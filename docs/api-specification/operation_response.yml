@@ -9,8 +9,8 @@ Successfull:
       example: Operation succeeded!
     status:
       type: number
-      min: 200
-      max: 299
+      minimum: 200
+      maximum: 299
       example: 201
 ClientError:
   type: object
@@ -23,6 +23,6 @@ ClientError:
       example: Ooops! Something went wrong...
     status:
       type: number
-      min: 400
-      max: 499
+      minimum: 400
+      maximum: 499
       example: 400
