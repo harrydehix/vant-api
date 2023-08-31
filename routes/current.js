@@ -21,13 +21,17 @@ router.get('/',
 
         if (result.isEmpty()) {
             CurrentConditions.findOne().then((currentConditions) => {
+                if (currentConditions === null) {
+                    next(new Error("No current weather conditions available. This error usually happens if no weather data hasn't been uploaded!", 503))
+                }
+
                 // TODO: change Units
                 res.status(200).json({
                     success: true,
                     data: currentConditions
                 });
             }).catch((err) => {
-                next(new Error("No current weather conditions available. This error usually happens if no weather data hasn't been uploaded!", 503))
+                next(new Error("Failed to access the current weather conditions from the database!", 500, err))
             })
         } else {
             next(new Error("Invalid query parameters! Please check the official API documentation.", 400))
