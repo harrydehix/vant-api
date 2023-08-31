@@ -1,0 +1,19 @@
+RainUnit:
+  type: string
+  enum: [in, mm]
+
+WindUnit:
+  type: string
+  enum: [km/h, mph, ft/s, knots, Bft, m/s]
+
+PressureUnit:
+  type: string
+  enum: [hPa, inHg, mmHg, mb]
+
+SolarRadiationUnit:
+  type: string
+  enum: [W/m²]
+
+TemperatureUnit:
+  type: string
+  enum: [°C, °F]

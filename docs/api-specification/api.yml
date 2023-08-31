@@ -1,0 +1,64 @@
+openapi: "3.0.2"
+info:
+  title: Vant API
+  version: "0.1"
+servers:
+  - url: http://localhost:8000/api/v1/
+paths:
+  /current:
+    get:
+      description: Returns the currently measured weather data, which is automatically converted into the desired units. If no units are passed the set up units will be used. One can set them up using environment variables.
+      parameters:
+        - in: query
+          name: rainUnit
+          schema:
+            $ref: "./units.yml#/RainUnit"
+        - in: query
+          name: windUnit
+          schema:
+            $ref: "./units.yml#/WindUnit"
+        - in: query
+          name: pressureUnit
+          schema:
+            $ref: "./units.yml#/PressureUnit"
+        - in: query
+          name: solarRadiationUnit
+          schema:
+            $ref: "./units.yml#/SolarRadiationUnit"
+        - in: query
+          name: temperatureUnit
+          schema:
+            $ref: "./units.yml#/TemperatureUnit"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: "./current_conditions.yml#/CurrentConditions"
+    post:
+      description: Updates the current weather conditions. One should use the set up units.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "./current_conditions.yml#/CurrentConditions"
+      responses:
+        "201":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/Successfull"
+        "400":
+          description: Bad Request (e.g. invalid request body)
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/ClientError"

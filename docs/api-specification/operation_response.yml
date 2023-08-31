@@ -1,0 +1,28 @@
+Successfull:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: true
+    message:
+      type: string
+      example: Operation succeeded!
+    status:
+      type: number
+      min: 200
+      max: 299
+      example: 201
+ClientError:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: false
+    message:
+      type: string
+      example: Ooops! Something went wrong...
+    status:
+      type: number
+      min: 400
+      max: 499
+      example: 400
