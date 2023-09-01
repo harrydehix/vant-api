@@ -1,9 +1,9 @@
 class Error {
 
-    constructor(msg, status, original_error) {
+    constructor(msg, status, details) {
         this.message = msg;
         this.status = status;
-        this.original_error = original_error;
+        this.details = details;
     }
 
 }

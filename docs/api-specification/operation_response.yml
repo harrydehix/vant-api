@@ -4,9 +4,6 @@ Successfull:
     success:
       type: boolean
       example: true
-    message:
-      type: string
-      example: Operation succeeded!
     status:
       type: number
       minimum: 200

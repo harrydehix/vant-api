@@ -66,6 +66,8 @@ CurrentConditions:
       example: 27.2
     humExtra:
       type: array
+      minItems: 7
+      maxItems: 7
       items:
         type: number
         nullable: true
@@ -80,12 +82,16 @@ CurrentConditions:
       example: 65.1
     leafTemps:
       type: array
+      minItems: 4
+      maxItems: 4
       items:
         type: number
         nullable: true
       example: [22.1, null, null, 29.2]
     leafWetnesses:
       type: array
+      minItems: 4
+      maxItems: 4
       items:
         type: number
         nullable: true
@@ -161,12 +167,16 @@ CurrentConditions:
       example: 823.12
     soilMoistures:
       type: array
+      minItems: 4
+      maxItems: 4
       items:
         type: number
         nullable: true
       example: [null, null, null, null]
     soilTemps:
       type: array
+      minItems: 4
+      maxItems: 4
       items:
         type: number
         nullable: true
@@ -193,12 +203,14 @@ CurrentConditions:
       example: "18:23"
     tempExtra:
       type: array
+      minItems: 7
+      maxItems: 7
       items:
         type: number
         nullable: true
       example: [null, 19.2, null, null, null, null, null]
     tempIn:
-      type: string
+      type: number
       nullable: true
       example: 23.1
     tempOut:

@@ -3,7 +3,8 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-        "start": "set DEBUG=vant-api & node ./bin/www"
+        "start": "node ./bin/www",
+        "debug": "set DEBUG=vant-api & set env=development & node ./bin/www"
     },
     "dependencies": {
         "cookie-parser": "~1.4.4",
@@ -16,6 +17,6 @@
         "morgan": "~1.9.1",
         "node-dev": "^8.0.0",
         "pug": "^3.0.2",
-        "vant-db": "0.0.1"
+        "vant-db": "0.0.2"
     }
 }
