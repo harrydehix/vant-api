@@ -47,7 +47,7 @@ app.use(function (err, req, res, next) {
             success: false,
             message: err.status >= 500 && err.status <= 599 && req.app.get('env') !== 'development' ? "Internal server error!" : err.message,
             status: err.status,
-            error: req.app.get('env') === 'development' ? err.details : undefined,
+            error: process.env.ENV === 'development' ? err.details : undefined,
         })
     } else {
         res.status(err.status || 500);
@@ -55,7 +55,7 @@ app.use(function (err, req, res, next) {
             success: false,
             message: err.status >= 500 && err.status <= 599 && req.app.get('env') !== 'development' ? "Internal server error!" : err.message,
             status: err.status || 500,
-            error: req.app.get('env') === 'development' ? err : undefined,
+            error: process.env.ENV === 'development' ? err : undefined,
         })
     }
 });

@@ -26,7 +26,13 @@ router.get('/',
                     next(new Error("No current weather conditions available. This error usually happens if no weather data hasn't been uploaded!", 503))
                 }
 
-                // TODO: Convert to passed units
+                currentConditions.changeUnits({
+                    rain: req.query.rainUnit,
+                    wind: req.query.windUnit,
+                    pressure: req.query.pressureUnit,
+                    solarRadiation: req.query.solarRadiationUnit,
+                    temperature: req.query.temperatureUnit
+                });
 
                 res.status(200).json({
                     success: true,
@@ -52,6 +58,12 @@ router.post('/', checkExact(checkSchema(currentConditionsSchema, ["body"])),
                 await currentConditions.validate();
             } catch (err) {
                 next(new Error("Invalid '" + err.errors[0] + "' value!"));
+            }
+
+            try {
+                await CurrentConditions.deleteMany();
+            } catch (err) {
+                next(new Error("Failed to delete existing current conditions in the database!", 500, err));
             }
 
             try {
