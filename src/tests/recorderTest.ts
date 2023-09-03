@@ -1,8 +1,10 @@
-import "../server/www";
+import startVantageAPI from "../server/server";"../server/server";
 import Recorder from "../recorder/Recorder";
 import { VantPro2Interface } from "vantjs/interfaces";
 
 async function main(){
+    startVantageAPI({ fallbackPort: 8000 });
+
     const device = await VantPro2Interface.create({
         units: {
             temperature: "°C",
