@@ -227,7 +227,7 @@ exports.default = {
         isFloat: true,
         errorMessage: "Invalid pressUserOffset value!",
     },
-    rain15min: {
+    rain15m: {
         optional: {
             options: {
                 nullable: true

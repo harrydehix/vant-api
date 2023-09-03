@@ -1,11 +1,12 @@
 {
     "name": "vant-api",
-    "version": "0.0.0",
-    "private": true,
+    "version": "0.0.1",
+    "private": false,
     "scripts": {
         "build": "npx tsc",
         "start": "node -r source-map-support/register ./dist/server/www.js",
-        "debug": "node-dev -r source-map-support/register ./dist/server/www.js"
+        "debug": "node-dev -r source-map-support/register ./dist/server/www.js",
+        "test": "node -r source-map-support/register"
     },
     "dependencies": {
         "@types/morgan": "^1.9.5",
@@ -21,7 +22,8 @@
         "morgan": "~1.9.1",
         "node-dev": "^8.0.0",
         "pug": "^3.0.2",
-        "vant-db": "0.0.8",
+        "superagent": "^8.1.2",
+        "vant-db": "0.0.9",
         "vantjs": "^1.0.6"
     },
     "devDependencies": {
@@ -30,6 +32,7 @@
         "@types/express": "^4.17.17",
         "@types/lodash.merge": "^4.6.7",
         "@types/node": "^20.5.9",
+        "@types/superagent": "^4.1.18",
         "source-map-support": "^0.5.21",
         "typescript": "^5.2.2"
     }

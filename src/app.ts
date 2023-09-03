@@ -21,6 +21,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/vant-db').then(() => {
 
 // Routers
 import currentRouter from "./routes/current";
+import { inspect } from "util";
 
 const app = express();
 
@@ -39,7 +40,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 // error handler
 app.use(function (err: any, req : Request, res : Response, next : NextFunction) {
-    debug("Handling error (" + err.message + ")!")
+    debug("Handling error (" + err.message + ")!");
+    debug(inspect(err, false, null, true));
     if (err instanceof Error) {
         res.status(err.status);
         res.json({

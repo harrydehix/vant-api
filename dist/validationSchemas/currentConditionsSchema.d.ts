@@ -224,7 +224,7 @@ declare const _default: {
         isFloat: boolean;
         errorMessage: string;
     };
-    rain15min: {
+    rain15m: {
         optional: {
             options: {
                 nullable: boolean;

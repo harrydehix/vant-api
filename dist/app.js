@@ -22,6 +22,7 @@ mongoose_1.default.connect('mongodb://127.0.0.1:27017/vant-db').then(() => {
 });
 // Routers
 const current_1 = __importDefault(require("./routes/current"));
+const util_1 = require("util");
 const app = (0, express_1.default)();
 // Middlewares
 app.use(express_1.default.json());
@@ -36,6 +37,7 @@ app.use((req, res, next) => {
 // error handler
 app.use(function (err, req, res, next) {
     debug("Handling error (" + err.message + ")!");
+    debug((0, util_1.inspect)(err, false, null, true));
     if (err instanceof Error_1.default) {
         res.status(err.status);
         res.json({
