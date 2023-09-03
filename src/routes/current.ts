@@ -1,9 +1,15 @@
-const express = require('express');
-const { body, query, validationResult, checkSchema, checkExact } = require('express-validator');
-const { CurrentConditions } = require("vant-db");
-const Error = require("../error-handling/Error");
-const asyncHandler = require("../error-handling/asyncHandler")
-const currentConditionsSchema = require("../validationSchemas/currentConditionsSchema");
+import express, {Request, Response, NextFunction} from "express";
+import { body, query, validationResult, checkSchema, checkExact, ValidationError }  from "express-validator";
+import { CurrentConditions } from "vant-db";
+import Error from "../error-handling/Error";
+import asyncHandler from "../error-handling/asyncHandler";
+import currentConditionsSchema from "../validationSchemas/currentConditionsSchema";
+import { RainUnits } from "vantjs/dist/units/RainUnits";
+import { WindUnits } from "vantjs/dist/units/WindUnits";
+import { PressureUnits } from "vantjs/dist/units/PressureUnits";
+import { SolarRadiationUnits } from "vantjs/dist/units/SolarRadiationUnits";
+import { TemperatureUnits } from "vantjs/dist/units/TemperatureUnits";
+import mongoose from "mongoose";
 
 const router = express.Router();
 
@@ -23,15 +29,15 @@ router.get('/',
                 const currentConditions = await CurrentConditions.findOne();
 
                 if (currentConditions === null) {
-                    next(new Error("No current weather conditions available. This error usually happens if no weather data hasn't been uploaded!", 503))
+                    return next(new Error("No current weather conditions available. This error usually happens if no weather data hasn't been uploaded!", 503))
                 }
 
                 currentConditions.changeUnits({
-                    rain: req.query.rainUnit,
-                    wind: req.query.windUnit,
-                    pressure: req.query.pressureUnit,
-                    solarRadiation: req.query.solarRadiationUnit,
-                    temperature: req.query.temperatureUnit
+                    rain: req.query.rainUnit as RainUnits,
+                    wind: req.query.windUnit as WindUnits,
+                    pressure: req.query.pressureUnit as PressureUnits,
+                    solarRadiation: req.query.solarRadiationUnit as SolarRadiationUnits,
+                    temperature: req.query.temperatureUnit as TemperatureUnits
                 });
 
                 res.status(200).json({
@@ -39,10 +45,10 @@ router.get('/',
                     data: currentConditions
                 });
             } catch (err) {
-                next(new Error("Failed to access the current weather conditions from the database!", 500, err))
+                return next(new Error("Failed to access the current weather conditions from the database!", 500, err))
             }
         } else {
-            next(new Error(result.array()[0], 400, result))
+            return next(new Error(result.array()[0].msg, 400, result))
         }
     }));
 
@@ -57,17 +63,21 @@ router.post('/', checkExact(checkSchema(currentConditionsSchema, ["body"])),
             try {
                 await currentConditions.validate();
             } catch (err) {
-                next(new Error("Invalid '" + err.errors[0] + "' value!"));
+                if(err instanceof mongoose.Error.ValidationError){
+                    return next(new Error("Invalid '" + err.errors[0] + "' value!", 400));
+                }else{
+                    return next(new Error("Unknown error while validation!", 500, err));
+                }
             }
 
             try {
                 await CurrentConditions.deleteMany();
             } catch (err) {
-                next(new Error("Failed to delete existing current conditions in the database!", 500, err));
+                return next(new Error("Failed to delete existing current conditions in the database!", 500, err));
             }
 
             try {
-                await currentConditions.save({ validateBeforeSafe: false });
+                await currentConditions.save({ validateBeforeSave: false });
 
                 res.status(201);
                 res.json({
@@ -75,11 +85,11 @@ router.post('/', checkExact(checkSchema(currentConditionsSchema, ["body"])),
                     status: 201
                 });
             } catch (err) {
-                next(new Error("Failed to save current conditions in the database!", 500, err));
+                return next(new Error("Failed to save current conditions in the database!", 500, err));
             }
         } else {
-            next(new Error(result.array()[0].msg, 400, result))
+            return next(new Error(result.array()[0].msg, 400, result))
         }
     }));
 
-module.exports = router;
+export default router;

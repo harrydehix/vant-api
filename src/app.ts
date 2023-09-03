@@ -1,13 +1,14 @@
 // Dependencies
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const cors = require('cors');
-const Error = require("./error-handling/Error");
-const mongoose = require("mongoose");
-const debug = require("debug")("vant-api");
+import createError from "http-errors";
+import express, { Errback, Request, Response, NextFunction } from "express";
+import logger from "morgan";
+import cors from "cors";
+import Error from "./error-handling/Error";
+import mongoose from "mongoose";
+import debugInitializer from "debug";
+
+
+const debug = debugInitializer("vant-api");
 
 // Database
 mongoose.connect('mongodb://127.0.0.1:27017/vant-db').then(() => {
@@ -19,27 +20,25 @@ mongoose.connect('mongodb://127.0.0.1:27017/vant-db').then(() => {
 })
 
 // Routers
-const currentRouter = require('./routes/current');
+import currentRouter from "./routes/current";
 
 const app = express();
 
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors({ origin: "*" }))
-//app.use(cookieParser());
-//app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors({ origin: "*" }));
 app.use(logger('dev'));
 
 app.use('/api/v1/current', currentRouter);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use((req: Request, res: Response, next: NextFunction) => {
     next(createError(404));
 });
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use(function (err: any, req : Request, res : Response, next : NextFunction) {
     debug("Handling error (" + err.message + ")!")
     if (err instanceof Error) {
         res.status(err.status);
@@ -60,5 +59,5 @@ app.use(function (err, req, res, next) {
     }
 });
 
-module.exports = app;
+export default app;
 

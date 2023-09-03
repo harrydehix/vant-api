@@ -1,6 +1,7 @@
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 // Validates on a basic low level (only the datatype is checked)
-module.exports = {
+exports.default = {
     altimeter: {
         optional: {
             options: {
@@ -488,3 +489,4 @@ module.exports = {
         errorMessage: "Invalid windGustDirDeg value!",
     },
 };
+//# sourceMappingURL=currentConditionsSchema.js.map

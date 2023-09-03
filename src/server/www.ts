@@ -3,15 +3,19 @@
 /**
  * Load environment variables
  */
-require('dotenv').config()
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 /**
  * Module dependencies.
  */
+import app from "../app";
+import debugInitializer from "debug";
+const debug = debugInitializer('vant-api');
 
-var app = require('../app');
-var debug = require('debug')('vant-api');
-var http = require('http');
+import * as http from "http";
+import { AddressInfo } from "net";
 
 /**
  * Get port from environment and store in Express.
@@ -38,7 +42,7 @@ server.on('listening', onListening);
  * Normalize a port into a number, string, or false.
  */
 
-function normalizePort(val) {
+function normalizePort(val : string) {
     var port = parseInt(val, 10);
 
     if (isNaN(port)) {
@@ -58,7 +62,7 @@ function normalizePort(val) {
  * Event listener for HTTP server "error" event.
  */
 
-function onError(error) {
+function onError(error : any) {
     if (error.syscall !== 'listen') {
         throw error;
     }
@@ -87,8 +91,8 @@ function onError(error) {
  */
 
 function onListening() {
-    var addr = server.address();
-    var bind = typeof addr === 'string'
+    const addr = server.address() as string | AddressInfo;
+    const bind = typeof addr === 'string'
         ? 'pipe ' + addr
         : 'port ' + addr.port;
     debug('Listening on ' + bind);
