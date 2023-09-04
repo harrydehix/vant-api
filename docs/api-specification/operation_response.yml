@@ -23,3 +23,30 @@ ClientError:
       minimum: 400
       maximum: 499
       example: 400
+ServerError:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: false
+    message:
+      type: string
+      example: Ooops! Something went wrong...
+    status:
+      type: number
+      minimum: 500
+      maximum: 599
+      example: 500
+NoWeatherDataAvailable:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: false
+    message:
+      type: string
+      example: No current weather data available. This error usually happens if no weather data hasn't been uploaded!
+    status:
+      type: number
+      enum: [503]
+      example: 503

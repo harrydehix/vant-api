@@ -42,6 +42,24 @@ paths:
                     example: true
                   data:
                     $ref: "./current_conditions.yml#/CurrentConditions"
+        "400":
+          description: Bad Request. Probably the query parameters (unit settings) are invalid.
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/ClientError"
+        "503":
+          description: Service Unavailable. Happens if no weather data hasn't been uploaded.
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/NoWeatherDataAvailable"
+        "500":
+          description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/ServerError"
     post:
       description: Updates the current weather conditions. One should use the set up units.
       requestBody:
@@ -57,8 +75,14 @@ paths:
               schema:
                 $ref: "./operation_response.yml#/Successfull"
         "400":
-          description: Bad Request (e.g. invalid request body)
+          description: Bad Request. Probably the sent weather data is invalid.
           content:
             application/json:
               schema:
                 $ref: "./operation_response.yml#/ClientError"
+        "500":
+          description: Internal server error. Multiple reasons are possible. Possibly the database connection failed.
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/ServerError"

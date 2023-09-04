@@ -23,7 +23,7 @@ async function main(){
 
     recorder.configureRealtimeRecordings({
         interval: 10,
-    })
+    });
 
     recorder.start();
 }
