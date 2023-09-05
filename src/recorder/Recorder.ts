@@ -6,7 +6,8 @@ import MinimumRecorderSettings from "./MinimumRecorderSettings";
 import dotenv from "dotenv";
 import validator from "validator";
 import log, { configureLogger } from "../logger/recorder-logger";
-import { PressureUnit, RainUnit, SolarRadiationUnit, TemperatureUnit, WindUnit } from "vant-environment/units";
+import { PressureUnit, RainUnit, SolarRadiationUnit, TemperatureUnit, WindUnit, PressureUnits, RainUnits, SolarRadiationUnits, TemperatureUnits, WindUnits } from "vant-environment/units";
+import { AdvancedModels, BaudRates, RainCollectorSizes } from "vant-environment";
 
 interface RealtimeRecorderSettings{
     readonly interval: number,
@@ -37,13 +38,13 @@ class Recorder {
                 invalidEnvironmentVariables.push("API");
             }
 
-            if(process.env.BAUD_RATE && validator.isIn(process.env.BAUD_RATE, ["1200", "2400", "4800", "9600", "14400", "19200"])){
+            if(process.env.BAUD_RATE && validator.isIn(process.env.BAUD_RATE, BaudRates)){
                 settings.baudRate = parseInt(process.env.BAUD_RATE!) as any;
             }else{
                 invalidEnvironmentVariables.push("BAUD_RATE");
             }
 
-            if(process.env.MODEL && validator.isIn(process.env.MODEL, ["VUE", "PRO2"])){
+            if(process.env.MODEL && validator.isIn(process.env.MODEL, AdvancedModels)){
                 settings.model = process.env.MODEL as any;
             }else{
                 invalidEnvironmentVariables.push("MODEL");
@@ -61,7 +62,7 @@ class Recorder {
                 invalidEnvironmentVariables.push("LOG_LEVEL");
             }
 
-            if(process.env.RAIN_COLLECTOR_SIZE && validator.isIn(process.env.RAIN_COLLECTOR_SIZE, ["0.01in", "0.2mm", "0.1mm"])){
+            if(process.env.RAIN_COLLECTOR_SIZE && validator.isIn(process.env.RAIN_COLLECTOR_SIZE, RainCollectorSizes)){
                 settings.rainCollectorSize = process.env.RAIN_COLLECTOR_SIZE as any;
             }else{
                 invalidEnvironmentVariables.push("RAIN_COLLECTOR_SIZE");
@@ -84,31 +85,31 @@ class Recorder {
             }else{
                 invalidEnvironmentVariables.push("LOG_ERROR_INFORMATION");
             }
-            if(process.env.RAIN_UNIT && validator.isIn(process.env.RAIN_UNIT, ["in", "mm"])){
+            if(process.env.RAIN_UNIT && validator.isIn(process.env.RAIN_UNIT, RainUnits)){
                 settings.units!.rain = process.env.RAIN_UNIT as RainUnit;
             }else{
                 invalidEnvironmentVariables.push("RAIN_UNIT");
             }
 
-            if(process.env.TEMPERATURE_UNIT && validator.isIn(process.env.TEMPERATURE_UNIT, ["°F", "°C"])){
+            if(process.env.TEMPERATURE_UNIT && validator.isIn(process.env.TEMPERATURE_UNIT, TemperatureUnits)){
                 settings.units!.temperature = process.env.TEMPERATURE_UNIT as TemperatureUnit;
             }else{
                 invalidEnvironmentVariables.push("TEMPERATURE_UNIT");
             }
 
-            if(process.env.PRESSURE_UNIT && validator.isIn(process.env.PRESSURE_UNIT, ["inHg", "hPa", "mmHg", "mb"])){
+            if(process.env.PRESSURE_UNIT && validator.isIn(process.env.PRESSURE_UNIT, PressureUnits)){
                 settings.units!.pressure = process.env.PRESSURE_UNIT as PressureUnit;
             }else{
                 invalidEnvironmentVariables.push("PRESSURE_UNIT");
             }
 
-            if(process.env.SOLAR_RADIATION_UNIT &&  validator.isIn(process.env.SOLAR_RADIATION_UNIT, ["W/m²"])){
+            if(process.env.SOLAR_RADIATION_UNIT &&  validator.isIn(process.env.SOLAR_RADIATION_UNIT, SolarRadiationUnits)){
                 settings.units!.solarRadiation = process.env.SOLAR_RADIATION_UNIT as SolarRadiationUnit;
             }else{
                 invalidEnvironmentVariables.push("SOLAR_RADIATION_UNIT");
             }
 
-            if(process.env.WIND_UNIT && validator.isIn(process.env.WIND_UNIT, ["km/h", "mph", "ft/s", "knots", "Bft", "m/s"])){
+            if(process.env.WIND_UNIT && validator.isIn(process.env.WIND_UNIT, WindUnits)){
                 settings.units!.wind = process.env.WIND_UNIT as WindUnit;
             }else{
                 invalidEnvironmentVariables.push("WIND_UNIT");
@@ -153,7 +154,7 @@ class Recorder {
         }
 
         let device;
-        if(settings.model === "PRO2"){
+        if(settings.model === "Pro2"){
             device = await VantPro2Interface.create({
                 path: settings.path!,
                 rainCollectorSize: settings.rainCollectorSize!,

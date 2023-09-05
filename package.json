@@ -34,7 +34,7 @@
         "superagent": "^8.1.2",
         "validator": "^13.11.0",
         "vant-db": "0.0.9",
-        "vant-environment": "^1.0.4",
+        "vant-environment": "^1.0.6",
         "vantjs": "^1.0.6",
         "winston": "^3.10.0"
     },

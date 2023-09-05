@@ -4,13 +4,9 @@ import APISettings, { defaultAPISettings } from "./APISettings";
 import MinimumAPISettings from "./MinimumAPISettings";
 import merge from "lodash.merge";
 import app from "../app";
-import { RainUnits } from "vantjs/dist/units/RainUnits";
-import { TemperatureUnits } from "vantjs/dist/units/TemperatureUnits";
-import { PressureUnits } from "vantjs/dist/units/PressureUnits";
-import { SolarRadiationUnits } from "vantjs/dist/units/SolarRadiationUnits";
-import { WindUnits } from "vantjs/dist/units/WindUnits";
 import log, { configureLogger } from "../logger/api-logger";
 import validator from "validator";
+import { PressureUnit, RainUnit, RainUnits, SolarRadiationUnit, TemperatureUnit, WindUnit } from "vant-environment/units";
 
 
 function startVantageAPI(apiSettings: MinimumAPISettings){
@@ -51,32 +47,32 @@ function startVantageAPI(apiSettings: MinimumAPISettings){
             invalidEnvironmentVariables.push("LOG_ERROR_INFORMATION");
         }
 
-        if(process.env.RAIN_UNIT && validator.isIn(process.env.RAIN_UNIT, ["in", "mm"])){
-            settings.units.rain = process.env.RAIN_UNIT as RainUnits;
+        if(process.env.RAIN_UNIT && validator.isIn(process.env.RAIN_UNIT, RainUnits)){
+            settings.units.rain = process.env.RAIN_UNIT as RainUnit;
         }else{
             invalidEnvironmentVariables.push("RAIN_UNIT");
         }
 
         if(process.env.TEMPERATURE_UNIT && validator.isIn(process.env.TEMPERATURE_UNIT, ["°F", "°C"])){
-            settings.units.temperature = process.env.TEMPERATURE_UNIT as TemperatureUnits;
+            settings.units.temperature = process.env.TEMPERATURE_UNIT as TemperatureUnit;
         }else{
             invalidEnvironmentVariables.push("TEMPERATURE_UNIT");
         }
 
         if(process.env.PRESSURE_UNIT && validator.isIn(process.env.PRESSURE_UNIT, ["inHg", "hPa", "mmHg", "mb"])){
-            settings.units.pressure = process.env.PRESSURE_UNIT as PressureUnits;
+            settings.units.pressure = process.env.PRESSURE_UNIT as PressureUnit;
         }else{
             invalidEnvironmentVariables.push("PRESSURE_UNIT");
         }
 
         if(process.env.SOLAR_RADIATION_UNIT &&  validator.isIn(process.env.SOLAR_RADIATION_UNIT, ["W/m²"])){
-            settings.units.solarRadiation = process.env.SOLAR_RADIATION_UNIT as SolarRadiationUnits;
+            settings.units.solarRadiation = process.env.SOLAR_RADIATION_UNIT as SolarRadiationUnit;
         }else{
             invalidEnvironmentVariables.push("SOLAR_RADIATION_UNIT");
         }
 
         if(process.env.WIND_UNIT && validator.isIn(process.env.WIND_UNIT, ["km/h", "mph", "ft/s", "knots", "Bft", "m/s"])){
-            settings.units.wind = process.env.WIND_UNIT as WindUnits;
+            settings.units.wind = process.env.WIND_UNIT as WindUnit;
         }else{
             invalidEnvironmentVariables.push("WIND_UNIT");
         }

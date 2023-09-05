@@ -1,3 +1,4 @@
+import { AdvancedModel, BaudRate } from "vant-environment";
 import { UnitConfiguration } from "vant-environment/units";
 import { UnitSettings } from "vantjs/dist/units/UnitSettings";
 import { VantPro2Interface, VantVueInterface } from "vantjs/interfaces";
@@ -8,13 +9,13 @@ export default interface MinimumRecorderSettings{
     /** The URL to the api. E.g. `http://localhost:8000/api`. Corresponding environment variable: `API`  */
     api?: string,
     /** The weather station model. Default is `PRO 2`. Corresponding environment variable: `MODEL` */
-    model?: "VUE" | "PRO2",
+    model?: AdvancedModel,
     /** The serial path to the weather station. E.g. `COM3`. Corresponding environment variable: `SERIAL_PATH` */
     path?: string,
     /** The default units. **Important**: Has to match the configured vant-api units! Corresponding environment variables: `RAIN_UNIT`, `TEMPERATURE_UNIT`, ...  */
     units?: Partial<UnitConfiguration>,
     /** The baud rate to use. Default is `19200`. This has to match your weather station's settings! Corresponding environment variable: `BAUD_RATE` */
-    baudRate?: 1200 | 2400 | 4800 | 9600 | 14400 | 19200,
+    baudRate?: BaudRate,
     /** Whether to prefer environment variables configured in the `.env` file. Default is `false`. */
     useEnvironmentVariables?: boolean,
     /** The minimimum log level that will be output. Default is `"info"`. Corresponding environment variable: `LOG_LEVEL` */
