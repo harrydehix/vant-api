@@ -1,14 +1,14 @@
-class Error {
-    public message : string;
+class APIError extends Error{
     public status : number;
     public details : any;
 
     constructor(message: string, status: number, details?: any) {
-        this.message = message;
+        super(message);
         this.status = status;
         this.details = details;
+        Error.captureStackTrace(this)
     }
 
 }
 
-export default Error;
+export default APIError;

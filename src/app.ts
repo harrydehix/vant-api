@@ -3,46 +3,52 @@ import createError from "http-errors";
 import express, { Errback, Request, Response, NextFunction } from "express";
 import logger from "morgan";
 import cors from "cors";
-import Error from "./error-handling/Error";
+import APIError from "./error-handling/APIError";
 import mongoose from "mongoose";
-import debugInitializer from "debug";
-
-
-const debug = debugInitializer("vant-api");
-
-// Database
-mongoose.connect('mongodb://127.0.0.1:27017/vant-db').then(() => {
-    debug("Connected to database!");
-}).catch((err) => {
-    debug("Failed to connect to database!");
-    debug(err);
-    process.exit(-1);
-})
 
 // Routers
 import currentRouter from "./routes/current";
-import { inspect } from "util";
 
 const app = express();
+
+import log from "./logger/api-logger";
+import morgan from "morgan";
+import { inspect } from "util";
+
+// Database
+mongoose.connect('mongodb://127.0.0.1:27017/vant-db').then(() => {
+    log.info("Successfully connected to database!");
+}).catch((err) => {
+    log.error("Failed to connect to database!");
+    log.error(err);
+    process.exit(-1);
+})
 
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({ origin: "*" }));
-app.use(logger('dev'));
+app.use((req: Request, res: Response, next: NextFunction) => {
+    let logFunction = log.info;
+    if(res.statusCode >= 400){
+        logFunction = log.warn;
+    }
+    logFunction(`REQUEST ${req.method} ${req.url}`)
+    next();
+});
 
 app.use('/api/v1/current', currentRouter);
 
 // catch 404 and forward to error handler
 app.use((req: Request, res: Response, next: NextFunction) => {
-    next(createError(404));
+    next(new APIError(`Route '${req.url}' does not exist!`, 404));
 });
+
 
 // error handler
 app.use(function (err: any, req : Request, res : Response, next : NextFunction) {
-    debug("Handling error (" + err.message + ")!");
-    debug(inspect(err, false, null, true));
-    if (err instanceof Error) {
+    log.error(err);
+    if (err instanceof APIError) {
         res.status(err.status);
         res.json({
             success: false,

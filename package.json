@@ -10,11 +10,20 @@
         "test": "node -r source-map-support/register",
         "api": "redocly build-docs docs/api-specification/api.yml --output=docs/api-specification/specification.html"
     },
+    "bin": "dist/tests/test.js",
+    "pkg": {
+        "scripts": "dist/**/*.js",
+        "targets": [
+            "node14-linux-x64",
+            "node14-macos-x64",
+            "node14-win-x64"
+        ],
+        "outputPath": "bin"
+    },
     "dependencies": {
         "@types/morgan": "^1.9.5",
         "cookie-parser": "~1.4.4",
         "cors": "^2.8.5",
-        "debug": "^2.6.9",
         "dotenv": "^16.3.1",
         "express": "^4.18.2",
         "express-validator": "^7.0.1",
@@ -25,8 +34,10 @@
         "node-dev": "^8.0.0",
         "pug": "^3.0.2",
         "superagent": "^8.1.2",
+        "validator": "^13.11.0",
         "vant-db": "0.0.9",
-        "vantjs": "^1.0.6"
+        "vantjs": "^1.0.6",
+        "winston": "^3.10.0"
     },
     "devDependencies": {
         "@types/cors": "^2.8.13",
@@ -35,6 +46,7 @@
         "@types/lodash.merge": "^4.6.7",
         "@types/node": "^20.5.9",
         "@types/superagent": "^4.1.18",
+        "@types/validator": "^13.11.1",
         "source-map-support": "^0.5.21",
         "typescript": "^5.2.2"
     }
