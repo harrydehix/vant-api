@@ -1,7 +1,5 @@
 // Dependencies
-import createError from "http-errors";
 import express, { Errback, Request, Response, NextFunction } from "express";
-import logger from "morgan";
 import cors from "cors";
 import APIError from "./error-handling/APIError";
 import mongoose from "mongoose";

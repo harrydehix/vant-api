@@ -1,16 +1,11 @@
-import { PressureUnits } from "vantjs/dist/units/PressureUnits"
-import { RainUnits } from "vantjs/dist/units/RainUnits"
-import { UnitSettings } from "vantjs/dist/units/UnitSettings"
-import { WindUnits } from "vantjs/dist/units/WindUnits"
+import { UnitConfiguration } from "vant-environment/units";
 import MinimumAPISettings from "./MinimumAPISettings";
-
-type Modifiable<T> = { -readonly [P in keyof T]: Modifiable<T[P]> };
 
 export default interface APISettings {
     /** The API's port number. Default is `8000`. Corresponding environment variable: `PORT`. */
     port: number,
     /** The default units. **Important**: Weather data uploads have to use these units! Corresponding environment variables: `RAIN_UNIT`, `TEMPERATURE_UNIT`, ...  */
-    units: Modifiable<UnitSettings>,
+    units: UnitConfiguration,
     /** The minimimum log level that will be output. Default is `"info"`. Corresponding environment variable: `LOG_LEVEL` */
     logLevel: "debug" | "info" | "warn" | "error",
     /** Whether the console log is enabled. Default is `true`. Corresponding environment variable: `CONSOLE_LOG` */

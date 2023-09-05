@@ -4,14 +4,9 @@ import { CurrentConditions } from "vant-db";
 import APIError from "../error-handling/APIError";
 import asyncHandler from "../error-handling/asyncHandler";
 import currentConditionsSchema from "../validationSchemas/currentConditionsSchema";
-import { RainUnits } from "vantjs/dist/units/RainUnits";
-import { WindUnits } from "vantjs/dist/units/WindUnits";
-import { PressureUnits } from "vantjs/dist/units/PressureUnits";
-import { SolarRadiationUnits } from "vantjs/dist/units/SolarRadiationUnits";
-import { TemperatureUnits } from "vantjs/dist/units/TemperatureUnits";
 import mongoose from "mongoose";
 import log from "../logger/api-logger";
-import logger from "../logger/api-logger";
+import { PressureUnit, RainUnit, SolarRadiationUnit, TemperatureUnit, WindUnit } from "vant-environment/units";
 
 const router = express.Router();
 
@@ -37,11 +32,11 @@ router.get('/',
                 
                 log.debug("Changing units...");
                 currentConditions.changeUnits({
-                    rain: req.query.rainUnit as RainUnits,
-                    wind: req.query.windUnit as WindUnits,
-                    pressure: req.query.pressureUnit as PressureUnits,
-                    solarRadiation: req.query.solarRadiationUnit as SolarRadiationUnits,
-                    temperature: req.query.temperatureUnit as TemperatureUnits
+                    rain: req.query.rainUnit as RainUnit,
+                    wind: req.query.windUnit as WindUnit,
+                    pressure: req.query.pressureUnit as PressureUnit,
+                    solarRadiation: req.query.solarRadiationUnit as SolarRadiationUnit,
+                    temperature: req.query.temperatureUnit as TemperatureUnit
                 });
 
                 res.status(200).json({

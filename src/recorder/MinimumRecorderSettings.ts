@@ -1,8 +1,8 @@
+import { UnitConfiguration } from "vant-environment/units";
 import { UnitSettings } from "vantjs/dist/units/UnitSettings";
 import { VantPro2Interface, VantVueInterface } from "vantjs/interfaces";
 import { RainCollectorSize } from "vantjs/interfaces/settings";
 
-type Modifiable<T> = { -readonly [P in keyof T]: Modifiable<T[P]> };
 
 export default interface MinimumRecorderSettings{
     /** The URL to the api. E.g. `http://localhost:8000/api`. Corresponding environment variable: `API`  */
@@ -12,7 +12,7 @@ export default interface MinimumRecorderSettings{
     /** The serial path to the weather station. E.g. `COM3`. Corresponding environment variable: `SERIAL_PATH` */
     path?: string,
     /** The default units. **Important**: Has to match the configured vant-api units! Corresponding environment variables: `RAIN_UNIT`, `TEMPERATURE_UNIT`, ...  */
-    units?: Partial<Modifiable<UnitSettings>>,
+    units?: Partial<UnitConfiguration>,
     /** The baud rate to use. Default is `19200`. This has to match your weather station's settings! Corresponding environment variable: `BAUD_RATE` */
     baudRate?: 1200 | 2400 | 4800 | 9600 | 14400 | 19200,
     /** Whether to prefer environment variables configured in the `.env` file. Default is `false`. */
