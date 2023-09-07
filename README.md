@@ -35,6 +35,7 @@ import { Recorder } from "vant-api";
 async main(){
     const recorder = await Recorder.create({
         path: "COM5",
+        key: "your-api-write-key",
         api: "http://localhost:8000/api",
         rainCollectorSize: "0.2mm",
         units: {
