@@ -13,6 +13,10 @@ interface RealtimeRecorderSettings{
     readonly interval: number,
 }
 
+/**
+ * Counter-part to the `startVantageAPI()` function.
+ * Sends currently measured weather data repeatedly to the vant api.
+ */
 class Recorder {
     public readonly settings : RecorderSettings;
     public readonly interface : VantVueInterface | VantPro2Interface;
@@ -25,6 +29,30 @@ class Recorder {
         this.interface = device;
     }
 
+    /**
+     * Creates a new recorder with the passed settings.
+     * 
+     * **Example**:
+     * ```ts
+     * // create recorder
+     * const recorder = await Recorder.create({
+     *      path: "COM5",
+     *      api: "http://localhost:8000/api",
+     *      rainCollectorSize: "0.2mm",
+     *      model: "Pro2",
+     *      ....
+     * });
+     * #
+     * 
+     * // configure realtime recordings
+     * recorder.configureRealtimeRecording({ interval: 10 });
+     * 
+     * // start recorder
+     * recorder.start();
+     * ```
+     * @param settings 
+     * @returns 
+     */
     public static create = async(settings: MinimumRecorderSettings) => {
         settings = merge(defaultRecorderSettings, settings);
 
@@ -34,6 +62,12 @@ class Recorder {
 
             if(process.env.API && validator.isURL(process.env.API, {require_tld: false})){
                 settings.api = process.env.API;
+            }else{
+                invalidEnvironmentVariables.push("API");
+            }
+
+            if(process.env.API_KEY){
+                settings.key = process.env.API_KEY;
             }else{
                 invalidEnvironmentVariables.push("API");
             }
@@ -197,6 +231,7 @@ class Recorder {
             .post(this.settings.api + "/v1/current")
             .send(record)
             .set('accept', 'json')
+            .set('x-api-key', this.settings.key)
             .end((err, res: superagent.Response) => {
                 if(!res || !res.ok){
                     log.error("Failed to send realtime record!");  

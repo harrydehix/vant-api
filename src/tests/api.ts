@@ -1,5 +1,9 @@
 import startVantageAPI from "../server/server";
 
-startVantageAPI({
+async function main(){
+    const api = await startVantageAPI({
         useEnvironmentVariables: true,
     });
+}
+
+main();

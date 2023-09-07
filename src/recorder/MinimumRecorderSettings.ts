@@ -1,13 +1,13 @@
-import { AdvancedModel, BaudRate } from "vant-environment";
-import { UnitConfiguration } from "vant-environment/units";
-import { UnitSettings } from "vantjs/dist/units/UnitSettings";
+import { AdvancedModel, BaudRate, RainCollectorSize } from "vant-environment";
+import { UnitConfiguration, UnitSettings } from "vant-environment/units";
 import { VantPro2Interface, VantVueInterface } from "vantjs/interfaces";
-import { RainCollectorSize } from "vantjs/interfaces/settings";
 
 
 export default interface MinimumRecorderSettings{
     /** The URL to the api. E.g. `http://localhost:8000/api`. Corresponding environment variable: `API`  */
     api?: string,
+    /** The api key used to communicate with the api. Corresponding environment variable: `API_KEY` */
+    key?: string,
     /** The weather station model. Default is `PRO 2`. Corresponding environment variable: `MODEL` */
     model?: AdvancedModel,
     /** The serial path to the weather station. E.g. `COM3`. Corresponding environment variable: `SERIAL_PATH` */

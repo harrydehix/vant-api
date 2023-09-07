@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 
 // Routers
 import currentRouter from "./routes/current";
+import configRouter from "./routes/config";
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use('/api/v1/current', currentRouter);
+app.use('/api/v1/config', configRouter);
 
 // catch 404 and forward to error handler
 app.use((req: Request, res: Response, next: NextFunction) => {

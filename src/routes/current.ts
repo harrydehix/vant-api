@@ -7,11 +7,14 @@ import currentConditionsSchema from "../validationSchemas/currentConditionsSchem
 import mongoose from "mongoose";
 import log from "../logger/api-logger";
 import { PressureUnit, RainUnit, SolarRadiationUnit, TemperatureUnit, WindUnit } from "vant-environment/units";
+import protect from "../security/protect";
 
 const router = express.Router();
 
 /* GET current weather conditions */
 router.get('/',
+    // api key authentification
+    protect("read"),
     // query validation
     query("rainUnit").optional().isIn(["in", "mm"]).withMessage("Invalid rain unit. Allowed values are: 'in', 'mm'"),
     query("windUnit").optional().isIn(["km/h", "mph", "ft/s", "knots", "Bft", "m/s"]).withMessage("Invalid wind unit. Allowed values are: 'km/h', 'mph', 'ft/s', 'knots', 'Bft', 'm/s'"),
@@ -23,12 +26,14 @@ router.get('/',
 
         if (result.isEmpty()) {
             try {
-                const currentConditions = await CurrentConditions.findOne();
-
-                if (currentConditions === null) {
+                let currentConditions = null;
+                for(let i = 0; i < 10 && !currentConditions; ++i){
+                    currentConditions = await CurrentConditions.findOne();
+                    await new Promise(r => setTimeout(r, 200));
+                }
+                if (!currentConditions) {
                     return next(new APIError("No current weather conditions available. This error usually happens if no weather data hasn't been uploaded!", 503))
                 }
-
                 
                 log.debug("Changing units...");
                 currentConditions.changeUnits({
@@ -52,7 +57,11 @@ router.get('/',
     }));
 
 /* SET current weather conditions */
-router.post('/', checkExact(checkSchema(currentConditionsSchema, ["body"])),
+router.post('/', 
+    // api key authentification
+    protect("write"), 
+    // request body validation
+    checkExact(checkSchema(currentConditionsSchema, ["body"])),
     asyncHandler(async (req, res, next) => {
         const result = validationResult(req);
 

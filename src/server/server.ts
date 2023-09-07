@@ -7,9 +7,28 @@ import app from "../app";
 import log, { configureLogger } from "../logger/api-logger";
 import validator from "validator";
 import { PressureUnit, RainUnit, RainUnits, SolarRadiationUnit, TemperatureUnit, WindUnit } from "vant-environment/units";
+import { APIUser, APIUserRole } from "vant-db";
 
+async function generateApiKeyIfNotExistent(role: APIUserRole){
+    try{
+        let user = await APIUser.findOne({role: role});
+        if(!user){
+            user = await APIUser.createNew(role);
+            await user.save();
+        }
+        log.info(`[${role}] API key is '${user.key}'`)
+    }catch(err){
+        log.error(`Fatal error while generating ${role} api key! Shutting down...`);
+        log.error(err);
+        process.exit(-1);
+    }
+}
 
-function startVantageAPI(apiSettings: MinimumAPISettings){
+/**
+ * Starts the vantage with the passed settings. 
+ * @param apiSettings the api's settings (port, units, ...)
+ */
+async function startVantageAPI(apiSettings: MinimumAPISettings){
     const settings = merge(defaultAPISettings, apiSettings) as APISettings;
     /**
      * Load environment variables
@@ -89,6 +108,12 @@ function startVantageAPI(apiSettings: MinimumAPISettings){
          log.debug("Loaded environment variables!");
     }
 
+    generateApiKeyIfNotExistent("admin");
+    generateApiKeyIfNotExistent("read");
+    generateApiKeyIfNotExistent("readwrite");
+    generateApiKeyIfNotExistent("write");
+    log.info("You can generate more api keys using the '/api/v1/config/generate-key?role=role' route!");
+
     app.set('port', settings.port);
 
     /**
@@ -109,6 +134,8 @@ function startVantageAPI(apiSettings: MinimumAPISettings){
     server.on('listening', ()=>{
         log.info(`Successfully started vant-api server on port ${settings.port}!`);
     });
+
+    return {server, log, app, settings};
 }
 
 

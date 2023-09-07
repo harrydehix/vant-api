@@ -6,6 +6,8 @@ import { VantPro2Interface, VantVueInterface } from "vantjs/interfaces";
 export default interface RecorderSettings{
     /** The URL to the api. E.g. `http://localhost:8000/api`. Corresponding environment variable: `API`  */
     api: string,
+    /** The api key used to communicate with the api. Corresponding environment variable: `API_KEY` */
+    key: string,
     /** The weather station model. Default is `PRO2`. Corresponding environment variable: `MODEL` */
     model: AdvancedModel,
     /** The serial path to the weather station. E.g. `COM3`. Corresponding environment variable: `SERIAL_PATH` */
