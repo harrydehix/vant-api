@@ -1,57 +1,51 @@
 # vant-api
 
 API for storing and retrieving vantage weather data.
-Following image shows how all `vant-*` programs may work together.
+Following image shows how all `vant*` programs may work together.
 
 ![](./docs/skizze.jpg)
 
 
 ### ⚠️ Development in early progress
 
-Non functional yet!
+This package is still in active development. There will be many breaking changes, improvements in the future.
 
 
-### Sneak peaks
+### Running the prototype
 
-To start the vantage api, just run the following code:
-```ts
-import { startVantageAPI } from "vant-api";
+To start the `vant-api` prototype just clone this repository and create the following `.env` file in the root directory.
 
-startVantageAPI({
-        units: {
-            rain: "mm",
-            ...
-        },
-        port: 8000,
-    });
+```sh
+# unit settings (for api & recorder), don't have to match the units of the vant-web-gui
+WIND_UNIT=mph               # wind unit
+TEMPERATURE_UNIT='°F'       # temperature unit
+SOLAR_RADIATION_UNIT='W/m²' # solar radiation unit
+RAIN_UNIT=in                # rain unit
+PRESSURE_UNIT=inHg          # pressure unit
+
+# environment (use production for a production build)
+ENV=development
+
+# log-settings (for api & recorder)
+LOG_LEVEL=debug
+FILE_LOG=true
+CONSOLE_LOG=true
+LOG_ERROR_INFORMATION=false
+
+# api specific settings
+PORT=8000
+
+# recorder specific settings
+BAUD_RATE=19200                 # has to match your console's settings
+MODEL=Pro2                      # supported models: Pro2, Vue
+RAIN_COLLECTOR_SIZE='0.2mm'     # possible values: 0.2mm, 0.1mm, 0.1in
+API=http://localhost:8000/api   
+SERIAL_PATH=COM5                # change!
+API_KEY=your-write-api-key      # is logged to the console when you start the vant-api
 ```
-You can also use the `useEnvironmentVariables` option and
-save your config in the `.env` file.
 
-To start the recorder, run the following code:
-```ts
-import { Recorder } from "vant-api";
+After that you have to build the src folder. Just run `npm install && npm run build`. This may take a while!
 
-async main(){
-    const recorder = await Recorder.create({
-        path: "COM5",
-        key: "your-api-write-key",
-        api: "http://localhost:8000/api",
-        rainCollectorSize: "0.2mm",
-        units: {
-            rain: "mm",
-            ...
-        },
-    });
+Finally start the `vant-api` with `npm run vant-api` and the `vant-recorder` with `npm run vant-recorder`.
 
-    recorder.configureRealtimeRecordings({
-            interval: 10,
-        });
-
-    recorder.start();
-}
-
-main();
-```
-You can also use the `useEnvironmentVariables` option and
-save your config in the `.env` file.
+You **don't** have to execute both programs on the same machine!
