@@ -1,8 +1,18 @@
 {
     "name": "vant-api",
-    "version": "0.4.0",
+    "keywords": [
+        "vantage",
+        "vantjs",
+        "vant-environment",
+        "Davis Vantage Pro 2",
+        "Davis Vantage Vue",
+        "weather"
+    ],
+    "description": "RESTful API for storing and retrieving vantage weather data.",
+    "version": "0.4.2",
     "private": false,
     "main": "dist/index.js",
+    "author": "Henri Hollmann (harrydehix)",
     "scripts": {
         "build": "npx tsc",
         "vant-api": "node -r source-map-support/register ./dist/tests/api.js",

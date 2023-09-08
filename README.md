@@ -1,48 +1,113 @@
 # vant-api
 
-API for storing and retrieving vantage weather data.
+RESTful API for storing and retrieving vantage weather data.
 
-### ⚠️ Development in early progress
+# Usage
 
-This package is still in active development. There will be many breaking changes and improvements in the future.
+Running the vantage api is super easy!
+```ts
+import { startVantageAPI } from "vant-api/api";
 
-### Running the prototype
-
-To start the `vant-api` prototype just clone this repository and create the following `.env` file in the root directory.
-*Comment: In the future you don't need to clone the repository. You will be able to simply install it as package using npm.*
-
-```sh
-# unit settings (for api & recorder), don't have to match the units of the vant-web-gui
-WIND_UNIT=mph               # wind unit
-TEMPERATURE_UNIT='°F'       # temperature unit
-SOLAR_RADIATION_UNIT='W/m²' # solar radiation unit
-RAIN_UNIT=in                # rain unit
-PRESSURE_UNIT=inHg          # pressure unit
-
-# environment (use production for a production build)
-ENV=development
-
-# log-settings (for api & recorder)
-LOG_LEVEL=debug
-FILE_LOG=true
-CONSOLE_LOG=true
-LOG_ERROR_INFORMATION=false
-
-# api specific settings
-PORT=8000
-
-# recorder specific settings
-BAUD_RATE=19200                 # has to match your console's settings
-MODEL=Pro2                      # supported models: Pro2, Vue
-RAIN_COLLECTOR_SIZE='0.2mm'     # possible values: 0.2mm, 0.1mm, 0.1in
-API=http://localhost:8000/api   
-SERIAL_PATH=COM5                # change!
-API_KEY=your-write-api-key      # is logged to the console when you start the vant-api
-CURRENT_CONDITIONS_INTERVAL=1   # the interval the current conditions get updated (min: 1)
+startVantageAPI({
+    port: 8000,
+    units: {
+        rain: "mm",
+        wind: "km/h",
+        ...
+    }
+});
 ```
 
-After that you have to build the src folder. Just run `npm install && npm run build`. This may take a while!
+Running the recorder is also pretty easy.
+```ts
+import { Recorder } from "vant-api/recorder";
 
-Finally start the `vant-api` with `npm run vant-api` and the `vant-recorder` with `npm run vant-recorder`.
+async function main(){
+    // Configure recorder 
+    const recorder = await Recorder.create({
+        path: "COM5",
+        api: "http://localhost:8000/api",
+        key: "your-api-key",
+        ...
+    });
 
-You **don't** have to execute both programs on the same machine!
+    // Configure "/api/v1/current" update interval
+    recorder.configureCurrentConditionsTask({
+        interval: 1,
+    });
+
+    // Start recorder
+    recorder.start();
+}
+
+main();
+```
+
+Read the [guides](./guides) to get started!
+
+# Documentation
+
+First of all you should read the [guides](https://github.com/harrydehix/vant-api/tree/main/guides). After that you may get more information and read the official [documentation](https://harrydehix.github.io).
+
+# Roadmap
+
+This project is in an early stage. There is still so much to come. Currently the api only stores the _current_ weather conditions. This will change.
+
+## Planned endpoints
+
+Currently following endpoints are planned. This may change.
+
+### `/highs-and-lows/:interval`
+
+This route will return interesting records. Using the
+`:interval` you will be able to choose different periods.
+Possible values will be: `hour`, `day`, `week`, `month`, `year`. By default it will assume that you are interested in the _current_ hour, day, etc. This is changeable by passing a `time` query parameter. E.g. `/highs-and-lows/week?time=2023/34` (this requests the highs and lows of the 34 calendar week of 2023).
+
+```json
+{
+    "success": true,
+    "interval": "year",
+    "data": {
+        "tempOut": {
+            "low": {
+                "value": -12.4,
+                "time": "2004-01-28"
+            },
+            "high": {
+                "value": 39.2,
+                "time": "2004-08-27"
+            }
+        },
+        ...
+    }
+}
+```
+
+### `/summary/:interval`
+
+This route will return a summary of the passed interval.
+Possible values will be: `hour`, `day`, `week`, `month`, `year`.
+
+```json
+{
+    "success": true,
+    "interval": "day",
+    "data": {
+        "rain": 7.4,
+        "windDir": "W",
+        "tempOut": {
+            "low": {
+                "value": 9.4,
+                "time": "05:34"
+            },
+            "high": {
+                "value": 14.9,
+                "time": "14:22"
+            }
+        },
+        ...
+    }
+}
+```
+
+This route will be useful for generating graphs that visualize the weather of a specified interval.
