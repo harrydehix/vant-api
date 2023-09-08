@@ -38,6 +38,7 @@ RAIN_COLLECTOR_SIZE='0.2mm'     # possible values: 0.2mm, 0.1mm, 0.1in
 API=http://localhost:8000/api   
 SERIAL_PATH=COM5                # change!
 API_KEY=your-write-api-key      # is logged to the console when you start the vant-api
+CURRENT_CONDITIONS_INTERVAL=1   # the interval the current conditions get updated (min: 1)
 ```
 
 After that you have to build the src folder. Just run `npm install && npm run build`. This may take a while!
