@@ -26,7 +26,7 @@ async function generateApiKeyIfNotExistent(role: APIUserRole){
 
 /**
  * Starts the **vantage api** with the passed settings. All endpoints of the vant-api are
- * documented in the [api-specification](https://harrydehix.github.io/specification.html).
+ * documented in the [api-specification](https://harrydehix.github.io/vant-api/specification.html).
  * 
  * Following steps are performed:
  * 1. Load settings from environment variables (if enabled)
