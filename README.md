@@ -2,6 +2,19 @@
 
 RESTful API for storing and retrieving vantage weather data.
 
+## Introduction
+
+There are _two main components_.
+
+1. **RESTful API** - process and provide weather data
+2. **recorder** - upload weather data
+
+The **api** is an _expressjs_ api, which manages a database and provides [simple endpoints](https://harrydehix.github.io/vant-api/specification.html) to access your weather data.
+
+The **recorder** repeatedly uploads weather data to the api.
+
+Both of them together form a robust platform!
+
 # Usage
 
 Running the vantage api is super easy!
@@ -47,7 +60,7 @@ Read the [guides](./guides) to get started!
 
 # Documentation
 
-First of all you should read the [guides](https://github.com/harrydehix/vant-api/tree/main/guides). After that you may get more information and read the official [documentation](https://harrydehix.github.io).
+First of all you should read the [guides](https://github.com/harrydehix/vant-api/tree/main/guides). After that you may get more information and read the official [documentation](https://harrydehix.github.io/vant-api).
 
 # Roadmap
 

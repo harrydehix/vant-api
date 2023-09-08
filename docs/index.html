@@ -13,6 +13,14 @@
 <div class="tsd-page-title">
 <h2>vant-api</h2></div>
 <div class="tsd-panel tsd-typography"><a id="md:vant-api" class="tsd-anchor"></a><h1><a href="#md:vant-api">vant-api</a></h1><p>RESTful API for storing and retrieving vantage weather data.</p>
+<a id="md:introduction" class="tsd-anchor"></a><h2><a href="#md:introduction">Introduction</a></h2><p>There are <em>two main components</em>.</p>
+<ol>
+<li><strong>RESTful API</strong> - process and provide weather data</li>
+<li><strong>recorder</strong> - upload weather data</li>
+</ol>
+<p>The <strong>api</strong> is an <em>expressjs</em> api, which manages a database and provides <a href="https://harrydehix.github.io/vant-api/specification.html">simple endpoints</a> to access your weather data.</p>
+<p>The <strong>recorder</strong> repeatedly uploads weather data to the api.</p>
+<p>Both of them together form a robust platform!</p>
 <a id="md:usage" class="tsd-anchor"></a><h1><a href="#md:usage">Usage</a></h1><p>Running the vantage api is super easy!</p>
 <pre><code class="language-ts"><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">startVantageAPI</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&quot;vant-api/api&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-4">startVantageAPI</span><span class="hl-1">({</span><br/><span class="hl-1">    </span><span class="hl-2">port:</span><span class="hl-1"> </span><span class="hl-5">8000</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-2">units:</span><span class="hl-1"> {</span><br/><span class="hl-1">        </span><span class="hl-2">rain:</span><span class="hl-1"> </span><span class="hl-3">&quot;mm&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">        </span><span class="hl-2">wind:</span><span class="hl-1"> </span><span class="hl-3">&quot;km/h&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">        ...</span><br/><span class="hl-1">    }</span><br/><span class="hl-1">});</span>
 </code><button>Copy</button></pre>
@@ -20,7 +28,7 @@
 <pre><code class="language-ts"><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">Recorder</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&quot;vant-api/recorder&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-6">async</span><span class="hl-1"> </span><span class="hl-6">function</span><span class="hl-1"> </span><span class="hl-4">main</span><span class="hl-1">(){</span><br/><span class="hl-1">    </span><span class="hl-7">// Configure recorder </span><br/><span class="hl-1">    </span><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-8">recorder</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">Recorder</span><span class="hl-1">.</span><span class="hl-4">create</span><span class="hl-1">({</span><br/><span class="hl-1">        </span><span class="hl-2">path:</span><span class="hl-1"> </span><span class="hl-3">&quot;COM5&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">        </span><span class="hl-2">api:</span><span class="hl-1"> </span><span class="hl-3">&quot;http://localhost:8000/api&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">        </span><span class="hl-2">key:</span><span class="hl-1"> </span><span class="hl-3">&quot;your-api-key&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">        ...</span><br/><span class="hl-1">    });</span><br/><br/><span class="hl-1">    </span><span class="hl-7">// Configure &quot;/api/v1/current&quot; update interval</span><br/><span class="hl-1">    </span><span class="hl-2">recorder</span><span class="hl-1">.</span><span class="hl-4">configureCurrentConditionsTask</span><span class="hl-1">({</span><br/><span class="hl-1">        </span><span class="hl-2">interval:</span><span class="hl-1"> </span><span class="hl-5">1</span><span class="hl-1">,</span><br/><span class="hl-1">    });</span><br/><br/><span class="hl-1">    </span><span class="hl-7">// Start recorder</span><br/><span class="hl-1">    </span><span class="hl-2">recorder</span><span class="hl-1">.</span><span class="hl-4">start</span><span class="hl-1">();</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-4">main</span><span class="hl-1">();</span>
 </code><button>Copy</button></pre>
 <p>Read the <a href="./guides">guides</a> to get started!</p>
-<a id="md:documentation" class="tsd-anchor"></a><h1><a href="#md:documentation">Documentation</a></h1><p>First of all you should read the <a href="https://github.com/harrydehix/vant-api/tree/main/guides">guides</a>. After that you may get more information and read the official <a href="https://harrydehix.github.io">documentation</a>.</p>
+<a id="md:documentation" class="tsd-anchor"></a><h1><a href="#md:documentation">Documentation</a></h1><p>First of all you should read the <a href="https://github.com/harrydehix/vant-api/tree/main/guides">guides</a>. After that you may get more information and read the official <a href="https://harrydehix.github.io/vant-api">documentation</a>.</p>
 <a id="md:roadmap" class="tsd-anchor"></a><h1><a href="#md:roadmap">Roadmap</a></h1><p>This project is in an early stage. There is still so much to come. Currently the api only stores the <em>current</em> weather conditions. This will change.</p>
 <a id="md:planned-endpoints" class="tsd-anchor"></a><h2><a href="#md:planned-endpoints">Planned endpoints</a></h2><p>Currently following endpoints are planned. This may change.</p>
 <a id="md:highs-and-lowsinterval" class="tsd-anchor"></a><h3><a href="#md:highs-and-lowsinterval"><code>/highs-and-lows/:interval</code></a></h3><p>This route will return interesting records. Using the
@@ -56,6 +64,9 @@ Possible values will be: <code>hour</code>, <code>day</code>, <code>week</code>,
 <li>
 <ul>
 <li><a href="#md:vant-api"><span>vant-<wbr/>api</span></a></li>
+<li>
+<ul>
+<li><a href="#md:introduction"><span>Introduction</span></a></li></ul></li>
 <li><a href="#md:usage"><span>Usage</span></a></li>
 <li><a href="#md:documentation"><span>Documentation</span></a></li>
 <li><a href="#md:roadmap"><span>Roadmap</span></a></li>
