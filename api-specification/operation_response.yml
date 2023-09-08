@@ -4,6 +4,7 @@ Successfull:
     success:
       type: boolean
       example: true
+      enum: [true]
     status:
       type: number
       minimum: 200
@@ -15,6 +16,7 @@ ClientError:
     success:
       type: boolean
       example: false
+      enum: [false]
     message:
       type: string
       example: Ooops! Something went wrong...
@@ -29,6 +31,7 @@ ServerError:
     success:
       type: boolean
       example: false
+      enum: [false]
     message:
       type: string
       example: Ooops! Something went wrong...
@@ -37,12 +40,27 @@ ServerError:
       minimum: 500
       maximum: 599
       example: 500
+AccessDenied:
+  type: object
+  properties:
+    success:
+      type: boolean
+      enum: [false]
+      example: false
+    message:
+      type: string
+      example: Access denied! ...
+    status:
+      type: number
+      enum: [403]
+      example: 403
 NoWeatherDataAvailable:
   type: object
   properties:
     success:
       type: boolean
       example: false
+      enum: [false]
     message:
       type: string
       example: No current weather data available. This error usually happens if no weather data hasn't been uploaded!

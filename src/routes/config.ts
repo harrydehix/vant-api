@@ -34,7 +34,7 @@ router.get("/generate-key",
                 success: true,
                 key: apiUser.key,
                 role: apiUser.role,
-                generated: apiUser.generated
+                generated: apiUser.generated.toISOString()
             });
         }else{
             return next(new APIError(result.array()[0].msg, 400, result));

@@ -1,14 +1,22 @@
 openapi: "3.0.2"
 info:
   title: Vant API
-  version: "0.1"
+  version: "0.4"
 servers:
   - url: http://localhost:8000/api/v1
 paths:
   /current:
     get:
-      description: Returns the currently measured weather data, which is automatically converted into the desired units. If no units are passed the set up units will be used. One can set them up using environment variables.
+      summary: Access the currently measured weather data
+      description: Returns the currently measured weather data, which is automatically converted into the desired units. If no units are passed the configured will be used. Your api key needs read access.
       parameters:
+        - in: header
+          name: x-api-key
+          description: An api key with read access
+          schema:
+            type: string
+            format: uuid
+            example: f9484f84-18c2-4318-9ee1-6d1f8fc87dba
         - in: query
           name: rainUnit
           schema:
@@ -48,6 +56,12 @@ paths:
             application/json:
               schema:
                 $ref: "./operation_response.yml#/ClientError"
+        "403":
+          description: Access denied. Your api key is missing, invalid or has no read access.
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/AccessDenied"
         "503":
           description: Service Unavailable. Happens if no weather data hasn't been uploaded.
           content:
@@ -61,7 +75,16 @@ paths:
               schema:
                 $ref: "./operation_response.yml#/ServerError"
     post:
-      description: Updates the current weather conditions. One should use the set up units.
+      summary: Update the currently measured weather data
+      description: Updates the current weather conditions. You have to use the configured units. Your api key needs write access.
+      parameters:
+        - in: header
+          name: x-api-key
+          description: An api key with write access
+          schema:
+            type: string
+            format: uuidv4
+            example: f9484f84-18c2-4318-9ee1-6d1f8fc87dba
       requestBody:
         content:
           application/json:
@@ -80,8 +103,73 @@ paths:
             application/json:
               schema:
                 $ref: "./operation_response.yml#/ClientError"
+        "403":
+          description: Access denied. Your api key is missing, invalid or has no write access.
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/AccessDenied"
         "500":
-          description: Internal server error. Multiple reasons are possible. Possibly the database connection failed.
+          description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/ServerError"
+  /config/generate-key:
+    get:
+      summary: Generate a new api key
+      description: Returns a new api key. You need a admin api key to create new api keys.
+      parameters:
+        - in: header
+          name: x-api-key
+          description: An api key with admin rights
+          schema:
+            type: string
+            format: uuid
+            example: f9484f84-18c2-4318-9ee1-6d1f8fc87dba
+        - in: query
+          name: role
+          description: The role (access privileges) of the generated api key.
+          schema:
+            type: string
+            enum: [read, write, readwrite, admin]
+      responses:
+        "201":
+          description: The API key was generated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    enum: [true]
+                    example: true
+                  key:
+                    type: string
+                    format: uuid
+                    example: f9484f84-18c2-4318-9ee1-6d1f8fc87dba
+                  role:
+                    type: string
+                    enum: [read, write, readwrite, admin]
+                    example: readwrite
+                  generated:
+                    type: string
+                    example: 2023-08-31T12:23:01Z
+        "400":
+          description: Bad Request. Probably your role query parameter is missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/ClientError"
+        "403":
+          description: Access denied. Your api key is missing, invalid or has no admin access.
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/AccessDenied"
+        "500":
+          description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
           content:
             application/json:
               schema:
