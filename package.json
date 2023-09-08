@@ -8,8 +8,7 @@
         "vant-api": "node -r source-map-support/register ./dist/tests/api.js",
         "vant-recorder": "node -r source-map-support/register ./dist/tests/recorder.js",
         "test": "node -r source-map-support/register",
-        "api": "redocly build-docs api-specification/api.yml --output=api-specification/specification.html",
-        "docs": "npx typedoc"
+        "docs": "npx typedoc && redocly build-docs api-specification/api.yml --output=docs/specification.html"
     },
     "exports": {
         ".": "./dist/index.js",
