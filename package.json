@@ -1,6 +1,6 @@
 {
     "name": "vant-api",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "private": false,
     "main": "dist/index.js",
     "scripts": {
@@ -8,8 +8,25 @@
         "vant-api": "node -r source-map-support/register ./dist/tests/api.js",
         "vant-recorder": "node -r source-map-support/register ./dist/tests/recorder.js",
         "test": "node -r source-map-support/register",
-        "api": "redocly build-docs docs/api-specification/api.yml --output=docs/api-specification/specification.html"
+        "api": "redocly build-docs api-specification/api.yml --output=api-specification/specification.html",
+        "docs": "npx typedoc"
     },
+    "exports": {
+        ".": "./dist/index.js",
+        "./api": "./dist/api/index.js",
+        "./recorder": "./dist/recorder/index.js"
+    },
+    "typesVersions": {
+        "*": {
+            "api": [
+                "dist/api"
+            ],
+            "recorder": [
+                "dist/recorder"
+            ]
+        }
+    },
+    "types": "dist/index.d.ts",
     "bin": "dist/tests/test.js",
     "pkg": {
         "scripts": "dist/**/*.js",
@@ -50,6 +67,7 @@
         "@types/uuid": "^9.0.3",
         "@types/validator": "^13.11.1",
         "source-map-support": "^0.5.21",
+        "typedoc": "^0.25.1",
         "typescript": "^5.2.2"
     }
 }

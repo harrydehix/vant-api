@@ -1,8 +1,12 @@
-import { UnitSettings, UnitConfiguration } from "vant-environment/units";
+import { defaultUnitSettings, UnitConfiguration } from "vant-environment/units";
 import { AdvancedModel, BaudRate, RainCollectorSize } from "vant-environment";
-import { VantPro2Interface, VantVueInterface } from "vantjs/interfaces";
+import Recorder from "./Recorder";
 
-
+/**
+ * The general settings for the recorder. For example this includes the `url` to your running _vant-api_ instance or the serial `path` to your connected weather station.
+ * 
+ * To configure the current conditions task call {@link Recorder.configureCurrentConditionsTask}.
+ */
 export default interface RecorderSettings{
     /** The URL to the api. E.g. `http://localhost:8000/api`. Corresponding environment variable: `API`  */
     api: string,
@@ -30,7 +34,13 @@ export default interface RecorderSettings{
     rainCollectorSize?: RainCollectorSize,
 }
 
-export const defaultRecorderSettings : Partial<RecorderSettings> = {
+/**
+ * The default recorder settings.
+ */
+export const defaultRecorderSettings : RecorderSettings = {
+    api: "",
+    key: "",
+    path: "",
     model: "Pro2",
     baudRate: 19200,
     useEnvironmentVariables: false,
@@ -38,11 +48,24 @@ export const defaultRecorderSettings : Partial<RecorderSettings> = {
     consoleLog: true,
     fileLog: true,
     logErrorInformation: true,
-    units: {
-        rain: "in",
-        wind: "mph",
-        solarRadiation: "W/m²",
-        temperature: "°F",
-        pressure: "inHg"
-    }
+    units: defaultUnitSettings
 } 
+
+/**
+ * The settings for the current conditions task. This is related to the `api/v1/current` route.
+ * Call {@link Recorder.configureCurrentConditionsTask} to configure. If your recorder is already running you have to restart it using `restart()`.
+ */
+export interface CurrentConditionsTaskSettings{
+    /** The update interval as integer (in seconds) for the current conditions. Default value is `1` (which is the minimum). Corresponding environment variable: `CURRENT_CONDITIONS_INTERVAL` */
+    interval: number,
+    /** Whether to prefer environment variables configured in the `.env` file. Default is `false`. */
+    useEnvironmentVariables: boolean,
+}
+
+/**
+ * The default settings for the current conditions task.
+ */
+export const defaultCurrentConditionsTaskSettings : CurrentConditionsTaskSettings = {
+    interval: 1,
+    useEnvironmentVariables: false
+}

@@ -1,5 +1,5 @@
 import winston from "winston";
-import APISettings from "../server/APISettings";
+import APISettings from "../api/APISettings";
 import { inspect } from "util";
 
 const consoleTransport = new winston.transports.Console({

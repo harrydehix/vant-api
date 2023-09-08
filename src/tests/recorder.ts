@@ -5,8 +5,9 @@ async function main(){
         useEnvironmentVariables: true,
     });
 
-    recorder.configureRealtimeRecordings({
+    recorder.configureCurrentConditionsTask({
         interval: 1,
+        useEnvironmentVariables: true,
     });
 
     recorder.start();

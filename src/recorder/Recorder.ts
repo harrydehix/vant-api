@@ -1,36 +1,59 @@
 import { VantPro2Interface, VantVueInterface } from "vantjs/interfaces";
 import superagent from "superagent";
-import RecorderSettings, { defaultRecorderSettings } from "./RecorderSettings";
+import RecorderSettings, { CurrentConditionsTaskSettings, defaultCurrentConditionsTaskSettings, defaultRecorderSettings } from "./RecorderSettings";
 import merge from "lodash.merge";
-import MinimumRecorderSettings from "./MinimumRecorderSettings";
+import MinimumRecorderSettings, { MinimumCurrentConditionsTaskSettings } from "./MinimumRecorderSettings";
 import dotenv from "dotenv";
 import validator from "validator";
 import log, { configureLogger } from "../logger/recorder-logger";
 import { PressureUnit, RainUnit, SolarRadiationUnit, TemperatureUnit, WindUnit, PressureUnits, RainUnits, SolarRadiationUnits, TemperatureUnits, WindUnits } from "vant-environment/units";
 import { AdvancedModels, BaudRates, RainCollectorSizes } from "vant-environment";
-
-interface RealtimeRecorderSettings{
-    readonly interval: number,
-}
-
+import InvalidRecorderConfigurationError from "./InvalidRecorderConfigurationError";
+import { RichRealtimeData } from "vant-environment/structures";
 /**
- * Counter-part to the `startVantageAPI()` function.
- * Sends currently measured weather data repeatedly to the vant api.
+ * The recorder is the counter-part to the `startVantageAPI()` function.
+ * It repeatedly sends weather data to a running vant-api instance via _HTTP requests_.
+ * 
+ * To get the weather data is utilizes a {@link VantPro2Interface} or a {@link VantVueInterface}. 
+ * Only works on Vantage Pro 2 and Vue (having firmware dated after April 24, 2002 / v1.90 or above).
+ * 
+ * The recorder is structured in multiple _tasks_ which are responsibly for different kinds of weather data.
+ * Currently there are following tasks:
+ * - **Current Conditions**: Uploads rich realtime data very often (configurable, default: every `1s`) [route: `api/v1/current`]
+ * 
+ * To create a recorder write:
+ * ```ts
+ * const recorder = await Recorder.create(...);
+ * ```
+ * 
+ * To configure the current conditions task write:
+ * ```ts
+ * recorder.configureCurrentConditionsTask(...);
+ * ```
+ * 
+ * To start the recorder write:
+ * ```ts
+ * recorder.start();
+ * ```
  */
 class Recorder {
     public readonly settings : RecorderSettings;
     public readonly interface : VantVueInterface | VantPro2Interface;
 
-    private realtimeRecorderSettings? : RealtimeRecorderSettings;
+    private currentConditionsTaskSettings? : CurrentConditionsTaskSettings;
     private realtimeRecorderTimeout? : NodeJS.Timeout;
+    private running: boolean;
 
     private constructor(settings: RecorderSettings, device: VantVueInterface | VantPro2Interface){
         this.settings = settings;
         this.interface = device;
+        this.running = false;
     }
 
     /**
-     * Creates a new recorder with the passed settings.
+     * Creates a new recorder with the passed settings. Throws an {@link InvalidRecorderConfigurationError} if the settings are invalid.
+     * 
+     * It is also possible to configure your recorder using a `.env` file. To enable this feature pass `useEnvironmentVariables: true`.
      * 
      * **Example**:
      * ```ts
@@ -51,10 +74,11 @@ class Recorder {
      * recorder.start();
      * ```
      * @param settings 
-     * @returns 
+     * @returns a recorder instance
+     * @throws {@link InvalidRecorderConfigurationError} if the settings are invalid
      */
-    public static create = async(settings: MinimumRecorderSettings) => {
-        settings = merge(defaultRecorderSettings, settings);
+    public static create = async(recorderSettings: MinimumRecorderSettings) => {
+        const settings = (merge(defaultRecorderSettings, recorderSettings)) as RecorderSettings;
 
         const invalidEnvironmentVariables = []
         if(settings.useEnvironmentVariables){
@@ -160,31 +184,31 @@ class Recorder {
 
         if(settings.useEnvironmentVariables){
          log.debug("Loaded environment variables!");
-    }
+        }
 
         if(!settings.path){
-            log.error("No serial path specified! Exiting...");
-            process.exit(-1);
+            log.error("No serial path specified!");
+            throw new InvalidRecorderConfigurationError("No serial path specified!");
         }
 
         if(!settings.rainCollectorSize){
-            log.error("No rain collector size specified! Exiting...");
-            process.exit(-1);
+            log.error("No rain collector size specified!");
+            throw new InvalidRecorderConfigurationError("No rain collector size specified!");;
         }
 
         if(!settings.api){
-            log.error("No api url specified! Exiting...");
-            process.exit(-1);
+            log.error("No api url specified!");
+            throw new InvalidRecorderConfigurationError("No api url specified!");;
         }
 
         if(!settings.baudRate){
-            log.error("No baud rate specified! Exiting...");
-            process.exit(-1);
+            log.error("No baud rate specified!");
+            throw new InvalidRecorderConfigurationError("No baud rate specified!");;
         }
 
         if(!settings.model){
-            log.error("No weather station model specified! Exiting...");
-            process.exit(-1);
+            log.error("No weather station model specified!");
+            throw new InvalidRecorderConfigurationError("No weather station model specified!");;
         }
 
         let device;
@@ -203,29 +227,108 @@ class Recorder {
         return new Recorder(settings as RecorderSettings, device);
     }
 
-    configureRealtimeRecordings = (settings : RealtimeRecorderSettings) => {
-        this.realtimeRecorderSettings = settings;
-    }
+    /**
+     * Configures the current conditions task. This is related to the `/api/v1/current` route.
+     * Pass your desired settings to configure and enable the task, pass `false` to disable it.
+     * 
+     * It is also possible to configure your recorder using a `.env` file. To enable this feature pass `useEnvironmentVariables: true`.
+     * 
+     * To start all your configured tasks run `start()`.
+     * @param settings 
+     * @throws {@link InvalidRecorderConfigurationError} if the settings are invalid
+     */
+    public configureCurrentConditionsTask = (settings : MinimumCurrentConditionsTaskSettings | false) => {
+        if(!settings){
+            this.currentConditionsTaskSettings = undefined;
+        }else{
+            this.currentConditionsTaskSettings = merge(defaultCurrentConditionsTaskSettings, settings);
 
-    public realtimeRecordingsEnabled = () => this.realtimeRecorderSettings !== undefined;
-    public getRealtimeRecordingsInterval = () => this.realtimeRecorderSettings?.interval;
+            const invalidEnvironmentVariables = [];
+            if(settings.useEnvironmentVariables){
+                const interval = process.env.CURRENT_CONDITIONS_INTERVAL;
+                if(interval && validator.isInt(interval, { min: 1 })){
+                    this.currentConditionsTaskSettings.interval = parseInt(interval);
+                }else{
+                    invalidEnvironmentVariables.push("CURRENT_CONDITIONS_INTERVAL");
+                }
+            }
 
-    public start = () => {
-        log.info("Started recorder!")
-        if (this.realtimeRecorderSettings) { 
-            this.newRealtimeRecording();
+            if(settings.useEnvironmentVariables){
+                for(const invalidEnvironmentVariable of invalidEnvironmentVariables){
+                    log.warn(`Invalid or missing environment variable '${invalidEnvironmentVariable}'!`)
+                }
+            }
+
+            if(this.currentConditionsTaskSettings?.interval < 1){
+                throw new InvalidRecorderConfigurationError("The current conditions interval has to be greater or equal to 1.");
+            }
         }
     }
 
-    public stop = () => {
-        log.info("Stopped recorder!")
-        clearTimeout(this.realtimeRecorderTimeout);
+    /**
+     * Return whether the current conditions task is configured.
+     * @returns whether the current conditions task is configured
+     */
+    public currentConditionsConfigured = () => this.currentConditionsTaskSettings !== undefined;
+
+    /**
+     * Return the set up current conditions task's interval.
+     * @returns the set up current conditions task's interval
+     */
+    public currentConditionsInterval = () => this.currentConditionsTaskSettings?.interval;
+
+    /** Starts the recorder. Tasks that have
+     *  been configured using `configure*Task(...)` will be started.
+     *  
+     *  Does nothing if the recorder already has been started. */
+    public start = () => {
+        if(this.running){
+            return;
+        }
+        this.running = true;
+        log.info("Started recorder!");
+        if (this.currentConditionsTaskSettings) { 
+            this.updateCurrentConditions();
+        }
     }
 
-    newRealtimeRecording = async() => {
-        const record = await this.interface.getRichRealtimeData();
+    /** Stops the recorder. Clears all currently running recording tasks. 
+     * 
+     *  Does nothing if the recorder already has been stopped.
+    */
+    public stop = () => {
+        if(this.running){
+            log.info("Stopped recorder!")
+            clearTimeout(this.realtimeRecorderTimeout);
+        }
+    }
 
-        // TODO: Send http POST request to API
+    /**
+     * Restarts the recorder. Useful if you changed the recorder's settings while it was already running.
+     */
+    public restart = () => {
+        log.info("Restarting recorder!");
+        this.stop();
+        this.start();
+    }
+
+    /**
+     * Updates the current conditions.
+     * This is done by getting a rich realtime data package using the interface and sending it to the api using a `POST` request.
+     * @hidden
+     */
+    protected updateCurrentConditions = async() => {
+        // Get rich realtime record
+        let record : RichRealtimeData | undefined;
+        try{
+            record = await this.interface.getRichRealtimeData();
+        }catch(err){
+            log.error("Failed to get realtime record from interface.");
+            log.error(err);
+            return;
+        }
+
+        // Send post request
         log.info("New realtime record (" + record.time + ")");
         superagent
             .post(this.settings.api + "/v1/current")
@@ -241,15 +344,16 @@ class Recorder {
                         log.error("Is your api running?");
                     }
                 }else{
-                    log.debug("Sent realtime record (" + record.time + ") successfully!");
+                    log.debug("Sent realtime record (" + record!.time + ") successfully!");
                 }
             });
 
+        // Calculate next record time
         const newRecordTime = new Date(record.time);
-        newRecordTime.setSeconds(record.time.getSeconds() + this.realtimeRecorderSettings?.interval!);
+        newRecordTime.setSeconds(record.time.getSeconds() + this.currentConditionsTaskSettings?.interval!);
         newRecordTime.setMilliseconds(0);
         const timeoutTime = newRecordTime.getTime() - record.time.getTime();
-        this.realtimeRecorderTimeout = setTimeout(this.newRealtimeRecording, timeoutTime);
+        this.realtimeRecorderTimeout = setTimeout(this.updateCurrentConditions, timeoutTime);
     }
 }
 

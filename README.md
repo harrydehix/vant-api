@@ -1,19 +1,15 @@
 # vant-api
 
 API for storing and retrieving vantage weather data.
-Following image shows how all `vant*` programs may work together.
-
-![](./docs/skizze.jpg)
-
 
 ### ⚠️ Development in early progress
 
-This package is still in active development. There will be many breaking changes, improvements in the future.
-
+This package is still in active development. There will be many breaking changes and improvements in the future.
 
 ### Running the prototype
 
 To start the `vant-api` prototype just clone this repository and create the following `.env` file in the root directory.
+*Comment: In the future you don't need to clone the repository. You will be able to simply install it as package using npm.*
 
 ```sh
 # unit settings (for api & recorder), don't have to match the units of the vant-web-gui

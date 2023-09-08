@@ -18,14 +18,33 @@ async function generateApiKeyIfNotExistent(role: APIUserRole){
         }
         log.info(`[${role}] API key is '${user.key}'`)
     }catch(err){
-        log.error(`Fatal error while generating ${role} api key! Shutting down...`);
+        log.error(`Fatal error while generating ${role} api key!`);
         log.error(err);
         process.exit(-1);
     }
 }
 
 /**
- * Starts the vantage with the passed settings. 
+ * Starts the **vantage api** with the passed settings. All endpoints of the vant-api are
+ * documented in the [api-specification]().
+ * 
+ * Following steps are performed:
+ * 1. Load settings from environment variables (if enabled)
+ * 2. Validate the settings
+ * 3. Configure the logger
+ * 4. Generate an api key for each role (if not existent) and log it to the console
+ * 5. Start the http server
+ * 
+ * **Example**:
+ * ```ts
+ * import { startVantageAPI } from "vant-api/api";
+ * 
+ * startVantageAPI({
+ *      port: 8000,
+ *      ...
+ * });
+ * ```
+ * 
  * @param apiSettings the api's settings (port, units, ...)
  */
 async function startVantageAPI(apiSettings: MinimumAPISettings){

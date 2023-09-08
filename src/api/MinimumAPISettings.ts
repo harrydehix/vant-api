@@ -1,6 +1,6 @@
 import { UnitConfiguration } from "vant-environment/units";
 
-export default interface MinimumAPISettings{
+type MinimumAPISettings = {
     /** The API's port number. Default is `8000`. Corresponding environment variable: `PORT`. */
     port?: number,
     /** The default units. **Important**: Weather data uploads have to use these units! Corresponding environment variables: `RAIN_UNIT`, `TEMPERATURE_UNIT`, ...  */
@@ -16,3 +16,5 @@ export default interface MinimumAPISettings{
     /** Whether to log detailed error information. Default is `true`. */
     logErrorInformation?: boolean,
 }
+
+export default MinimumAPISettings;
