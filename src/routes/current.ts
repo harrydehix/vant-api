@@ -1,6 +1,6 @@
 import express, {Request, Response, NextFunction} from "express";
 import { body, query, validationResult, checkSchema, checkExact, ValidationError }  from "express-validator";
-import { CurrentConditions } from "vant-db";
+import CurrentConditions from "../models/CurrentConditions";
 import APIError from "../error-handling/APIError";
 import asyncHandler from "../error-handling/asyncHandler";
 import currentConditionsSchema from "../validationSchemas/currentConditionsSchema";

@@ -7,7 +7,7 @@ import app from "../app";
 import log, { configureLogger } from "../logger/api-logger";
 import validator from "validator";
 import { PressureUnit, RainUnit, RainUnits, SolarRadiationUnit, TemperatureUnit, WindUnit } from "vant-environment/units";
-import { APIUser, APIUserRole } from "vant-db";
+import APIUser, { APIUserRole } from "../models/APIUser";
 
 async function generateApiKeyIfNotExistent(role: APIUserRole){
     try{

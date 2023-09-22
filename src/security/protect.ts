@@ -1,6 +1,6 @@
 import { NextFunction, Response, Request } from "express";
 import APIError from "../error-handling/APIError";
-import { APIUser, APIUserRole } from "vant-db";
+import APIUser, { APIUserRole } from "../models/APIUser";
 import asyncHandler from "../error-handling/asyncHandler";
 import { header } from "express-validator";
 import log from "../logger/api-logger";

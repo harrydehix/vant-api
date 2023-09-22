@@ -18,7 +18,8 @@
         "vant-api": "node -r source-map-support/register ./dist/tests/api.js",
         "vant-recorder": "node -r source-map-support/register ./dist/tests/recorder.js",
         "test": "node -r source-map-support/register",
-        "docs": "npx typedoc && redocly build-docs api-specification/api.yml --output=docs/specification.html"
+        "docs": "npx typedoc && redocly build-docs api-specification/api.yml --output=docs/specification.html",
+        "watch": "npx tsc --watch"
     },
     "exports": {
         ".": "./dist/index.js",
@@ -58,9 +59,9 @@
         "mongoose": "^7.5.0",
         "node-dev": "^8.0.0",
         "pug": "^3.0.2",
+        "simple-units": "^1.0.6",
         "superagent": "^8.1.2",
         "validator": "^13.11.0",
-        "vant-db": "^0.1.2",
         "vant-environment": "^1.0.6",
         "vantjs": "^1.0.9",
         "winston": "^3.10.0"
