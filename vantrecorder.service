@@ -1,0 +1,12 @@
+[Unit]
+Description=Vant Recorder Service
+
+[Service]
+Type=simple
+ExecStart=npm run vant-recorder
+
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+WorkingDirectory=/home/harry/vant-api
+
+[Install]
