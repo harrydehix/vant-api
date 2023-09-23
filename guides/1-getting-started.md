@@ -17,7 +17,7 @@ When you connect your weather station console via the datalogger for the first t
 However, if you have installed the Weather Link software, configured your weather station there, and _selected USB as the communication type_, you will need to run the **CP210X USB to Serial Converter**. This utility is included in the Weather Link software. You can run it from the Windows Start menu by selecting _WeatherLink_ **>** _CP210X USB to Serial Converter_.
 
 ## 2. Install MongoDB Community Edition
-Your api manages a MongoDB database. That's why MonoDB has to be installed. Following the instructions [here](https://www.mongodb.com/try/download/community).
+Your api manages a MongoDB database. That's why MonoDB has to be installed. Follow the instructions [here](https://www.mongodb.com/try/download/community).
 
 ## 3. Install the vant-api package
 
@@ -29,22 +29,24 @@ npm install vant-api
 
 ## 4. Run the api
 
-Running the api is pretty simple. Create a new file (e.g. `api.js` / `api.ts`), simply import the start method and call it!
+Running the api is pretty simple. Create a new file (e.g. `api.js` / `api.ts`), import the api object, configure it and start the http server!
 
 ```ts
-import { startVantageAPI } from "vant-api/api";
+import { api } from "vant-api/api";
 // or
-const { startVantageAPI } = require("vant-api/api");
+const { api } = require("vant-api/api");
 
-startVantageAPI({
-    // optional settings
+api.configure({
+  ...       
 });
+
+api.start();
 ```
 
 By default the api runs on port `8000` and uses `us` units. You can change that by passing you desired configuration.
 
 ```ts
-startVantageAPI({
+api.configure({
     port: 8231,
     units: {
         rain: "mm",
@@ -56,9 +58,9 @@ startVantageAPI({
 });
 ```
 
-Start your program like every node program with `node api.js`. If you are using typescript it depends on your setup.
+Start your program like every node program with `node api.js`. If you are using typescript this depends on your setup.
 
-After starting your api four api keys (with different privileges) will be logged in the console. **Make sure to save them, you will need them!**
+After configuring your api four api keys (with different privileges) will be logged in the console. **Make sure to save them, you will need them!** Using these api keys it is possible to communicate with your api. They are as important as _passwords_, treat them like that! If you want to get these keys programmatically you can use `api.keys.<role>`.
 
 At this point your api is already running! You can test the routes specified in the [specification](https://harrydehix.github.io/vant-api/specification.html) with programs like postman.
 
@@ -97,19 +99,16 @@ main();
 ```
 
 Following settings should be passed:
--  `path`: Path to serial port. Defines the channel used to communicate with the weather station.
--  `rainCollectorSize`: Your weather station's rain collector size. Possible sizes are `"0.1in"`, `"0.2mm"` and `"0.1mm"`.
--  `baudRate`: The used baud rate. Should match your console's settings.
--  `model`: Your weather station's model. Choose `"Pro2"` or `"Vue"`.
+- `path`: Path to serial port. Defines the channel used to communicate with the weather station.
+- `rainCollectorSize`: Your weather station's rain collector size. Possible sizes are `"0.1in"`, `"0.2mm"` and `"0.1mm"`.
+- `baudRate`: The used baud rate. Should match your console's settings.
+- `model`: Your weather station's model. Choose `"Pro2"` or `"Vue"`.
 - `api`: The url to your running api.
 - `key`: The used key to communicate with the api. Use a key with **write** access!
 - _optional_ `units`: If you have changed the api's unit settings pass these settings here too.
 
-Now run your program and tadaaa... everything should work!
+Now run your program and tadaaa... everything should work!🥳
 
 ### Read the official documentation
 
-You want change the recorder's update interval?
-You want to disable logging?
-
-_Read the [official documentation](https://harrydehix.github.io/vant-api/)!_
+More information can be found in the _[official documentation](https://harrydehix.github.io/vant-api/)!_

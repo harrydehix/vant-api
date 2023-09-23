@@ -1,5 +1,6 @@
 import { AdvancedModel, BaudRate, RainCollectorSize } from "vant-environment";
 import { UnitConfiguration, UnitSettings } from "vant-environment/units";
+import LogLevel from "../../logger/LogLevel";
 import { CurrentConditionsTaskSettings } from "./RecorderSettings";
 
 
@@ -17,9 +18,9 @@ type MinimumRecorderSettings = {
     /** The baud rate to use. Default is `19200`. This has to match your weather station's settings! Corresponding environment variable: `BAUD_RATE` */
     baudRate: BaudRate;
     /** Whether to prefer environment variables configured in the `.env` file. Default is `false`. */
-    useEnvironmentVariables?: false;
+    preferEnvironmentVariables?: false;
     /** The minimimum log level that will be output. Default is `"info"`. Corresponding environment variable: `LOG_LEVEL` */
-    logLevel?: "debug" | "info" | "warn" | "error";
+    logLevel?: LogLevel;
     /** Whether the console log is enabled. Default is `true`. Corresponding environment variable: `CONSOLE_LOG` */
     consoleLog?: boolean;
     /** Whether file logging is enabled. Default is `true`. Corresponding environment variable: `FILE_LOG` */
@@ -42,7 +43,7 @@ type MinimumRecorderSettings = {
     /** The baud rate to use. Default is `19200`. This has to match your weather station's settings! Corresponding environment variable: `BAUD_RATE` */
     baudRate?: BaudRate;
     /** Whether to prefer environment variables configured in the `.env` file. Default is `false`. */
-    useEnvironmentVariables: true;
+    preferEnvironmentVariables: true;
     /** The minimimum log level that will be output. Default is `"info"`. Corresponding environment variable: `LOG_LEVEL` */
     logLevel?: "debug" | "info" | "warn" | "error";
     /** Whether the console log is enabled. Default is `true`. Corresponding environment variable: `CONSOLE_LOG` */
@@ -62,5 +63,5 @@ export type MinimumCurrentConditionsTaskSettings = {
     /** The update interval as integer (in seconds) for the current conditions. Default value is `1` (which is the minimum). Corresponding environment variable: `CURRENT_CONDITIONS_INTERVAL` */
     interval?: number,
     /** Whether to prefer environment variables configured in the `.env` file. Default is `false`. */
-    useEnvironmentVariables?: boolean,
+    preferEnvironmentVariables?: boolean,
 }

@@ -12,18 +12,18 @@ export default interface APISettings {
     consoleLog: boolean,
     /** Whether file logging is enabled. Default is `true`. Corresponding environment variable: `FILE_LOG` */
     fileLog: boolean,
-    /** Whether to prefer the API configuration in the `.env`-file. Default is `false`.  */
-    useEnvironmentVariables: boolean,
+    /** Whether to prefer environment variables to configure the api. Settings passed directly are still preferred. Default is `false`.  */
+    preferEnvironmentVariables: boolean,
     /** Whether to log detailed error information. Default is `true`. Corresponding environment variable: `LOG_ERROR_INFORMATION´ */
     logErrorInformation: boolean,
 }
 
-export const defaultAPISettings : MinimumAPISettings = {
+export const defaultAPISettings : APISettings = {
     port: 8000,
     logLevel: "info",
     consoleLog: true,
     fileLog: true,
-    useEnvironmentVariables: false,
+    preferEnvironmentVariables: false,
     logErrorInformation: true,
     units: {
         rain: "in",
@@ -31,5 +31,5 @@ export const defaultAPISettings : MinimumAPISettings = {
         solarRadiation: "W/m²",
         temperature: "°F",
         pressure: "inHg"
-    }
+    },
 }

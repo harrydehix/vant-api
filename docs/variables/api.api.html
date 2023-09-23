@@ -1,4 +1,4 @@
-<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>startVantageAPI | vant-api</title><meta name="description" content="Documentation for vant-api"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script defer src="../assets/main.js"></script><script async src="../assets/search.js" id="tsd-search-script"></script><script async src="../assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>api | vant-api</title><meta name="description" content="Documentation for vant-api"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script defer src="../assets/main.js"></script><script async src="../assets/search.js" id="tsd-search-script"></script><script async src="../assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
 <div class="tsd-toolbar-contents container">
 <div class="table-cell" id="tsd-search" data-base="..">
 <div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div>
@@ -14,38 +14,24 @@
 <ul class="tsd-breadcrumb">
 <li><a href="../index.html">vant-api</a></li>
 <li><a href="../modules/api.html">api</a></li>
-<li><a href="api.startVantageAPI.html">startVantageAPI</a></li></ul>
-<h1>Function startVantageAPI</h1></div>
-<section class="tsd-panel">
-<ul class="tsd-signatures">
-<li class="tsd-signature tsd-anchor-link" id="startVantageAPI"><span class="tsd-kind-call-signature">start<wbr/>VantageAPI</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">apiSettings</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">app</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Express</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">log</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Logger</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">server</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Server</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">typeof </span><span class="tsd-signature-type ">IncomingMessage</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">typeof </span><span class="tsd-signature-type ">ServerResponse</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">settings</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/api.APISettings.html" class="tsd-signature-type tsd-kind-interface">APISettings</a><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">&gt;</span><a href="#startVantageAPI" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
-<li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Starts the <strong>vantage api</strong> with the passed settings. All endpoints of the vant-api are
-documented in the <a href="https://harrydehix.github.io/vant-api/specification.html">api-specification</a>.</p>
-<p>Following steps are performed:</p>
-<ol>
-<li>Load settings from environment variables (if enabled)</li>
-<li>Validate the settings</li>
-<li>Configure the logger</li>
-<li>Generate an api key for each role (if not existent) and log it to the console</li>
-<li>Start the http server</li>
-</ol>
-<p><strong>Example</strong>:</p>
-<pre><code class="language-ts"><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">startVantageAPI</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&quot;vant-api/api&quot;</span><span class="hl-1">;</span><br/><br/><span class="hl-4">startVantageAPI</span><span class="hl-1">({</span><br/><span class="hl-1">     </span><span class="hl-2">port:</span><span class="hl-1"> </span><span class="hl-5">8000</span><span class="hl-1">,</span><br/><span class="hl-1">     ...</span><br/><span class="hl-1">});</span>
-</code><button>Copy</button></pre>
+<li><a href="api.api.html">api</a></li></ul>
+<h1>Variable api<code class="tsd-tag ts-flagConst">Const</code> </h1></div>
+<div class="tsd-signature"><span class="tsd-kind-variable">api</span><span class="tsd-signature-symbol">:</span> <a href="../classes/api.VantAPI.html" class="tsd-signature-type tsd-kind-class">VantAPI</a><span class="tsd-signature-symbol"> = ...</span></div>
+<div class="tsd-comment tsd-typography"><p>Represents the vant api itself. Using this object you can...</p>
+<ul>
+<li>change the api&#39;s settings</li>
+<li>start and stop the http server</li>
+<li>generate additional api keys</li>
+<li>access the automatically generated base api keys</li>
+<li>listen to events</li>
+</ul>
+<p>The vant api&#39;s endpoints are documented <a href="https://harrydehix.github.io/vant-api/specification.html">here</a>.</p>
+<p>You can also access the vant api&#39;s internally used components (e.g. the http server object, the express app, ...) and make custom changes.
+But be careful with it, otherwise the API won&#39;t work properly anymore.</p>
 </div>
-<div class="tsd-parameters">
-<h4 class="tsd-parameters-title">Parameters</h4>
-<ul class="tsd-parameter-list">
-<li>
-<h5><span class="tsd-kind-parameter">apiSettings</span>: <a href="../types/api.MinimumAPISettings.html" class="tsd-signature-type tsd-kind-type-alias">MinimumAPISettings</a></h5>
-<div class="tsd-comment tsd-typography"><p>the api&#39;s settings (port, units, ...)</p>
-</div>
-<div class="tsd-comment tsd-typography"></div></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">app</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Express</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">log</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Logger</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">server</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Server</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">typeof </span><span class="tsd-signature-type ">IncomingMessage</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">typeof </span><span class="tsd-signature-type ">ServerResponse</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">settings</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/api.APISettings.html" class="tsd-signature-type tsd-kind-interface">APISettings</a><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">&gt;</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/70aa1c1/src/api/api.ts#L50">src/api/api.ts:50</a></li></ul></aside></li></ul></section></div>
+<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/b68c2b3/src/api/api.ts#L279">src/api/api.ts:279</a></li></ul></aside></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

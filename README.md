@@ -19,16 +19,20 @@ Both of them together form a robust platform!
 
 Running the vantage api is super easy!
 ```ts
-import { startVantageAPI } from "vant-api/api";
+import { api } from "vant-api/api";
 
-startVantageAPI({
-    port: 8000,
-    units: {
-        rain: "mm",
-        wind: "km/h",
-        ...
-    }
-});
+async function main(){
+    api.configure({
+        units: {
+            temperature: "°C",
+        },
+        port: 5231,
+    });
+    
+    await api.start();
+}
+
+main();
 ```
 
 Running the recorder is also pretty easy.

@@ -1,6 +1,7 @@
 import { defaultUnitSettings, UnitConfiguration } from "vant-environment/units";
 import { AdvancedModel, BaudRate, RainCollectorSize } from "vant-environment";
-import Recorder from "./Recorder";
+import Recorder from "../Recorder";
+import LogLevel from "../../logger/LogLevel";
 
 /**
  * The general settings for the recorder. For example this includes the `url` to your running _vant-api_ instance or the serial `path` to your connected weather station.
@@ -21,9 +22,9 @@ export default interface RecorderSettings{
     /** The baud rate to use. Default is `19200`. This has to match your weather station's settings! Corresponding environment variable: `BAUD_RATE` */
     baudRate: BaudRate,
     /** Whether to prefer environment variables configured in the `.env` file. Default is `false`. */
-    useEnvironmentVariables: boolean,
+    preferEnvironmentVariables: boolean,
     /** The minimimum log level that will be output. Default is `"info"`. Corresponding environment variable: `LOG_LEVEL` */
-    logLevel: "debug" | "info" | "warn" | "error",
+    logLevel: LogLevel,
     /** Whether the console log is enabled. Default is `true`. Corresponding environment variable: `CONSOLE_LOG` */
     consoleLog: boolean,
     /** Whether file logging is enabled. Default is `true`. Corresponding environment variable: `FILE_LOG` */
@@ -43,7 +44,7 @@ export const defaultRecorderSettings : RecorderSettings = {
     path: "",
     model: "Pro2",
     baudRate: 19200,
-    useEnvironmentVariables: false,
+    preferEnvironmentVariables: false,
     logLevel: "info",
     consoleLog: true,
     fileLog: true,

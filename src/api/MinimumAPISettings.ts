@@ -11,8 +11,8 @@ type MinimumAPISettings = {
     consoleLog?: boolean,
     /** Whether file logging is enabled. Default is `true`. Corresponding environment variable: `FILE_LOG` */
     fileLog?: boolean,
-    /** Whether to prefer the API configuration in the `.env`-file. Default is `false`.  */
-    useEnvironmentVariables?: boolean,
+    /** Whether to prefer environment variables to configure the api. Default is `false`.  */
+    preferEnvironmentVariables?: boolean,
     /** Whether to log detailed error information. Default is `true`. */
     logErrorInformation?: boolean,
 }

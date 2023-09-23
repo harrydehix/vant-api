@@ -1,8 +1,8 @@
 import { VantPro2Interface, VantVueInterface } from "vantjs/interfaces";
 import superagent from "superagent";
-import RecorderSettings, { CurrentConditionsTaskSettings, defaultCurrentConditionsTaskSettings, defaultRecorderSettings } from "./RecorderSettings";
+import RecorderSettings, { CurrentConditionsTaskSettings, defaultCurrentConditionsTaskSettings, defaultRecorderSettings } from "./settings/RecorderSettings";
 import merge from "lodash.merge";
-import MinimumRecorderSettings, { MinimumCurrentConditionsTaskSettings } from "./MinimumRecorderSettings";
+import MinimumRecorderSettings, { MinimumCurrentConditionsTaskSettings } from "./settings/MinimumRecorderSettings";
 import dotenv from "dotenv";
 import validator from "validator";
 import log, { configureLogger } from "../logger/recorder-logger";
@@ -10,6 +10,8 @@ import { PressureUnit, RainUnit, SolarRadiationUnit, TemperatureUnit, WindUnit, 
 import { AdvancedModels, BaudRates, RainCollectorSizes } from "vant-environment";
 import InvalidRecorderConfigurationError from "./InvalidRecorderConfigurationError";
 import { RichRealtimeData } from "vant-environment/structures";
+import { DeepReadonly } from "ts-essentials";
+
 /**
  * The recorder is the counter-part to the `startVantageAPI()` function.
  * It repeatedly sends weather data to a running vant-api instance via _HTTP requests_.
@@ -37,7 +39,7 @@ import { RichRealtimeData } from "vant-environment/structures";
  * ```
  */
 class Recorder {
-    public readonly settings : RecorderSettings;
+    public readonly settings : DeepReadonly<RecorderSettings>;
     public readonly interface : VantVueInterface | VantPro2Interface;
 
     private currentConditionsTaskSettings? : CurrentConditionsTaskSettings;
@@ -65,7 +67,6 @@ class Recorder {
      *      model: "Pro2",
      *      ....
      * });
-     * #
      * 
      * // configure realtime recordings
      * recorder.configureRealtimeRecording({ interval: 10 });
@@ -79,113 +80,139 @@ class Recorder {
      */
     public static create = async(recorderSettings: MinimumRecorderSettings) => {
         const settings = (merge(defaultRecorderSettings, recorderSettings)) as RecorderSettings;
+       
+        if(settings.preferEnvironmentVariables){
+            Recorder.loadEnvironmentVariablesAndConfigureLogger(settings);
+        }else{
+            configureLogger(settings);
+        }
 
+        Recorder.validateSettings(settings);
+
+        let device = await this.createDeviceInterface(settings);
+
+        return new Recorder(settings, device);
+    }
+
+    private static async createDeviceInterface(settings: RecorderSettings){
+        let device;
+        if(settings.model === "Pro2"){
+            device = await VantPro2Interface.create({
+                path: settings.path!,
+                rainCollectorSize: settings.rainCollectorSize!,
+            });
+        }else{
+            device = await VantVueInterface.create({
+                path: settings.path!,
+                rainCollectorSize: settings.rainCollectorSize!,
+            });
+        }
+        return device;
+    }
+
+    private static loadEnvironmentVariablesAndConfigureLogger(settings: RecorderSettings){
         const invalidEnvironmentVariables = []
-        if(settings.useEnvironmentVariables){
-            dotenv.config();
+        dotenv.config();
 
-            if(process.env.API && validator.isURL(process.env.API, {require_tld: false})){
-                settings.api = process.env.API;
-            }else{
-                invalidEnvironmentVariables.push("API");
-            }
-
-            if(process.env.API_KEY){
-                settings.key = process.env.API_KEY;
-            }else{
-                invalidEnvironmentVariables.push("API");
-            }
-
-            if(process.env.BAUD_RATE && validator.isIn(process.env.BAUD_RATE, BaudRates)){
-                settings.baudRate = parseInt(process.env.BAUD_RATE!) as any;
-            }else{
-                invalidEnvironmentVariables.push("BAUD_RATE");
-            }
-
-            if(process.env.MODEL && validator.isIn(process.env.MODEL, AdvancedModels)){
-                settings.model = process.env.MODEL as any;
-            }else{
-                invalidEnvironmentVariables.push("MODEL");
-            }
-
-            if(process.env.SERIAL_PATH){
-                settings.path = process.env.SERIAL_PATH;
-            }else{
-                invalidEnvironmentVariables.push("SERIAL_PATH");
-            }
-
-            if(process.env.LOG_LEVEL && validator.isIn(process.env.LOG_LEVEL, ["debug", "info", "warn", "error"])){
-                settings.logLevel = process.env.LOG_LEVEL as any;
-            }else{
-                invalidEnvironmentVariables.push("LOG_LEVEL");
-            }
-
-            if(process.env.RAIN_COLLECTOR_SIZE && validator.isIn(process.env.RAIN_COLLECTOR_SIZE, RainCollectorSizes)){
-                settings.rainCollectorSize = process.env.RAIN_COLLECTOR_SIZE as any;
-            }else{
-                invalidEnvironmentVariables.push("RAIN_COLLECTOR_SIZE");
-            }
-
-            if(process.env.CONSOLE_LOG && validator.isBoolean(process.env.CONSOLE_LOG)){
-                settings.consoleLog = process.env.CONSOLE_LOG === "true";
-            }else{
-                invalidEnvironmentVariables.push("CONSOLE_LOG");
-            }
-
-            if(process.env.FILE_LOG && validator.isBoolean(process.env.FILE_LOG)){
-                settings.fileLog = process.env.FILE_LOG === "true";
-            }else{
-                invalidEnvironmentVariables.push("FILE_LOG");
-            }
-
-            if(process.env.LOG_ERROR_INFORMATION && validator.isBoolean(process.env.LOG_ERROR_INFORMATION)){
-                settings.logErrorInformation = process.env.LOG_ERROR_INFORMATION === "true";
-            }else{
-                invalidEnvironmentVariables.push("LOG_ERROR_INFORMATION");
-            }
-            if(process.env.RAIN_UNIT && validator.isIn(process.env.RAIN_UNIT, RainUnits)){
-                settings.units!.rain = process.env.RAIN_UNIT as RainUnit;
-            }else{
-                invalidEnvironmentVariables.push("RAIN_UNIT");
-            }
-
-            if(process.env.TEMPERATURE_UNIT && validator.isIn(process.env.TEMPERATURE_UNIT, TemperatureUnits)){
-                settings.units!.temperature = process.env.TEMPERATURE_UNIT as TemperatureUnit;
-            }else{
-                invalidEnvironmentVariables.push("TEMPERATURE_UNIT");
-            }
-
-            if(process.env.PRESSURE_UNIT && validator.isIn(process.env.PRESSURE_UNIT, PressureUnits)){
-                settings.units!.pressure = process.env.PRESSURE_UNIT as PressureUnit;
-            }else{
-                invalidEnvironmentVariables.push("PRESSURE_UNIT");
-            }
-
-            if(process.env.SOLAR_RADIATION_UNIT &&  validator.isIn(process.env.SOLAR_RADIATION_UNIT, SolarRadiationUnits)){
-                settings.units!.solarRadiation = process.env.SOLAR_RADIATION_UNIT as SolarRadiationUnit;
-            }else{
-                invalidEnvironmentVariables.push("SOLAR_RADIATION_UNIT");
-            }
-
-            if(process.env.WIND_UNIT && validator.isIn(process.env.WIND_UNIT, WindUnits)){
-                settings.units!.wind = process.env.WIND_UNIT as WindUnit;
-            }else{
-                invalidEnvironmentVariables.push("WIND_UNIT");
-            }
+        if(process.env.API && validator.isURL(process.env.API, {require_tld: false})){
+            settings.api = process.env.API;
+        }else{
+            invalidEnvironmentVariables.push("API");
         }
 
-        configureLogger(settings as RecorderSettings);
-
-        if(settings.useEnvironmentVariables){
-            for(const invalidEnvironmentVariable of invalidEnvironmentVariables){
-                log.warn(`Invalid or missing environment variable '${invalidEnvironmentVariable}'!`)
-            }
+        if(process.env.API_KEY){
+            settings.key = process.env.API_KEY;
+        }else{
+            invalidEnvironmentVariables.push("API");
         }
 
-        if(settings.useEnvironmentVariables){
+        if(process.env.BAUD_RATE && validator.isIn(process.env.BAUD_RATE, BaudRates)){
+            settings.baudRate = parseInt(process.env.BAUD_RATE!) as any;
+        }else{
+            invalidEnvironmentVariables.push("BAUD_RATE");
+        }
+
+        if(process.env.MODEL && validator.isIn(process.env.MODEL, AdvancedModels)){
+            settings.model = process.env.MODEL as any;
+        }else{
+            invalidEnvironmentVariables.push("MODEL");
+        }
+
+        if(process.env.SERIAL_PATH){
+            settings.path = process.env.SERIAL_PATH;
+        }else{
+            invalidEnvironmentVariables.push("SERIAL_PATH");
+        }
+
+        if(process.env.LOG_LEVEL && validator.isIn(process.env.LOG_LEVEL, ["debug", "info", "warn", "error"])){
+            settings.logLevel = process.env.LOG_LEVEL as any;
+        }else{
+            invalidEnvironmentVariables.push("LOG_LEVEL");
+        }
+
+        if(process.env.RAIN_COLLECTOR_SIZE && validator.isIn(process.env.RAIN_COLLECTOR_SIZE, RainCollectorSizes)){
+            settings.rainCollectorSize = process.env.RAIN_COLLECTOR_SIZE as any;
+        }else{
+            invalidEnvironmentVariables.push("RAIN_COLLECTOR_SIZE");
+        }
+
+        if(process.env.CONSOLE_LOG && validator.isBoolean(process.env.CONSOLE_LOG)){
+            settings.consoleLog = process.env.CONSOLE_LOG === "true";
+        }else{
+            invalidEnvironmentVariables.push("CONSOLE_LOG");
+        }
+
+        if(process.env.FILE_LOG && validator.isBoolean(process.env.FILE_LOG)){
+            settings.fileLog = process.env.FILE_LOG === "true";
+        }else{
+            invalidEnvironmentVariables.push("FILE_LOG");
+        }
+
+        if(process.env.LOG_ERROR_INFORMATION && validator.isBoolean(process.env.LOG_ERROR_INFORMATION)){
+            settings.logErrorInformation = process.env.LOG_ERROR_INFORMATION === "true";
+        }else{
+            invalidEnvironmentVariables.push("LOG_ERROR_INFORMATION");
+        }
+        if(process.env.RAIN_UNIT && validator.isIn(process.env.RAIN_UNIT, RainUnits)){
+            settings.units!.rain = process.env.RAIN_UNIT as RainUnit;
+        }else{
+            invalidEnvironmentVariables.push("RAIN_UNIT");
+        }
+
+        if(process.env.TEMPERATURE_UNIT && validator.isIn(process.env.TEMPERATURE_UNIT, TemperatureUnits)){
+            settings.units!.temperature = process.env.TEMPERATURE_UNIT as TemperatureUnit;
+        }else{
+            invalidEnvironmentVariables.push("TEMPERATURE_UNIT");
+        }
+
+        if(process.env.PRESSURE_UNIT && validator.isIn(process.env.PRESSURE_UNIT, PressureUnits)){
+            settings.units!.pressure = process.env.PRESSURE_UNIT as PressureUnit;
+        }else{
+            invalidEnvironmentVariables.push("PRESSURE_UNIT");
+        }
+
+        if(process.env.SOLAR_RADIATION_UNIT &&  validator.isIn(process.env.SOLAR_RADIATION_UNIT, SolarRadiationUnits)){
+            settings.units!.solarRadiation = process.env.SOLAR_RADIATION_UNIT as SolarRadiationUnit;
+        }else{
+            invalidEnvironmentVariables.push("SOLAR_RADIATION_UNIT");
+        }
+
+        if(process.env.WIND_UNIT && validator.isIn(process.env.WIND_UNIT, WindUnits)){
+            settings.units!.wind = process.env.WIND_UNIT as WindUnit;
+        }else{
+            invalidEnvironmentVariables.push("WIND_UNIT");
+        }
+
+        configureLogger(settings);
+
+        for(const invalidEnvironmentVariable of invalidEnvironmentVariables){
+            log.warn(`Invalid or missing environment variable '${invalidEnvironmentVariable}'!`)
+        }
+
          log.debug("Loaded environment variables!");
-        }
+    }
 
+    private static validateSettings(settings: RecorderSettings){
         if(!settings.path){
             log.error("No serial path specified!");
             throw new InvalidRecorderConfigurationError("No serial path specified!");
@@ -210,21 +237,6 @@ class Recorder {
             log.error("No weather station model specified!");
             throw new InvalidRecorderConfigurationError("No weather station model specified!");;
         }
-
-        let device;
-        if(settings.model === "Pro2"){
-            device = await VantPro2Interface.create({
-                path: settings.path!,
-                rainCollectorSize: settings.rainCollectorSize!,
-            });
-        }else{
-            device = await VantVueInterface.create({
-                path: settings.path!,
-                rainCollectorSize: settings.rainCollectorSize!,
-            });
-        }
-
-        return new Recorder(settings as RecorderSettings, device);
     }
 
     /**
@@ -244,7 +256,7 @@ class Recorder {
             this.currentConditionsTaskSettings = merge(defaultCurrentConditionsTaskSettings, settings);
 
             const invalidEnvironmentVariables = [];
-            if(settings.useEnvironmentVariables){
+            if(settings.preferEnvironmentVariables){
                 const interval = process.env.CURRENT_CONDITIONS_INTERVAL;
                 if(interval && validator.isInt(interval, { min: 1 })){
                     this.currentConditionsTaskSettings.interval = parseInt(interval);
@@ -253,13 +265,13 @@ class Recorder {
                 }
             }
 
-            if(settings.useEnvironmentVariables){
+            if(settings.preferEnvironmentVariables){
                 for(const invalidEnvironmentVariable of invalidEnvironmentVariables){
                     log.warn(`Invalid or missing environment variable '${invalidEnvironmentVariable}'!`)
                 }
             }
 
-            if(this.currentConditionsTaskSettings?.interval < 1){
+            if(!this.currentConditionsTaskSettings?.interval || this.currentConditionsTaskSettings?.interval < 1){
                 throw new InvalidRecorderConfigurationError("The current conditions interval has to be greater or equal to 1.");
             }
         }

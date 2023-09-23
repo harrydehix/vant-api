@@ -27,13 +27,13 @@ Currently there are following tasks:</p>
 <li><strong>Current Conditions</strong>: Uploads rich realtime data very often (configurable, default: every <code>1s</code>) [route: <code>api/v1/current</code>]</li>
 </ul>
 <p>To create a recorder write:</p>
-<pre><code class="language-ts"><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-8">recorder</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">Recorder</span><span class="hl-1">.</span><span class="hl-4">create</span><span class="hl-1">(...);</span>
+<pre><code class="language-ts"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-8">recorder</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">Recorder</span><span class="hl-1">.</span><span class="hl-5">create</span><span class="hl-1">(...);</span>
 </code><button>Copy</button></pre>
 <p>To configure the current conditions task write:</p>
-<pre><code class="language-ts"><span class="hl-2">recorder</span><span class="hl-1">.</span><span class="hl-4">configureCurrentConditionsTask</span><span class="hl-1">(...);</span>
+<pre><code class="language-ts"><span class="hl-2">recorder</span><span class="hl-1">.</span><span class="hl-5">configureCurrentConditionsTask</span><span class="hl-1">(...);</span>
 </code><button>Copy</button></pre>
 <p>To start the recorder write:</p>
-<pre><code class="language-ts"><span class="hl-2">recorder</span><span class="hl-1">.</span><span class="hl-4">start</span><span class="hl-1">();</span>
+<pre><code class="language-ts"><span class="hl-2">recorder</span><span class="hl-1">.</span><span class="hl-5">start</span><span class="hl-1">();</span>
 </code><button>Copy</button></pre>
 </div>
 <div class="tsd-comment tsd-typography"></div></section>
@@ -42,7 +42,7 @@ Currently there are following tasks:</p>
 <ul class="tsd-hierarchy">
 <li><span class="target">Recorder</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/70aa1c1/src/recorder/Recorder.ts#L39">src/recorder/Recorder.ts:39</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/b68c2b3/src/recorder/Recorder.ts#L41">src/recorder/Recorder.ts:41</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -69,6 +69,9 @@ Currently there are following tasks:</p>
 <a href="recorder.Recorder.html#start" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>start</span></a>
 <a href="recorder.Recorder.html#stop" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>stop</span></a>
 <a href="recorder.Recorder.html#create" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>create</span></a>
+<a href="recorder.Recorder.html#createDeviceInterface" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>create<wbr/>Device<wbr/>Interface</span></a>
+<a href="recorder.Recorder.html#loadEnvironmentVariablesAndConfigureLogger" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>load<wbr/>Environment<wbr/>Variables<wbr/>And<wbr/>Configure<wbr/>Logger</span></a>
+<a href="recorder.Recorder.html#validateSettings" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>validate<wbr/>Settings</span></a>
 </div></section></div></details></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Constructors</h2>
@@ -86,34 +89,97 @@ Currently there are following tasks:</p>
 <h5><span class="tsd-kind-parameter">device</span>: <span class="tsd-signature-type ">default</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type ">default</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="recorder.Recorder.html" class="tsd-signature-type tsd-kind-class">Recorder</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/70aa1c1/src/recorder/Recorder.ts#L47">src/recorder/Recorder.ts:47</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/b68c2b3/src/recorder/Recorder.ts#L49">src/recorder/Recorder.ts:49</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="currentConditionsTaskSettings" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <code class="tsd-tag ts-flagOptional">Optional</code> <span>current<wbr/>Conditions<wbr/>Task<wbr/>Settings</span><a href="#currentConditionsTaskSettings" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">current<wbr/>Conditions<wbr/>Task<wbr/>Settings</span><span class="tsd-signature-symbol">?:</span> <a href="../interfaces/recorder.CurrentConditionsTaskSettings.html" class="tsd-signature-type tsd-kind-interface">CurrentConditionsTaskSettings</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/70aa1c1/src/recorder/Recorder.ts#L43">src/recorder/Recorder.ts:43</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/b68c2b3/src/recorder/Recorder.ts#L45">src/recorder/Recorder.ts:45</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="interface" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagReadonly">Readonly</code> <span>interface</span><a href="#interface" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">interface</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">default</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type ">default</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/70aa1c1/src/recorder/Recorder.ts#L41">src/recorder/Recorder.ts:41</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/b68c2b3/src/recorder/Recorder.ts#L43">src/recorder/Recorder.ts:43</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="realtimeRecorderTimeout" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <code class="tsd-tag ts-flagOptional">Optional</code> <span>realtime<wbr/>Recorder<wbr/>Timeout</span><a href="#realtimeRecorderTimeout" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">realtime<wbr/>Recorder<wbr/>Timeout</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type ">Timeout</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/70aa1c1/src/recorder/Recorder.ts#L44">src/recorder/Recorder.ts:44</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/b68c2b3/src/recorder/Recorder.ts#L46">src/recorder/Recorder.ts:46</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="running" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>running</span><a href="#running" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">running</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/70aa1c1/src/recorder/Recorder.ts#L45">src/recorder/Recorder.ts:45</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/b68c2b3/src/recorder/Recorder.ts#L47">src/recorder/Recorder.ts:47</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="settings" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagReadonly">Readonly</code> <span>settings</span><a href="#settings" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">settings</span><span class="tsd-signature-symbol">:</span> <a href="../interfaces/recorder.RecorderSettings.html" class="tsd-signature-type tsd-kind-interface">RecorderSettings</a></div><aside class="tsd-sources">
+<div class="tsd-signature"><span class="tsd-kind-property">settings</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">api</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">baudRate</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">BaudRate</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">consoleLog</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">fileLog</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">key</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">logErrorInformation</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">logLevel</span><span class="tsd-signature-symbol">: </span><a href="../types/index.LogLevel.html" class="tsd-signature-type tsd-kind-type-alias">LogLevel</a><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">model</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">AdvancedModel</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">path</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">preferEnvironmentVariables</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">rainCollectorSize</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type ">RainCollectorSize</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">units</span><span class="tsd-signature-symbol">: </span>{ readonly rain: RainUnit; readonly wind: WindUnit; readonly temperature: TemperatureUnit; readonly solarRadiation: &quot;W/m²&quot;; readonly pressure: PressureUnit; }<span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span></div>
+<div class="tsd-type-declaration">
+<h4>Type declaration</h4>
+<ul class="tsd-parameters">
+<li class="tsd-parameter">
+<h5><code class="tsd-tag ts-flagReadonly">Readonly</code> <span class="tsd-kind-property">api</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+<div class="tsd-comment tsd-typography"><p>The URL to the api. E.g. <code>http://localhost:8000/api</code>. Corresponding environment variable: <code>API</code></p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li>
+<li class="tsd-parameter">
+<h5><code class="tsd-tag ts-flagReadonly">Readonly</code> <span class="tsd-kind-property">baud<wbr/>Rate</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">BaudRate</span></h5>
+<div class="tsd-comment tsd-typography"><p>The baud rate to use. Default is <code>19200</code>. This has to match your weather station&#39;s settings! Corresponding environment variable: <code>BAUD_RATE</code></p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li>
+<li class="tsd-parameter">
+<h5><code class="tsd-tag ts-flagReadonly">Readonly</code> <span class="tsd-kind-property">console<wbr/>Log</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h5>
+<div class="tsd-comment tsd-typography"><p>Whether the console log is enabled. Default is <code>true</code>. Corresponding environment variable: <code>CONSOLE_LOG</code></p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li>
+<li class="tsd-parameter">
+<h5><code class="tsd-tag ts-flagReadonly">Readonly</code> <span class="tsd-kind-property">file<wbr/>Log</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h5>
+<div class="tsd-comment tsd-typography"><p>Whether file logging is enabled. Default is <code>true</code>. Corresponding environment variable: <code>FILE_LOG</code></p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li>
+<li class="tsd-parameter">
+<h5><code class="tsd-tag ts-flagReadonly">Readonly</code> <span class="tsd-kind-property">key</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+<div class="tsd-comment tsd-typography"><p>The api key used to communicate with the api. Corresponding environment variable: <code>API_KEY</code></p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li>
+<li class="tsd-parameter">
+<h5><code class="tsd-tag ts-flagReadonly">Readonly</code> <span class="tsd-kind-property">log<wbr/>Error<wbr/>Information</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h5>
+<div class="tsd-comment tsd-typography"><p>Whether to log detailed error information. Default is <code>true</code>. Corresponding environment variable: `LOG_ERROR_INFORMATION´</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li>
+<li class="tsd-parameter">
+<h5><code class="tsd-tag ts-flagReadonly">Readonly</code> <span class="tsd-kind-property">log<wbr/>Level</span><span class="tsd-signature-symbol">: </span><a href="../types/index.LogLevel.html" class="tsd-signature-type tsd-kind-type-alias">LogLevel</a></h5>
+<div class="tsd-comment tsd-typography"><p>The minimimum log level that will be output. Default is <code>&quot;info&quot;</code>. Corresponding environment variable: <code>LOG_LEVEL</code></p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li>
+<li class="tsd-parameter">
+<h5><code class="tsd-tag ts-flagReadonly">Readonly</code> <span class="tsd-kind-property">model</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">AdvancedModel</span></h5>
+<div class="tsd-comment tsd-typography"><p>The weather station model. Default is <code>PRO2</code>. Corresponding environment variable: <code>MODEL</code></p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li>
+<li class="tsd-parameter">
+<h5><code class="tsd-tag ts-flagReadonly">Readonly</code> <span class="tsd-kind-property">path</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+<div class="tsd-comment tsd-typography"><p>The serial path to the weather station. E.g. <code>COM3</code>. Corresponding environment variable: <code>SERIAL_PATH</code></p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li>
+<li class="tsd-parameter">
+<h5><code class="tsd-tag ts-flagReadonly">Readonly</code> <span class="tsd-kind-property">prefer<wbr/>Environment<wbr/>Variables</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h5>
+<div class="tsd-comment tsd-typography"><p>Whether to prefer environment variables configured in the <code>.env</code> file. Default is <code>false</code>.</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li>
+<li class="tsd-parameter">
+<h5><code class="tsd-tag ts-flagOptional">Optional</code> <code class="tsd-tag ts-flagReadonly">Readonly</code> <span class="tsd-kind-property">rain<wbr/>Collector<wbr/>Size</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type ">RainCollectorSize</span></h5>
+<div class="tsd-comment tsd-typography"><p>The weather station&#39;s rain collector size.</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li>
+<li class="tsd-parameter">
+<h5><code class="tsd-tag ts-flagReadonly">Readonly</code> <span class="tsd-kind-property">units</span><span class="tsd-signature-symbol">: </span>{ readonly rain: RainUnit; readonly wind: WindUnit; readonly temperature: TemperatureUnit; readonly solarRadiation: &quot;W/m²&quot;; readonly pressure: PressureUnit; }</h5>
+<div class="tsd-comment tsd-typography"><p>The default units. <strong>Important</strong>: Has to match the configured vant-api units! Corresponding environment variables: <code>RAIN_UNIT</code>, <code>TEMPERATURE_UNIT</code>, ...</p>
+</div>
+<div class="tsd-comment tsd-typography"></div></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/70aa1c1/src/recorder/Recorder.ts#L40">src/recorder/Recorder.ts:40</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/b68c2b3/src/recorder/Recorder.ts#L42">src/recorder/Recorder.ts:42</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member"><a id="configureCurrentConditionsTask" class="tsd-anchor"></a>
@@ -137,7 +203,7 @@ Pass your desired settings to configure and enable the task, pass <code>false</c
 <h4>Throws</h4><p><a href="recorder.InvalidRecorderConfigurationError.html" class="tsd-kind-class">InvalidRecorderConfigurationError</a> if the settings are invalid</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/70aa1c1/src/recorder/Recorder.ts#L240">src/recorder/Recorder.ts:240</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/b68c2b3/src/recorder/Recorder.ts#L252">src/recorder/Recorder.ts:252</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="currentConditionsConfigured" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>current<wbr/>Conditions<wbr/>Configured</span><a href="#currentConditionsConfigured" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -149,7 +215,7 @@ Pass your desired settings to configure and enable the task, pass <code>false</c
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/70aa1c1/src/recorder/Recorder.ts#L272">src/recorder/Recorder.ts:272</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/b68c2b3/src/recorder/Recorder.ts#L284">src/recorder/Recorder.ts:284</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="currentConditionsInterval" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>current<wbr/>Conditions<wbr/>Interval</span><a href="#currentConditionsInterval" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -161,7 +227,7 @@ Pass your desired settings to configure and enable the task, pass <code>false</c
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/70aa1c1/src/recorder/Recorder.ts#L278">src/recorder/Recorder.ts:278</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/b68c2b3/src/recorder/Recorder.ts#L290">src/recorder/Recorder.ts:290</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="restart" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>restart</span><a href="#restart" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -172,7 +238,7 @@ Pass your desired settings to configure and enable the task, pass <code>false</c
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/70aa1c1/src/recorder/Recorder.ts#L309">src/recorder/Recorder.ts:309</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/b68c2b3/src/recorder/Recorder.ts#L321">src/recorder/Recorder.ts:321</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="start" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>start</span><a href="#start" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -185,7 +251,7 @@ Pass your desired settings to configure and enable the task, pass <code>false</c
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/70aa1c1/src/recorder/Recorder.ts#L284">src/recorder/Recorder.ts:284</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/b68c2b3/src/recorder/Recorder.ts#L296">src/recorder/Recorder.ts:296</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="stop" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>stop</span><a href="#stop" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -197,7 +263,7 @@ Pass your desired settings to configure and enable the task, pass <code>false</c
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/70aa1c1/src/recorder/Recorder.ts#L299">src/recorder/Recorder.ts:299</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/b68c2b3/src/recorder/Recorder.ts#L311">src/recorder/Recorder.ts:311</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="create" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>create</span><a href="#create" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -206,7 +272,7 @@ Pass your desired settings to configure and enable the task, pass <code>false</c
 <div class="tsd-comment tsd-typography"><p>Creates a new recorder with the passed settings. Throws an <a href="recorder.InvalidRecorderConfigurationError.html" class="tsd-kind-class">InvalidRecorderConfigurationError</a> if the settings are invalid.</p>
 <p>It is also possible to configure your recorder using a <code>.env</code> file. To enable this feature pass <code>useEnvironmentVariables: true</code>.</p>
 <p><strong>Example</strong>:</p>
-<pre><code class="language-ts"><span class="hl-7">// create recorder</span><br/><span class="hl-6">const</span><span class="hl-1"> </span><span class="hl-8">recorder</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">Recorder</span><span class="hl-1">.</span><span class="hl-4">create</span><span class="hl-1">({</span><br/><span class="hl-1">     </span><span class="hl-2">path:</span><span class="hl-1"> </span><span class="hl-3">&quot;COM5&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">     </span><span class="hl-2">api:</span><span class="hl-1"> </span><span class="hl-3">&quot;http://localhost:8000/api&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">     </span><span class="hl-2">rainCollectorSize:</span><span class="hl-1"> </span><span class="hl-3">&quot;0.2mm&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">     </span><span class="hl-2">model:</span><span class="hl-1"> </span><span class="hl-3">&quot;Pro2&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">     ....</span><br/><span class="hl-1">});</span><br/><span class="hl-1">#</span><br/><br/><span class="hl-7">// configure realtime recordings</span><br/><span class="hl-2">recorder</span><span class="hl-1">.</span><span class="hl-4">configureRealtimeRecording</span><span class="hl-1">({ </span><span class="hl-2">interval:</span><span class="hl-1"> </span><span class="hl-5">10</span><span class="hl-1"> });</span><br/><br/><span class="hl-7">// start recorder</span><br/><span class="hl-2">recorder</span><span class="hl-1">.</span><span class="hl-4">start</span><span class="hl-1">();</span>
+<pre><code class="language-ts"><span class="hl-7">// create recorder</span><br/><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-8">recorder</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">Recorder</span><span class="hl-1">.</span><span class="hl-5">create</span><span class="hl-1">({</span><br/><span class="hl-1">     </span><span class="hl-2">path:</span><span class="hl-1"> </span><span class="hl-3">&quot;COM5&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">     </span><span class="hl-2">api:</span><span class="hl-1"> </span><span class="hl-3">&quot;http://localhost:8000/api&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">     </span><span class="hl-2">rainCollectorSize:</span><span class="hl-1"> </span><span class="hl-3">&quot;0.2mm&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">     </span><span class="hl-2">model:</span><span class="hl-1"> </span><span class="hl-3">&quot;Pro2&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">     ....</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-7">// configure realtime recordings</span><br/><span class="hl-2">recorder</span><span class="hl-1">.</span><span class="hl-5">configureRealtimeRecording</span><span class="hl-1">({ </span><span class="hl-2">interval:</span><span class="hl-1"> </span><span class="hl-6">10</span><span class="hl-1"> });</span><br/><br/><span class="hl-7">// start recorder</span><br/><span class="hl-2">recorder</span><span class="hl-1">.</span><span class="hl-5">start</span><span class="hl-1">();</span>
 </code><button>Copy</button></pre>
 </div>
 <div class="tsd-parameters">
@@ -220,7 +286,46 @@ Pass your desired settings to configure and enable the task, pass <code>false</c
 <h4>Throws</h4><p><a href="recorder.InvalidRecorderConfigurationError.html" class="tsd-kind-class">InvalidRecorderConfigurationError</a> if the settings are invalid</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/70aa1c1/src/recorder/Recorder.ts#L80">src/recorder/Recorder.ts:80</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/b68c2b3/src/recorder/Recorder.ts#L81">src/recorder/Recorder.ts:81</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-private"><a id="createDeviceInterface" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <code class="tsd-tag ts-flagPrivate">Private</code> <span>create<wbr/>Device<wbr/>Interface</span><a href="#createDeviceInterface" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-private">
+<li class="tsd-signature tsd-anchor-link" id="createDeviceInterface.createDeviceInterface-1"><span class="tsd-kind-call-signature">create<wbr/>Device<wbr/>Interface</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">settings</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">default</span><span class="tsd-signature-symbol">&gt;</span><a href="#createDeviceInterface.createDeviceInterface-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><span class="tsd-kind-parameter">settings</span>: <a href="../interfaces/recorder.RecorderSettings.html" class="tsd-signature-type tsd-kind-interface">RecorderSettings</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">default</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/b68c2b3/src/recorder/Recorder.ts#L97">src/recorder/Recorder.ts:97</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-private"><a id="loadEnvironmentVariablesAndConfigureLogger" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <code class="tsd-tag ts-flagPrivate">Private</code> <span>load<wbr/>Environment<wbr/>Variables<wbr/>And<wbr/>Configure<wbr/>Logger</span><a href="#loadEnvironmentVariablesAndConfigureLogger" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-private">
+<li class="tsd-signature tsd-anchor-link" id="loadEnvironmentVariablesAndConfigureLogger.loadEnvironmentVariablesAndConfigureLogger-1"><span class="tsd-kind-call-signature">load<wbr/>Environment<wbr/>Variables<wbr/>And<wbr/>Configure<wbr/>Logger</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">settings</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#loadEnvironmentVariablesAndConfigureLogger.loadEnvironmentVariablesAndConfigureLogger-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><span class="tsd-kind-parameter">settings</span>: <a href="../interfaces/recorder.RecorderSettings.html" class="tsd-signature-type tsd-kind-interface">RecorderSettings</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/b68c2b3/src/recorder/Recorder.ts#L113">src/recorder/Recorder.ts:113</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-private"><a id="validateSettings" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <code class="tsd-tag ts-flagPrivate">Private</code> <span>validate<wbr/>Settings</span><a href="#validateSettings" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-private">
+<li class="tsd-signature tsd-anchor-link" id="validateSettings.validateSettings-1"><span class="tsd-kind-call-signature">validate<wbr/>Settings</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">settings</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#validateSettings.validateSettings-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><span class="tsd-kind-parameter">settings</span>: <a href="../interfaces/recorder.RecorderSettings.html" class="tsd-signature-type tsd-kind-interface">RecorderSettings</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/harrydehix/vant-api/blob/b68c2b3/src/recorder/Recorder.ts#L215">src/recorder/Recorder.ts:215</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -252,7 +357,10 @@ Pass your desired settings to configure and enable the task, pass <code>false</c
 <li><a href="#restart" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>restart</span></a></li>
 <li><a href="#start" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>start</span></a></li>
 <li><a href="#stop" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>stop</span></a></li>
-<li><a href="#create" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>create</span></a></li></ul></div></details></div>
+<li><a href="#create" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>create</span></a></li>
+<li><a href="#createDeviceInterface" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>create<wbr/>Device<wbr/>Interface</span></a></li>
+<li><a href="#loadEnvironmentVariablesAndConfigureLogger" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>load<wbr/>Environment<wbr/>Variables<wbr/>And<wbr/>Configure<wbr/>Logger</span></a></li>
+<li><a href="#validateSettings" class="tsd-is-private"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>validate<wbr/>Settings</span></a></li></ul></div></details></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="../index.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1"></use></svg><span>vant-api</span></a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="..">

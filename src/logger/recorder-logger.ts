@@ -1,6 +1,6 @@
 import winston from "winston";
 import { inspect } from "util";
-import RecorderSettings from "../recorder/RecorderSettings";
+import RecorderSettings from "../recorder/settings/RecorderSettings";
 
 const consoleTransport = new winston.transports.Console({
             format: winston.format.combine(

@@ -3,7 +3,7 @@ import mongoose, { Model, Schema, HydratedDocument } from "mongoose";
 import { v4 as uuidv4 } from 'uuid';
 
 export type APIUserRole = "write" | "read" | "readwrite" | "admin";
-export const APIUserRoles = ["write", "read", "readwrite", "admin"];
+export const APIUserRoles = ["write", "read", "readwrite", "admin"] as APIUserRole[];
 
 interface IAPIUser{
     key: string,
