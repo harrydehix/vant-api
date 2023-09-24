@@ -95,6 +95,8 @@ class Recorder {
     }
 
     private static async createDeviceInterface(settings: RecorderSettings){
+        
+        log.info(`Connecting to device ${settings.path} (${settings.model})...`);
         let device;
         if(settings.model === "Pro2"){
             device = await VantPro2Interface.create({
@@ -107,6 +109,7 @@ class Recorder {
                 rainCollectorSize: settings.rainCollectorSize!,
             });
         }
+        log.info(`Connected!`);
         return device;
     }
 
@@ -312,6 +315,7 @@ class Recorder {
         if(this.running){
             log.info("Stopped recorder!")
             clearTimeout(this.realtimeRecorderTimeout);
+            this.running = false;
         }
     }
 
