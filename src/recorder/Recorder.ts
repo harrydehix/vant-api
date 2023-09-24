@@ -11,6 +11,7 @@ import { AdvancedModels, BaudRates, RainCollectorSizes } from "vant-environment"
 import InvalidRecorderConfigurationError from "./InvalidRecorderConfigurationError";
 import { RichRealtimeData } from "vant-environment/structures";
 import { DeepReadonly } from "ts-essentials";
+import sleep from "../utils/sleep";
 
 /**
  * The recorder is the counter-part to the `startVantageAPI()` function.
@@ -336,13 +337,16 @@ class Recorder {
     protected updateCurrentConditions = async() => {
         // Get rich realtime record
         let record : RichRealtimeData | undefined;
-        try{
-            record = await this.interface.getRichRealtimeData();
-        }catch(err){
-            log.error("Failed to get realtime record from interface.");
-            log.error(err);
-            return;
-        }
+        do{
+            try{
+                record = await this.interface.getRichRealtimeData();
+            }catch(err){
+                log.error("Failed to get realtime record from interface.");
+                log.error(err);
+                log.info("Retrying...");
+                await sleep(1000);
+            }
+        }while(record == undefined);
 
         // Send post request
         log.info("New realtime record (" + record.time + ")");
