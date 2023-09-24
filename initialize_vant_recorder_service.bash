@@ -12,8 +12,11 @@ Description=Vant Recorder Service
 
 [Service]
 Type=simple
-ExecStart=npm run vant-recorder
-
+ExecStart=$REPO_PATH/vant_recorder.sh
+KillMode=control-group
+PIDFile=/run/vant_recorder.pid
+Restart=on-failure
+RestartSec=1
 Environment=PATH=/usr/bin:/usr/local/bin:$NPM_PATH:$NODE_PATH
 Environment=NODE_ENV=production
 WorkingDirectory=$REPO_PATH

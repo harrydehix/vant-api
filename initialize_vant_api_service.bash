@@ -12,8 +12,11 @@ Description=Vant API Service
 
 [Service]
 Type=simple
-ExecStart=npm run vant-api
-
+ExecStart=$REPO_PATH/vant_api.sh
+Restart=on-failure
+RestartSec=1
+KillMode=control-group
+PIDFile=/run/vant_api.pid
 Environment=PATH=/usr/bin:/usr/local/bin:$NPM_PATH:$NODE_PATH
 Environment=NODE_ENV=production
 WorkingDirectory=$REPO_PATH

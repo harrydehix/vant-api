@@ -20,7 +20,7 @@
         "test": "node -r source-map-support/register",
         "docs": "npx typedoc && redocly build-docs api-specification/api.yml --output=docs/specification.html",
         "watch": "npx tsc --watch",
-        "service-setup": "sudo bash initialize_vant_api_service.bash && sudo bash initialize_vant_recorder_service.bash && systemctl daemon-reload && systemctl enable vantapi && systemctl enable vantrecorder"
+        "service-setup": "sudo bash initialize_vant_api_service.bash && sudo bash initialize_vant_recorder_service.bash && sudo systemctl daemon-reload && sudo systemctl enable vantapi && sudo systemctl enable vantrecorder"
     },
     "exports": {
         ".": "./dist/index.js",
