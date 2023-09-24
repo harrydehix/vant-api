@@ -21,7 +21,8 @@ const fileTransport = new winston.transports.File({
                 winston.format.printf(
                     (info) => `${info.label}  ${info.timestamp}  ${info.level} : ${info.message}`
                 )
-            ) 
+            ),
+            maxsize: 1000000
         });
 
 const logger = winston.createLogger({
