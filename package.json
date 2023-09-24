@@ -19,7 +19,8 @@
         "vant-recorder": "node -r source-map-support/register ./dist/tests/recorder.js",
         "test": "node -r source-map-support/register",
         "docs": "npx typedoc && redocly build-docs api-specification/api.yml --output=docs/specification.html",
-        "watch": "npx tsc --watch"
+        "watch": "npx tsc --watch",
+        "service-setup": "sudo bash intialize_vant_api_service.bash intialize_vant_recorder_service.bash && systemctl daemon-reload && systemctl enable vantapi && systemctl enable vantrecorder"
     },
     "exports": {
         ".": "./dist/index.js",

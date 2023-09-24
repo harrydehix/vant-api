@@ -19,4 +19,5 @@ Environment=NODE_ENV=production
 WorkingDirectory=$REPO_PATH
 
 [Install]
+WantedBy=multi-user.target
 EOF
