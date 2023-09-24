@@ -2,20 +2,21 @@
 # Erstellt den Vant-API Service, muss im Repository Ornder ausgeführt werden
 
 # Den Installationsort von npm ermitteln und in einer Variablen speichern
-NPM_PATH=$(which npm)
+NPM_PATH=$(which npm | xargs dirname)
+NODE_PATH=$(which node | xargs dirname)
 REPO_PATH=$(pwd)
 
-cat > /etc/systemd/system/vantapi.service << EOF
+sudo cat > /etc/systemd/system/vantapi.service << EOF
 [Unit]
 Description=Vant API Service
 
 [Service]
 Type=simple
-ExecStart=$NPM_PATH run vant-api
+ExecStart=npm run vant-api
 
-Environment=PATH=/usr/bin:/usr/local/bin
+Environment=PATH=/usr/bin:/usr/local/bin:$NPM_PATH:$NODE_PATH
 Environment=NODE_ENV=production
-WorkingDirectory=REPO_PATH
+WorkingDirectory=$REPO_PATH
 
 [Install]
 EOF
