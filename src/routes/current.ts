@@ -8,11 +8,11 @@ import mongoose from "mongoose";
 import log from "../logger/api-logger";
 import { PressureUnit, RainUnit, SolarRadiationUnit, TemperatureUnit, WindUnit } from "vant-environment/units";
 import protect from "../security/protect";
-import Cache from "../cache";
 import sleep from "../utils/sleep";
 
+
 const router = express.Router();
-const cache = new Cache<CurrentConditionsType>();
+let current : CurrentConditionsType | null = null;
 
 /* GET current weather conditions */
 router.get('/',
@@ -29,13 +29,12 @@ router.get('/',
 
         if (result.isEmpty()) {
             try {
-                let currentConditions : CurrentConditionsType | null | undefined = cache.get('current');
-                if(!currentConditions){
+                if(current === null){
                      return next(new APIError("No current weather conditions available. This error usually happens if no weather data hasn't been uploaded!", 503))
                 }
                 
                 log.debug("Changing units...");
-                currentConditions.changeUnits({
+                current.changeUnits({
                     rain: req.query.rainUnit as RainUnit,
                     wind: req.query.windUnit as WindUnit,
                     pressure: req.query.pressureUnit as PressureUnit,
@@ -45,7 +44,7 @@ router.get('/',
 
                 res.status(200).json({
                     success: true,
-                    data: currentConditions
+                    data: current
                 });
             } catch (err) {
                 return next(new APIError("Failed to access the current weather conditions from the database!", 500, err))
@@ -65,21 +64,12 @@ router.post('/',
         const result = validationResult(req);
 
         if (result.isEmpty()) {
-            let currentConditions: CurrentConditionsType | null | undefined = cache.get('current');
-            if(!currentConditions){
-                log.debug("No cached current conditions available: Trying to access conditions from database...")
-                currentConditions = await CurrentConditions.findOne({});
-            }
-            if(!currentConditions){
-                log.debug("No current conditions stored in database: Creating new conditions...")
-                currentConditions = new CurrentConditions();
-            }
-
-            Object.assign(currentConditions, req.body);
+            const newCurrent = new CurrentConditions(req.body);
 
             try {
                 log.debug("Validating updated current conditions...");
-                await currentConditions.validate();
+                await newCurrent.validate();
+                current = newCurrent;
             } catch (err) {
                 if(err instanceof mongoose.Error.ValidationError){
                     return next(new APIError("Invalid '" + err.errors[0] + "' value!", 400));
@@ -88,10 +78,15 @@ router.post('/',
                 }
             }
 
-            cache.set('current', currentConditions);
+            try{
+                log.debug("Deleting old current conditions...");
+                await CurrentConditions.deleteMany({});
+            }catch(err){
+                return next(new APIError("Error while deleting old current conditions!", 500, err));
+            }
 
             log.debug("Saving new current conditions...");
-            await currentConditions.save({ validateBeforeSave: false });
+            await newCurrent.save({ validateBeforeSave: false });
             try {
                 res.status(201);
                 res.json({
