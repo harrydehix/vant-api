@@ -1,5 +1,5 @@
 
-import mongoose, { Model, Schema } from "mongoose";
+import mongoose, { model, Model, Schema } from "mongoose";
 import units from "simple-units";
 import { WindUnit, RainUnit, TemperatureUnit, PressureUnit, SolarRadiationUnit, UnitSettings} from "vant-environment/units";
 import { RichRealtimeData } from "vant-environment/structures";
@@ -323,4 +323,9 @@ currentConditionsSchema.methods.changeUnits = function (unitSettings : Partial<U
     }
 };
 
-export default mongoose.model<ICurrentConditions, CurrentConditionsModel>("CurrentConditions", currentConditionsSchema);
+const currentModel = mongoose.model<ICurrentConditions, CurrentConditionsModel>("CurrentConditions", currentConditionsSchema);
+export default currentModel;
+
+const test = new currentModel();
+
+export type CurrentConditionsType = typeof test;
