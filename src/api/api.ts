@@ -1,5 +1,6 @@
 import * as dotenv from "dotenv";
 import * as http from "http";
+import * as https from "https";
 import APISettings, { defaultAPISettings } from "./APISettings";
 import MinimumAPISettings from "./MinimumAPISettings";
 import merge from "lodash.merge";
@@ -13,6 +14,7 @@ import { Logger } from "winston";
 import TypedEmitter from "typed-emitter"; 
 import EventEmitter from "events";
 import { DeepReadonly } from "ts-essentials";
+import * as fs from "fs";
 
 export type APIEvents = {
     /** Fires when the http server starts listening to incoming requests. */
@@ -30,7 +32,7 @@ export class VantAPI extends (EventEmitter as new () => TypedEmitter<APIEvents>)
     public settings: APISettings;
     public log: Logger;
     public app: Express;
-    public server: http.Server;
+    public server?: http.Server | https.Server;
 
     /**
      *  Holds the four base api keys which are generated while configuring the vant api for the first time.
@@ -47,7 +49,6 @@ export class VantAPI extends (EventEmitter as new () => TypedEmitter<APIEvents>)
         this.log = log;
         this.app = app;
         this.settings = defaultAPISettings;
-        this.server = this.createServer();
     }
 
     /**
@@ -56,7 +57,7 @@ export class VantAPI extends (EventEmitter as new () => TypedEmitter<APIEvents>)
      * @param settings 
      */
     public configure(settings: MinimumAPISettings){
-        if(this.server.listening){
+        if(this.server?.listening){
             log.warn("You are configuring the api while the server is already running. You must restart the server for the changes to take effect.");
         }
 
@@ -71,6 +72,8 @@ export class VantAPI extends (EventEmitter as new () => TypedEmitter<APIEvents>)
         this.generateAPIKeysIfNotExistent();
 
         app.set('port', settings.port);
+
+        this.server = this.createServer();
     }
 
 
@@ -80,14 +83,14 @@ export class VantAPI extends (EventEmitter as new () => TypedEmitter<APIEvents>)
     public start(){
         return new Promise<void>((resolve, reject) => {
             let resolved = false;
-            this.server.once("error", (err) => {
+            this.server?.once("error", (err) => {
                 if(!resolved){
                     this.emit("start", err);
                     log.error("Failed to start the vantage api!");
                     reject(err);
                 }
             })
-            this.server.listen(this.settings.port, () => {
+            this.server?.listen(this.settings.port, () => {
                 resolved = true;
                 this.emit("start");
                 log.info(`Successfully started vant api. Listening on port ${this.settings.port}!`);
@@ -102,7 +105,7 @@ export class VantAPI extends (EventEmitter as new () => TypedEmitter<APIEvents>)
     public stop(){
         return new Promise<void>((resolve, reject) => {
             log.info("Stopping vant api...");
-            this.server.close((err) => {
+            this.server?.close((err) => {
                 if(err && "code" in err && err["code"] === "ERR_SERVER_NOT_RUNNING"){
                     this.emit("stop");
                     resolve();
@@ -144,7 +147,17 @@ export class VantAPI extends (EventEmitter as new () => TypedEmitter<APIEvents>)
      * @hidden
      */
     private createServer(){
-        const server = http.createServer(app);
+        let server;
+        if(this.settings.https){
+            server = https.createServer({
+                key: fs.readFileSync(this.settings.sslKeyFile),
+                cert: fs.readFileSync(this.settings.sslCrtFile)
+            }, app);
+            log.info("Created a HTTPS server!");
+        }else{
+            server = http.createServer(app);
+            log.info("Created a HTTP server!");
+        }
 
         server.on('error', (err) => {
             this.emit("error", err);
@@ -221,6 +234,24 @@ export class VantAPI extends (EventEmitter as new () => TypedEmitter<APIEvents>)
             this.settings.units.wind = process.env.WIND_UNIT as WindUnit;
         }else{
             invalidEnvironmentVariables.push("WIND_UNIT");
+        }
+
+        if(process.env.HTTPS && validator.isBoolean(process.env.HTTPS)){
+            this.settings.https = process.env.HTTPS === "true";
+        }else{
+            invalidEnvironmentVariables.push("HTTPS");
+        }
+
+        if(process.env.SSL_CRT_FILE){
+            this.settings.sslCrtFile = process.env.SSL_CRT_FILE;
+        }else{
+            if(this.settings.https) invalidEnvironmentVariables.push("SSL_CRT_FILE");
+        }
+
+        if(process.env.SSL_KEY_FILE){
+            this.settings.sslKeyFile = process.env.SSL_KEY_FILE;
+        }else{
+            if(this.settings.https) invalidEnvironmentVariables.push("SSL_KEY_FILE");
         }
 
         configureLogger(this.settings);

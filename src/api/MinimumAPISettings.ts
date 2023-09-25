@@ -13,8 +13,14 @@ type MinimumAPISettings = {
     fileLog?: boolean,
     /** Whether to prefer environment variables to configure the api. Default is `false`.  */
     preferEnvironmentVariables?: boolean,
-    /** Whether to log detailed error information. Default is `true`. */
+    /** Whether to log detailed error information. Default is `true`. Corresponding environment variable: `LOG_ERROR_INFORMATION` */
     logErrorInformation?: boolean,
+    /** Whether to use https. Default is `false`. Corresponding environment variable: `HTTPS` */
+    https?: boolean,
+    /** The path to your ssl public certificate. Corresponding environment variable: `SSL_CRT_FILE` */
+    sslCrtFile?: string,
+    /** The path to your ssl private key. Corresponding environment variable: `SSL_KEY_FILE` */
+    sslKeyFile?: string,
 }
 
 export default MinimumAPISettings;

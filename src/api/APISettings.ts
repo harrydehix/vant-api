@@ -16,9 +16,18 @@ export default interface APISettings {
     preferEnvironmentVariables: boolean,
     /** Whether to log detailed error information. Default is `true`. Corresponding environment variable: `LOG_ERROR_INFORMATION´ */
     logErrorInformation: boolean,
+    /** Whether to use https. Default is `false`. Corresponding environment variable: `HTTPS` */
+    https: boolean,
+    /** The path to your ssl public certificate. Corresponding environment variable: `SSL_CRT_FILE` */
+    sslCrtFile: string,
+    /** The path to your ssl private key. Corresponding environment variable: `SSL_KEY_FILE` */
+    sslKeyFile: string,
 }
 
 export const defaultAPISettings : APISettings = {
+    https: false,
+    sslCrtFile: "",
+    sslKeyFile: "",
     port: 8000,
     logLevel: "info",
     consoleLog: true,
