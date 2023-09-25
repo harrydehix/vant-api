@@ -34,7 +34,8 @@ router.get('/',
                 }
                 
                 log.debug("Changing units...");
-                current.changeUnits({
+                const data = current.$clone();
+                data.changeUnits({
                     rain: req.query.rainUnit as RainUnit,
                     wind: req.query.windUnit as WindUnit,
                     pressure: req.query.pressureUnit as PressureUnit,
@@ -44,7 +45,7 @@ router.get('/',
 
                 res.status(200).json({
                     success: true,
-                    data: current
+                    data: data
                 });
             } catch (err) {
                 return next(new APIError("Failed to access the current weather conditions from the database!", 500, err))

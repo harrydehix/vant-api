@@ -4,7 +4,7 @@ import units from "simple-units";
 import { WindUnit, RainUnit, TemperatureUnit, PressureUnit, SolarRadiationUnit, UnitSettings} from "vant-environment/units";
 import { RichRealtimeData } from "vant-environment/structures";
 
-interface ICurrentConditions extends Omit<RichRealtimeData, 'time'>{
+export interface ICurrentConditions extends Omit<RichRealtimeData, 'time'>{
     /**
      * The time the record was created
      */
