@@ -15,9 +15,8 @@ const consoleTransport = new winston.transports.Console({
         });
 
         const fileTransport = new winston.transports.DailyRotateFile({ 
-            datePattern: 'YYYY-MM-DD-HH',
-            filename: 'vant-api-%DATE%.log', 
-            maxSize: '20m',
+            datePattern: 'YYYY-MM-DD',
+            filename: './logs/vant-api-%DATE%.log',
             maxFiles: '14d',
             format: winston.format.combine(
                 winston.format.label({label: "vant-api"}),

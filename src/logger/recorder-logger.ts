@@ -15,9 +15,8 @@ const consoleTransport = new winston.transports.Console({
         });
 
 const fileTransport = new winston.transports.DailyRotateFile({ 
-            filename: 'vant-recorder-%DATE%.log', 
-            datePattern: 'YYYY-MM-DD-HH',
-            maxSize: '20m',
+            filename: './logs/vant-recorder-%DATE%.log', 
+            datePattern: 'YYYY-MM-DD',
             maxFiles: '14d',
             format: winston.format.combine(
                 winston.format.label({label: "vant-recorder"}),
