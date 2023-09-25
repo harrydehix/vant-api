@@ -1,6 +1,7 @@
 import winston from "winston";
 import APISettings from "../api/APISettings";
 import { inspect } from "util";
+import 'winston-daily-rotate-file';
 
 const consoleTransport = new winston.transports.Console({
             format: winston.format.combine(
@@ -13,8 +14,11 @@ const consoleTransport = new winston.transports.Console({
             )
         });
 
-const fileTransport = new winston.transports.File({ 
-            filename: 'vant-api.log', 
+        const fileTransport = new winston.transports.DailyRotateFile({ 
+            datePattern: 'YYYY-MM-DD-HH',
+            filename: 'vant-api-%DATE%.log', 
+            maxSize: '20m',
+            maxFiles: '14d',
             format: winston.format.combine(
                 winston.format.label({label: "vant-api"}),
                 winston.format.timestamp(),
@@ -22,7 +26,6 @@ const fileTransport = new winston.transports.File({
                     (info) => `${info.label}  ${info.timestamp}  ${info.level} : ${info.message}`
                 )
             ),
-            maxsize: 1000000
         });
 
 const logger = winston.createLogger({

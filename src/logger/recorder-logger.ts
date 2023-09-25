@@ -1,6 +1,7 @@
 import winston from "winston";
 import { inspect } from "util";
 import RecorderSettings from "../recorder/settings/RecorderSettings";
+import 'winston-daily-rotate-file';
 
 const consoleTransport = new winston.transports.Console({
             format: winston.format.combine(
@@ -13,16 +14,18 @@ const consoleTransport = new winston.transports.Console({
             )
         });
 
-const fileTransport = new winston.transports.File({ 
-            filename: 'vant-recorder.log', 
+const fileTransport = new winston.transports.DailyRotateFile({ 
+            filename: 'vant-recorder-%DATE%.log', 
+            datePattern: 'YYYY-MM-DD-HH',
+            maxSize: '20m',
+            maxFiles: '14d',
             format: winston.format.combine(
                 winston.format.label({label: "vant-recorder"}),
                 winston.format.timestamp(),
                 winston.format.printf(
                     (info) => `${info.label}  ${info.timestamp}  ${info.level} : ${info.message}`
                 )
-            ),
-            maxsize: 1000000
+            )
         });
 
 const logger = winston.createLogger({

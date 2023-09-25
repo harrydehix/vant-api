@@ -64,7 +64,8 @@
         "validator": "^13.11.0",
         "vant-environment": "^1.0.6",
         "vantjs": "^1.0.9",
-        "winston": "^3.10.0"
+        "winston": "^3.10.0",
+        "winston-daily-rotate-file": "^4.7.1"
     },
     "devDependencies": {
         "@types/cors": "^2.8.13",
