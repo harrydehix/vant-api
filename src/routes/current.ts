@@ -1,6 +1,6 @@
 import express, {Request, Response, NextFunction} from "express";
 import { body, query, validationResult, checkSchema, checkExact, ValidationError }  from "express-validator";
-import CurrentConditions, { CurrentConditionsType } from "../models/CurrentConditions";
+import CurrentConditions from "../models/CurrentConditions";
 import APIError from "../error-handling/APIError";
 import asyncHandler from "../error-handling/asyncHandler";
 import currentConditionsSchema from "../validationSchemas/currentConditionsSchema";
@@ -8,11 +8,8 @@ import mongoose from "mongoose";
 import log from "../logger/api-logger";
 import { PressureUnit, RainUnit, SolarRadiationUnit, TemperatureUnit, WindUnit } from "vant-environment/units";
 import protect from "../security/protect";
-import sleep from "../utils/sleep";
-
 
 const router = express.Router();
-let current : CurrentConditionsType | null = null;
 
 /* GET current weather conditions */
 router.get('/',
@@ -29,13 +26,17 @@ router.get('/',
 
         if (result.isEmpty()) {
             try {
-                if(current === null){
-                     return next(new APIError("No current weather conditions available. This error usually happens if no weather data hasn't been uploaded!", 503))
+                let currentConditions = null;
+                for(let i = 0; i < 10 && !currentConditions; ++i){
+                    currentConditions = await CurrentConditions.findOne();
+                    await new Promise(r => setTimeout(r, 200));
+                }
+                if (!currentConditions) {
+                    return next(new APIError("No current weather conditions available. This error usually happens if no weather data hasn't been uploaded!", 503))
                 }
                 
                 log.debug("Changing units...");
-                const data = current.$clone();
-                data.changeUnits({
+                currentConditions.changeUnits({
                     rain: req.query.rainUnit as RainUnit,
                     wind: req.query.windUnit as WindUnit,
                     pressure: req.query.pressureUnit as PressureUnit,
@@ -45,7 +46,7 @@ router.get('/',
 
                 res.status(200).json({
                     success: true,
-                    data: data
+                    data: currentConditions
                 });
             } catch (err) {
                 return next(new APIError("Failed to access the current weather conditions from the database!", 500, err))
@@ -65,12 +66,11 @@ router.post('/',
         const result = validationResult(req);
 
         if (result.isEmpty()) {
-            const newCurrent = new CurrentConditions(req.body);
+            const currentConditions = new CurrentConditions(req.body);
 
             try {
-                log.debug("Validating updated current conditions...");
-                await newCurrent.validate();
-                current = newCurrent;
+                log.debug("Validating ingoing current conditions...");
+                await currentConditions.validate();
             } catch (err) {
                 if(err instanceof mongoose.Error.ValidationError){
                     return next(new APIError("Invalid '" + err.errors[0] + "' value!", 400));
@@ -79,16 +79,17 @@ router.post('/',
                 }
             }
 
-            try{
-                log.debug("Deleting old current conditions...");
-                await CurrentConditions.deleteMany({});
-            }catch(err){
-                return next(new APIError("Error while deleting old current conditions!", 500, err));
+            try {
+                log.debug("Deleting outdated current conditions...");
+                await CurrentConditions.deleteMany();
+            } catch (err) {
+                return next(new APIError("Failed to delete existing current conditions in the database!", 500, err));
             }
 
-            log.debug("Saving new current conditions...");
-            await newCurrent.save({ validateBeforeSave: false });
             try {
+                log.debug("Saving new current conditions...");
+                await currentConditions.save({ validateBeforeSave: false });
+
                 res.status(201);
                 res.json({
                     success: true,

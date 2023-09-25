@@ -8,6 +8,7 @@ api.start();
 
 function handleExit(){
     api.stop();
+    process.exit();
 }
 
 // do something when app is closing
