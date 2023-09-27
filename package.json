@@ -15,12 +15,11 @@
     "author": "Henri Hollmann (harrydehix)",
     "scripts": {
         "build": "npx tsc",
-        "vant-api": "node -r source-map-support/register ./dist/tests/api.js",
-        "vant-recorder": "node -r source-map-support/register ./dist/tests/recorder.js",
+        "vant-api": "node -r source-map-support/register ./dist/services/api.js",
+        "vant-recorder": "node -r source-map-support/register ./dist/services/recorder.js",
         "test": "node -r source-map-support/register",
         "docs": "npx typedoc && redocly build-docs api-specification/api.yml --output=docs/specification.html",
-        "watch": "npx tsc --watch",
-        "service-setup": "sudo bash initialize_vant_api_service.bash && sudo bash initialize_vant_recorder_service.bash && sudo systemctl daemon-reload && sudo systemctl enable vantapi && sudo systemctl enable vantrecorder"
+        "watch": "npx tsc --watch"
     },
     "exports": {
         ".": "./dist/index.js",
@@ -52,12 +51,14 @@
         "@types/morgan": "^1.9.5",
         "cookie-parser": "~1.4.4",
         "cors": "^2.8.5",
+        "destroyable-server": "^1.0.0",
         "dotenv": "^16.3.1",
         "express": "^4.18.2",
         "express-validator": "^7.0.1",
         "lodash.merge": "^4.6.2",
         "mongoose": "^7.5.0",
         "node-dev": "^8.0.0",
+        "pm2": "^5.3.0",
         "pug": "^3.0.2",
         "simple-units": "^1.0.6",
         "string-hash": "^1.1.3",

@@ -5,3 +5,8 @@ dist/
 logs/
 logs/*.*
 .env
+*-audit.json
+*.crt
+*.key
+.envdocker
+data/

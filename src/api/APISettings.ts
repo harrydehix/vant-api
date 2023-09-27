@@ -22,9 +22,15 @@ export default interface APISettings {
     sslCrtFile: string,
     /** The path to your ssl private key. Corresponding environment variable: `SSL_KEY_FILE` */
     sslKeyFile: string,
+    /** The connection string used to connect to mongodb. Default is `mongodb://127.0.0.1:27017`. Corresponding environment variable: `MONGO_URI` */
+    mongoUri: string,
+    /** Whether the api should automatically start the http(s) server after being configured. Default is `true`. Corresponding environment variable: `AUTOSTART`. */
+    autoStart: boolean,
 }
 
 export const defaultAPISettings : APISettings = {
+    autoStart: true,
+    mongoUri: "mongodb://127.0.0.1:27017",
     https: false,
     sslCrtFile: "",
     sslKeyFile: "",

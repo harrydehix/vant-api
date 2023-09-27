@@ -1,0 +1,7 @@
+/node_modules
+/api-specification
+/docs
+/guides
+/logs
+/dist
+.env

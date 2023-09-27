@@ -127,7 +127,7 @@ class Recorder {
         if(process.env.API_KEY){
             settings.key = process.env.API_KEY;
         }else{
-            invalidEnvironmentVariables.push("API");
+            invalidEnvironmentVariables.push("API_KEY");
         }
 
         if(process.env.BAUD_RATE && validator.isIn(process.env.BAUD_RATE, BaudRates)){

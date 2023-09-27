@@ -15,12 +15,19 @@ import TypedEmitter from "typed-emitter";
 import EventEmitter from "events";
 import { DeepReadonly } from "ts-essentials";
 import * as fs from "fs";
+import mongoose from "mongoose";
+import APIClosedError from "./APIClosedError";
+import { makeDestroyable, DestroyableServer } from 'destroyable-server';
+
+
 
 export type APIEvents = {
     /** Fires when the http server starts listening to incoming requests. */
-    start: (err?: Error) => void,
+    "start-server": (err?: Error) => void,
     /** Fires when the http server starts stops to incoming requests. */
-    stop: (err?: Error) => void,
+    "stop-server": (err?: any) => void,
+    /** Fires when the api is finally closed. */
+    "close": (err?: any) => void,
     /** Fires when an error occurs. */
     error: (err: Error | any) => void
 }
@@ -32,7 +39,8 @@ export class VantAPI extends (EventEmitter as new () => TypedEmitter<APIEvents>)
     public settings: APISettings;
     public log: Logger;
     public app: Express;
-    public server?: http.Server | https.Server;
+    public server?: DestroyableServer<http.Server | https.Server>;
+    public closed: boolean = false;
 
     /**
      *  Holds the four base api keys which are generated while configuring the vant api for the first time.
@@ -56,7 +64,9 @@ export class VantAPI extends (EventEmitter as new () => TypedEmitter<APIEvents>)
      * Pass `{ useEnvironmentVariables: true }` to setup these settings using environment variables (e.g. stored in a `.env` file).
      * @param settings 
      */
-    public configure(settings: MinimumAPISettings){
+    public async configure(settings: MinimumAPISettings){
+        if(this.closed) throw new APIClosedError();
+
         if(this.server?.listening){
             log.warn("You are configuring the api while the server is already running. You must restart the server for the changes to take effect.");
         }
@@ -69,31 +79,59 @@ export class VantAPI extends (EventEmitter as new () => TypedEmitter<APIEvents>)
             configureLogger(this.settings);
         }
 
-        this.generateAPIKeysIfNotExistent();
+        await mongoose.connect(`${this.settings.mongoUri}/vant-db`);
+        log.info("Successfully connected to database!");
+
+        await this.generateAPIKeysIfNotExistent();
 
         app.set('port', settings.port);
 
-        this.server = this.createServer();
+        this.server = makeDestroyable(this.createServer());
+
+        if(this.settings.autoStart){
+            await this.startServer();
+        }
+    }
+
+    /**
+     * Stops the http server and closes the connection to the database. This action is **final**!
+     */
+    public async close(){
+        if(this.closed) return;
+
+        await this.stopServer();
+        
+        try{
+            await mongoose.disconnect();
+            log.warn("Disconnected from database!");
+            this.emit("close");
+        }catch(err){
+            this.emit("close", err);
+        }
+        log.warn("Closed api!");
+
+        this.closed = true;
     }
 
 
     /**
      * Starts the http server on the configured port. The promise resolves when the server starts listening for incoming requests.
      */
-    public start(){
+    public startServer(){
+        if(this.closed) throw new APIClosedError();
         return new Promise<void>((resolve, reject) => {
             let resolved = false;
             this.server?.once("error", (err) => {
                 if(!resolved){
-                    this.emit("start", err);
-                    log.error("Failed to start the vantage api!");
+                    this.emit("start-server", err);
+                    log.error("Failed to start the vantage api server!");
                     reject(err);
                 }
             })
             this.server?.listen(this.settings.port, () => {
                 resolved = true;
-                this.emit("start");
-                log.info(`Successfully started vant api. Listening on port ${this.settings.port}!`);
+                this.emit("start-server");
+                log.info(`Successfully started the vant api server. Listening on port ${this.settings.port}!`);
                 resolve();
             });
         })
@@ -102,27 +140,19 @@ export class VantAPI extends (EventEmitter as new () => TypedEmitter<APIEvents>)
     /**
      * Stops the http server. If the server hasn't been started yet no error will occur (but a warning will be logged).
      */
-    public stop(){
-        return new Promise<void>((resolve, reject) => {
-            log.info("Stopping vant api...");
-            this.server?.close((err) => {
-                if(err && "code" in err && err["code"] === "ERR_SERVER_NOT_RUNNING"){
-                    this.emit("stop");
-                    resolve();
-                    log.warn("vant api never has been started!");
-                }else{
-                    this.emit("stop", err);
-                    if(err){
-                        log.error("Failed to stop vant api!");
-                        log.error(err);
-                        reject(err);
-                    }else{
-                        log.info("Stopped vant api!");
-                        resolve();
-                    }
-                }
-            });
-        }) 
+    public async stopServer(){
+        if(this.closed) throw new APIClosedError();
+
+        log.info("Stopping vant api server...");
+        try{
+            await this.server?.destroy();
+            log.info("Successfully stopped vant api server!");
+            this.emit("stop-server");
+        }catch(err){
+            log.error("Error while stopping the vant api server!");
+            log.error(err);
+            this.emit("stop-server", err);
+        }
     }
 
     /**
@@ -138,6 +168,7 @@ export class VantAPI extends (EventEmitter as new () => TypedEmitter<APIEvents>)
      * @returns the uuidv4 api key as string
      */
     public async generateAPIKey(role: APIUserRole){
+        if(this.closed) throw new APIClosedError();
         const user = await APIUser.createNew(role);
         await user.save();
         return user.key;
@@ -180,6 +211,18 @@ export class VantAPI extends (EventEmitter as new () => TypedEmitter<APIEvents>)
             this.settings.port = parseInt(process.env.PORT);
         }else{
             invalidEnvironmentVariables.push("PORT");
+        }
+
+        if(process.env.MONGO_URI){
+            this.settings.mongoUri = process.env.MONGO_URI;
+        }else{
+            invalidEnvironmentVariables.push("MONGO_URI");
+        }
+
+        if(process.env.AUTOSTART && validator.isBoolean(process.env.AUTOSTART)){
+            this.settings.autoStart = process.env.AUTOSTART === "true";
+        }else{
+            invalidEnvironmentVariables.push("AUTOSTART");
         }
 
         if(process.env.LOG_LEVEL && validator.isIn(process.env.LOG_LEVEL, ["debug", "info", "warn", "error"])){

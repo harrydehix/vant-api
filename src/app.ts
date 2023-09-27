@@ -2,7 +2,6 @@
 import express, { Errback, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import APIError from "./error-handling/APIError";
-import mongoose from "mongoose";
 
 // Routers
 import currentRouter from "./routes/current";
@@ -14,16 +13,8 @@ import log from "./logger/api-logger";
 import morgan from "morgan";
 import { inspect } from "util";
 
-// Database
-mongoose.connect('mongodb://127.0.0.1:27017/vant-db').then(() => {
-    log.info("Successfully connected to database!");
-}).catch((err) => {
-    log.error("Failed to connect to database!");
-    log.error(err);
-    process.exit(-1);
-})
-
 // Middlewares
+app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({ origin: "*" }));

@@ -2,3 +2,9 @@
 ./src
 .env
 ./dist/tests
+*.envdocker
+*.env
+*.crt
+*.key
+./logs
+./data
