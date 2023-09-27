@@ -15,7 +15,7 @@
     "author": "Henri Hollmann (harrydehix)",
     "scripts": {
         "start": "node -r source-map-support/register ./dist/service.js",
-        "service": "forever -r source-map-support/register ./dist/service.js",
+        "docker-image": "sudo docker build -t vant-api .",
         "build": "npx tsc",
         "docs": "npx typedoc && redocly build-docs api-specification/api.yml --output=docs/specification.html",
         "watch": "npx tsc --watch"
