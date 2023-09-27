@@ -5,7 +5,7 @@ import APIError from "../error-handling/APIError";
 import asyncHandler from "../error-handling/asyncHandler";
 import currentConditionsSchema from "../validationSchemas/currentConditionsSchema";
 import mongoose from "mongoose";
-import log from "../logger/api-logger";
+import log from "../log";
 import { PressureUnit, RainUnit, SolarRadiationUnit, TemperatureUnit, WindUnit } from "vant-environment/units";
 import protect from "../security/protect";
 

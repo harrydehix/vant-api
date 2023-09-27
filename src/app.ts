@@ -9,7 +9,7 @@ import configRouter from "./routes/config";
 
 const app = express();
 
-import log from "./logger/api-logger";
+import log from "./log";
 import morgan from "morgan";
 import { inspect } from "util";
 

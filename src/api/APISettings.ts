@@ -1,4 +1,6 @@
+import { defaultLoggerSettings, LoggerSettings } from "vant-environment/log";
 import { UnitConfiguration } from "vant-environment/units";
+import { LoggerOptions } from "winston";
 import MinimumAPISettings from "./MinimumAPISettings";
 
 export default interface APISettings {
@@ -6,16 +8,10 @@ export default interface APISettings {
     port: number,
     /** The default units. **Important**: Weather data uploads have to use these units! Corresponding environment variables: `RAIN_UNIT`, `TEMPERATURE_UNIT`, ...  */
     units: UnitConfiguration,
-    /** The minimimum log level that will be output. Default is `"info"`. Corresponding environment variable: `LOG_LEVEL` */
-    logLevel: "debug" | "info" | "warn" | "error",
-    /** Whether the console log is enabled. Default is `true`. Corresponding environment variable: `CONSOLE_LOG` */
-    consoleLog: boolean,
-    /** Whether file logging is enabled. Default is `true`. Corresponding environment variable: `FILE_LOG` */
-    fileLog: boolean,
+    /** Configures the logging behaviour. */
+    logOptions: LoggerSettings,
     /** Whether to prefer environment variables to configure the api. Settings passed directly are still preferred. Default is `false`.  */
     preferEnvironmentVariables: boolean,
-    /** Whether to log detailed error information. Default is `true`. Corresponding environment variable: `LOG_ERROR_INFORMATION´ */
-    logErrorInformation: boolean,
     /** Whether to use https. Default is `false`. Corresponding environment variable: `HTTPS` */
     https: boolean,
     /** The path to your ssl public certificate. Corresponding environment variable: `SSL_CRT_FILE` */
@@ -35,11 +31,8 @@ export const defaultAPISettings : APISettings = {
     sslCrtFile: "",
     sslKeyFile: "",
     port: 8000,
-    logLevel: "info",
-    consoleLog: true,
-    fileLog: true,
+    logOptions: defaultLoggerSettings,
     preferEnvironmentVariables: false,
-    logErrorInformation: true,
     units: {
         rain: "in",
         wind: "mph",

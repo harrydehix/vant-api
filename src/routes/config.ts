@@ -4,7 +4,7 @@ import APIUser, { APIUserRole, APIUserRoles } from "../models/APIUser";
 import APIError from "../error-handling/APIError";
 import asyncHandler from "../error-handling/asyncHandler";
 import protect from "../security/protect";
-import log from "../logger/api-logger";
+import log from "../log";
 
 const router = express.Router();
 

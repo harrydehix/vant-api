@@ -5,7 +5,8 @@ import APISettings, { defaultAPISettings } from "./APISettings";
 import MinimumAPISettings from "./MinimumAPISettings";
 import merge from "lodash.merge";
 import app from "../app";
-import log, { configureLogger } from "../logger/api-logger";
+import { configureLogger } from "vant-environment/log";
+import log from "../log";
 import validator from "validator";
 import { PressureUnit, RainUnit, RainUnits, SolarRadiationUnit, TemperatureUnit, WindUnit } from "vant-environment/units";
 import APIUser, { APIUserRole, APIUserRoles } from "../models/APIUser";
@@ -76,7 +77,7 @@ export class VantAPI extends (EventEmitter as new () => TypedEmitter<APIEvents>)
         if(this.settings.preferEnvironmentVariables){
             this.loadEnvironmentVariablesAndConfigureLogger();
         }else{
-            configureLogger(this.settings);
+            configureLogger(log, this.settings.logOptions, "vant-api");
         }
 
         await mongoose.connect(`${this.settings.mongoUri}/vant-db`);
@@ -226,25 +227,25 @@ export class VantAPI extends (EventEmitter as new () => TypedEmitter<APIEvents>)
         }
 
         if(process.env.LOG_LEVEL && validator.isIn(process.env.LOG_LEVEL, ["debug", "info", "warn", "error"])){
-            this.settings.logLevel = process.env.LOG_LEVEL as any;
+            this.settings.logOptions.logLevel = process.env.LOG_LEVEL as any;
         }else{
             invalidEnvironmentVariables.push("LOG_LEVEL");
         }
 
         if(process.env.CONSOLE_LOG && validator.isBoolean(process.env.CONSOLE_LOG)){
-            this.settings.consoleLog = process.env.CONSOLE_LOG === "true";
+            this.settings.logOptions.consoleLog = process.env.CONSOLE_LOG === "true";
         }else{
             invalidEnvironmentVariables.push("CONSOLE_LOG");
         }
 
         if(process.env.FILE_LOG && validator.isBoolean(process.env.FILE_LOG)){
-            this.settings.fileLog = process.env.FILE_LOG === "true";
+            this.settings.logOptions.fileLog = process.env.FILE_LOG === "true";
         }else{
             invalidEnvironmentVariables.push("FILE_LOG");
         }
 
         if(process.env.LOG_ERROR_INFORMATION && validator.isBoolean(process.env.LOG_ERROR_INFORMATION)){
-            this.settings.logErrorInformation = process.env.LOG_ERROR_INFORMATION === "true";
+            this.settings.logOptions.logErrorInformation = process.env.LOG_ERROR_INFORMATION === "true";
         }else{
             invalidEnvironmentVariables.push("LOG_ERROR_INFORMATION");
         }
@@ -297,7 +298,7 @@ export class VantAPI extends (EventEmitter as new () => TypedEmitter<APIEvents>)
             if(this.settings.https) invalidEnvironmentVariables.push("SSL_KEY_FILE");
         }
 
-        configureLogger(this.settings);
+        configureLogger(log, this.settings.logOptions, "vant-api");
         
         for(const invalidEnvironmentVariable of invalidEnvironmentVariables){
             log.warn(`Environment variable '${invalidEnvironmentVariable}' is missing or invalid!`);

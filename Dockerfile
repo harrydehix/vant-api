@@ -8,5 +8,5 @@ COPY ./public.crt ./public.crt
 COPY ./private.key ./private.key
 WORKDIR /api
 COPY .envdocker .env
-CMD npm run vant-api & npm run vant-recorder
+CMD npm start
 EXPOSE 8000

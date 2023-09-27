@@ -6,8 +6,8 @@ RESTful API for storing and retrieving vantage weather data.
 
 There are _two main components_.
 
-1. **RESTful API** - process and provide weather data
-2. **recorder** - upload weather data
+1. **RESTful API** - process and provide weather data (this package)
+2. **recorder** - upload weather data ([here](https://github.com/harrydehix/vant-recorder))
 
 The **api** is an _expressjs_ api, which manages a database and provides [simple endpoints](https://harrydehix.github.io/vant-api/specification.html) to access your weather data.
 
@@ -19,20 +19,14 @@ Both of them together form a robust platform!
 
 Running the vantage api is super easy!
 ```ts
-import { api } from "vant-api/api";
+import api from "vant-api";
 
-async function main(){
-    api.configure({
+api.configure({
         units: {
             temperature: "°C",
         },
         port: 5231,
     });
-    
-    await api.start();
-}
-
-main();
 ```
 
 Running the recorder is also pretty easy.

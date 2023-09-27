@@ -3,7 +3,7 @@ import APIError from "../error-handling/APIError";
 import APIUser, { APIUserRole } from "../models/APIUser";
 import asyncHandler from "../error-handling/asyncHandler";
 import { header } from "express-validator";
-import log from "../logger/api-logger";
+import log from "../log";
 
 const protect = (minimumRole: APIUserRole) => {
     return [header("x-api-key").optional().escape(), asyncHandler(async(req: Request, res: Response, next: NextFunction) => {

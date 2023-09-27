@@ -19,12 +19,12 @@ However, if you have installed the Weather Link software, configured your weathe
 ## 2. Install MongoDB Community Edition
 Your api manages a MongoDB database. That's why MonoDB has to be installed. Follow the instructions [here](https://www.mongodb.com/try/download/community).
 
-## 3. Install the vant-api package
+## 3. Install the vant-api and the vant-recorder package
 
 Now that your weather station is serially connected and you have MongoDB installed, _vant-api_ can be easily installed via npm.
 
 ```shell
-npm install vant-api
+npm install vant-api vant-recorder
 ```
 
 ## 4. Run the api
@@ -32,15 +32,13 @@ npm install vant-api
 Running the api is pretty simple. Create a new file (e.g. `api.js` / `api.ts`), import the api object, configure it and start the http server!
 
 ```ts
-import { api } from "vant-api/api";
+import api from "vant-api/api";
 // or
-const { api } = require("vant-api/api");
+const api = require("vant-api/api").default;
 
 api.configure({
   ...       
 });
-
-api.start();
 ```
 
 By default the api runs on port `8000` and uses `us` units. You can change that by passing you desired configuration.
@@ -73,9 +71,9 @@ That's the recorder's job! It repeatedly sends data to your api.
 Create another file (e.g. `recorder.js`/`recorder.ts`), import the recorder and insert the following code.
 
 ```ts
-import { Recorder } from "vant-api/recorder";
+import Recorder from "vant-recorder";
 // or
-const { Recorder } = require("vant-api/recorder");
+const Recorder = require("vant-recorder").default;
 
 async function main(){    
     const recorder = await Recorder.create({

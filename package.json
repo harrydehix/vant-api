@@ -9,44 +9,23 @@
         "weather"
     ],
     "description": "RESTful API for storing and retrieving vantage weather data.",
-    "version": "0.5.1",
+    "version": "0.6.0",
     "private": false,
     "main": "dist/index.js",
     "author": "Henri Hollmann (harrydehix)",
     "scripts": {
+        "start": "node -r source-map-support/register ./dist/service.js",
         "build": "npx tsc",
-        "vant-api": "node -r source-map-support/register ./dist/services/api.js",
-        "vant-recorder": "node -r source-map-support/register ./dist/services/recorder.js",
-        "test": "node -r source-map-support/register",
         "docs": "npx typedoc && redocly build-docs api-specification/api.yml --output=docs/specification.html",
         "watch": "npx tsc --watch"
     },
     "exports": {
-        ".": "./dist/index.js",
-        "./api": "./dist/api/index.js",
-        "./recorder": "./dist/recorder/index.js"
+        ".": "./dist/index.js"
     },
     "typesVersions": {
-        "*": {
-            "api": [
-                "dist/api"
-            ],
-            "recorder": [
-                "dist/recorder"
-            ]
-        }
+        "*": {}
     },
     "types": "dist/index.d.ts",
-    "bin": "dist/tests/test.js",
-    "pkg": {
-        "scripts": "dist/**/*.js",
-        "targets": [
-            "node14-linux-x64",
-            "node14-macos-x64",
-            "node14-win-x64"
-        ],
-        "outputPath": "bin"
-    },
     "dependencies": {
         "@types/morgan": "^1.9.5",
         "cookie-parser": "~1.4.4",
@@ -64,7 +43,7 @@
         "string-hash": "^1.1.3",
         "superagent": "^8.1.2",
         "validator": "^13.11.0",
-        "vant-environment": "^1.0.6",
+        "vant-environment": "^2.0.1",
         "vantjs": "^1.0.9",
         "winston": "^3.10.0",
         "winston-daily-rotate-file": "^4.7.1"
