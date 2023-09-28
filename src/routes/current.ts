@@ -1,10 +1,10 @@
-import express, {Request, Response, NextFunction} from "express";
+import express, {Request, Response, NextFunction } from "express";
 import { body, query, validationResult, checkSchema, checkExact, ValidationError }  from "express-validator";
 import CurrentConditions from "../models/CurrentConditions";
 import APIError from "../error-handling/APIError";
 import asyncHandler from "../error-handling/asyncHandler";
 import currentConditionsSchema from "../validationSchemas/currentConditionsSchema";
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import log from "../log";
 import { PressureUnit, RainUnit, SolarRadiationUnit, TemperatureUnit, WindUnit } from "vant-environment/units";
 import protect from "../security/protect";
@@ -85,8 +85,9 @@ router.post('/',
             try {
                 log.debug("Deleting outdated current conditions...");
                 await CurrentConditions.deleteMany({
-                    id: { $neq: currentConditions.id }
+                    id: { $ne: new Types.ObjectId(currentConditions.id) }
                 });
+
             } catch (err) {
                 return next(new APIError("Failed to delete existing current conditions in the database!", 500, err));
             }
