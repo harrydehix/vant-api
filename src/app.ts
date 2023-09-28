@@ -40,6 +40,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use(function (err: any, req : Request, res : Response, next : NextFunction) {
     log.error(err);
     if (err instanceof APIError) {
+        log.error(err.details);
         res.status(err.status);
         res.json({
             success: false,
