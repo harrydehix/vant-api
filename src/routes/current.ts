@@ -26,11 +26,7 @@ router.get('/',
 
         if (result.isEmpty()) {
             try {
-                let currentConditions = null;
-                for(let i = 0; i < 10 && !currentConditions; ++i){
-                    currentConditions = await CurrentConditions.findOne();
-                    await new Promise(r => setTimeout(r, 200));
-                }
+                let currentConditions = await CurrentConditions.findOne();
                 if (!currentConditions) {
                     return next(new APIError("No current weather conditions available. This error usually happens if no weather data hasn't been uploaded!", 503))
                 }
@@ -78,26 +74,28 @@ router.post('/',
                     return next(new APIError("Unknown error while validation!", 500, err));
                 }
             }
+            
+            try {
+                log.debug("Saving new current conditions...");
+                await currentConditions.save({ validateBeforeSave: false });
+            } catch (err) {
+                return next(new APIError("Failed to save current conditions in the database!", 500, err));
+            }
 
             try {
                 log.debug("Deleting outdated current conditions...");
-                await CurrentConditions.deleteMany();
+                await CurrentConditions.deleteMany({
+                    id: { $neq: currentConditions.id }
+                });
             } catch (err) {
                 return next(new APIError("Failed to delete existing current conditions in the database!", 500, err));
             }
 
-            try {
-                log.debug("Saving new current conditions...");
-                await currentConditions.save({ validateBeforeSave: false });
-
-                res.status(201);
-                res.json({
-                    success: true,
-                    status: 201
-                });
-            } catch (err) {
-                return next(new APIError("Failed to save current conditions in the database!", 500, err));
-            }
+            res.status(201);
+            res.json({
+                success: true,
+                status: 201
+            });
         } else {
             return next(new APIError(result.array()[0].msg, 400, result))
         }
