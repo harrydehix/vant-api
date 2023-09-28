@@ -131,72 +131,85 @@ describe("GET /current [weather data available]", function() {
 });
 
 describe("POST /current", function() {
-    it('responds with 200 if valid current conditions and valid api key', function(done) {
-        const data = {
-            "altimeter": 30.112,
-            "chill": 68,
-            "consoleBatteryVoltage": 4.880859375,
-            "dewpoint": 60,
-            "etDay": 0,
-            "etMonth": 0,
-            "etYear": 0,
-            "forecast": "Partly Cloudy",
-            "forecastID": 6,
-            "forecastRule": 44,
-            "heat": 69,
-            "humExtra": [null, null, null, null, null, null, null],
-            "humIn": 54,
-            "humOut": 75,
-            "leafTemps": [null, null, null, null],
-            "leafWetnesses": [null, null, null, 0],
-            "press": 30.098,
-            "pressAbs": 29.349,
-            "pressCalibrationOffset": -0.017,
-            "pressRaw": 29.349,
-            "pressReductionMethod": "NOAA bar reduction",
-            "pressReductionMethodID": 2,
-            "pressTrend": "Steady",
-            "pressTrendID": 0,
-            "pressUserOffset": 0,
-            "rain15m": 0,
-            "rain1h": 0,
-            "rain24h": 0,
-            "rainDay": 0,
-            "rainMonth": 1.6929133858267718,
-            "rainRate": 0,
-            "rainYear": 22.488188976377952,
-            "soilMoistures": [null, null, null, null],
-            "soilTemps": [null, null, null, null],
-            "solarRadiation": null,
-            "stormRain": null,
-            "stormStartDate": null,
-            "sunrise": "07:25",
-            "sunset": "19:16",
-            "tempExtra": [null, null, null, null, null, null, null],
-            "tempIn": 67.8,
-            "tempOut": 68.1,
-            "thsw": null,
-            "time": "2023-09-28T09:24:46.139Z",
-            "transmitterBatteryStatus": 0,
-            "uv": null,
-            "wind": 0,
-            "windAvg10m": 1.1,
-            "windAvg2m": 1.4,
-            "windDir": "WSW",
-            "windDirDeg": 246,
-            "windGust": 5,
-            "windGustDir": "SSE",
-            "windGustDirDeg": 167
-        };
+    const data  = {
+        "altimeter": 30.112,
+        "chill": 68,
+        "consoleBatteryVoltage": 4.880859375,
+        "dewpoint": 60,
+        "etDay": 0,
+        "etMonth": 0,
+        "etYear": 0,
+        "forecast": "Partly Cloudy",
+        "forecastID": 6,
+        "forecastRule": 44,
+        "heat": 69,
+        "humExtra": [null, null, null, null, null, null, null],
+        "humIn": 54,
+        "humOut": 75,
+        "leafTemps": [null, null, null, null],
+        "leafWetnesses": [null, null, null, 0],
+        "press": 30.098,
+        "pressAbs": 29.349,
+        "pressCalibrationOffset": -0.017,
+        "pressRaw": 29.349,
+        "pressReductionMethod": "NOAA bar reduction",
+        "pressReductionMethodID": 2,
+        "pressTrend": "Steady",
+        "pressTrendID": 0,
+        "pressUserOffset": 0,
+        "rain15m": 0,
+        "rain1h": 0,
+        "rain24h": 0,
+        "rainDay": 0,
+        "rainMonth": 1.6929133858267718,
+        "rainRate": 0,
+        "rainYear": 22.488188976377952,
+        "soilMoistures": [null, null, null, null],
+        "soilTemps": [null, null, null, null],
+        "solarRadiation": null,
+        "stormRain": null,
+        "stormStartDate": null,
+        "sunrise": "07:25",
+        "sunset": "19:16",
+        "tempExtra": [null, null, null, null, null, null, null],
+        "tempIn": 67.8,
+        "tempOut": 68.1,
+        "thsw": null,
+        "time": "2023-09-28T09:24:46.139Z",
+        "transmitterBatteryStatus": 0,
+        "uv": null,
+        "wind": 0,
+        "windAvg10m": 1.1,
+        "windAvg2m": 1.4,
+        "windDir": "WSW",
+        "windDirDeg": 246,
+        "windGust": 5,
+        "windGustDir": "SSE",
+        "windGustDirDeg": 167
+    };
 
+    test('responds with 201 if valid current conditions and valid api key', (done) => {
         request(api.app)
             .post("/api/v1/current")
             .send(data)
             .set("x-api-key", api.keys.write!)
-            .expect(201, done);
+            .expect(201, done)
     });
 
-    afterAll(() => {
+    test('actually created new current conditions in database', (done) => {
+        request(api.app)
+            .post("/api/v1/current")
+            .send(data)
+            .set("x-api-key", api.keys.write!)
+            .expect(201)
+            .then(() => CurrentConditions.findOne({}))
+            .then((current) => {
+                expect(current).not.toBe(null);
+                done();
+            });
+    });
+
+    afterEach(() => {
         return CurrentConditions.deleteMany({});
     });
 });

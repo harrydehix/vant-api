@@ -85,7 +85,7 @@ router.post('/',
             try {
                 log.debug("Deleting outdated current conditions...");
                 await CurrentConditions.deleteMany({
-                    id: { $ne: new Types.ObjectId(currentConditions.id) }
+                    id: { $ne: currentConditions.id }
                 });
 
             } catch (err) {
