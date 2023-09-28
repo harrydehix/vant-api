@@ -2,6 +2,8 @@
 import express, { Errback, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import APIError from "./error-handling/APIError";
+import helmet from "helmet";
+import compression from "compression";
 
 // Routers
 import currentRouter from "./routes/current";
@@ -10,14 +12,15 @@ import configRouter from "./routes/config";
 const app = express();
 
 import log from "./log";
-import morgan from "morgan";
-import { inspect } from "util";
+
 
 // Middlewares
+app.use(helmet());
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({ origin: "*" }));
+app.use(compression());
 app.use((req: Request, res: Response, next: NextFunction) => {
     let logFunction = log.info;
     if(res.statusCode >= 400){
