@@ -196,17 +196,31 @@ describe("POST /current", function() {
             .expect(201, done)
     });
 
-    test('actually created new current conditions in database', (done) => {
-        request(api.app)
+    test('actually created new current conditions in database', async () => {
+        await request(api.app)
             .post("/api/v1/current")
             .send(data)
             .set("x-api-key", api.keys.write!)
-            .expect(201)
-            .then(() => CurrentConditions.findOne({}))
-            .then((current) => {
-                expect(current).not.toBe(null);
-                done();
-            });
+            .expect(201);
+        
+        const current = await CurrentConditions.findOne({});
+        expect(current).not.toBe(null);
+        expect(current!.rainYear).toBe(data.rainYear);
+    });
+
+    test('actually deleted old conditions in database', async () => {
+        await request(api.app)
+            .post("/api/v1/current")
+            .send(data)
+            .set("x-api-key", api.keys.write!)
+            .expect(201);
+        await request(api.app)
+            .post("/api/v1/current")
+            .send(data)
+            .set("x-api-key", api.keys.write!)
+            .expect(201);
+        const current = await CurrentConditions.find({});
+        expect(current.length).toBe(1);
     });
 
     afterEach(() => {

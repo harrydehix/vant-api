@@ -9,9 +9,6 @@ export interface ICurrentConditions extends Omit<RichRealtimeData, 'time'>{
      * The time the record was created
      */
     time: string,
-
-    /** The entry's id */
-    id: ObjectId,
 }
 
 interface ICurrentConditionsMethods {
@@ -22,9 +19,6 @@ interface ICurrentConditionsMethods {
 type CurrentConditionsModel = Model<ICurrentConditions, {}, ICurrentConditionsMethods>;
 
 const currentConditionsSchema = new mongoose.Schema<ICurrentConditions, CurrentConditionsModel, ICurrentConditionsMethods>({
-    id: {
-        type: Types.ObjectId,
-    },
     altimeter: {
         type: Number,
         default: null
