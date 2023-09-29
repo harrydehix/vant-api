@@ -8,7 +8,7 @@ paths:
   /current:
     get:
       summary: Access the currently measured weather data
-      description: Returns the currently measured weather data, which is automatically converted into the desired units. If no units are passed the configured will be used. Your api key needs read access.
+      description: Returns the currently measured weather data, which is automatically converted into the desired units. If no units are passed the configured will be used. Your api key needs read access. Also accessible via /current/live.
       parameters:
         - in: header
           name: x-api-key
@@ -109,6 +109,249 @@ paths:
             application/json:
               schema:
                 $ref: "./operation_response.yml#/AccessDenied"
+        "500":
+          description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/ServerError"
+  /current/:interval:
+    get:
+      summary: Get the latest measured weather data in the given interval
+      description: Returns the latest measured weather data in the given interval, which is automatically converted into the desired units. If no units are passed the configured will be used. Your api key needs read access.
+      parameters:
+        - in: path
+          name: interval
+          description: Your desired interval
+          required: true
+          schema:
+            $ref: "./interval.yml#/Interval"
+        - in: header
+          name: x-api-key
+          description: An api key with read access
+          schema:
+            type: string
+            format: uuid
+            example: f9484f84-18c2-4318-9ee1-6d1f8fc87dba
+        - in: query
+          name: rainUnit
+          schema:
+            $ref: "./units.yml#/RainUnit"
+        - in: query
+          name: windUnit
+          schema:
+            $ref: "./units.yml#/WindUnit"
+        - in: query
+          name: pressureUnit
+          schema:
+            $ref: "./units.yml#/PressureUnit"
+        - in: query
+          name: solarRadiationUnit
+          schema:
+            $ref: "./units.yml#/SolarRadiationUnit"
+        - in: query
+          name: temperatureUnit
+          schema:
+            $ref: "./units.yml#/TemperatureUnit"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: "./current_conditions.yml#/CurrentConditions"
+        "400":
+          description: Bad Request. Probably the query parameters (unit settings) are invalid.
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/ClientError"
+        "403":
+          description: Access denied. Your api key is missing, invalid or has no read access.
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/AccessDenied"
+        "503":
+          description: Service Unavailable. Happens if no weather data hasn't been uploaded.
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/NoWeatherDataAvailable"
+        "500":
+          description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/ServerError"
+  /current/element/{element}:
+    get:
+      summary: Access the currently measured value of a weather element
+      description: Returns the currently measured value of a weather element (and the time it has been measured). Your api key needs read access. Also accessible via /current/element/{element}/live.
+      parameters:
+        - in: path
+          name: element
+          description: Your desired weather element
+          required: true
+          schema:
+            $ref: "./elements.yml#/Element"
+        - in: header
+          name: x-api-key
+          description: An api key with read access
+          schema:
+            type: string
+            format: uuid
+            example: f9484f84-18c2-4318-9ee1-6d1f8fc87dba
+        - in: query
+          name: rainUnit
+          schema:
+            $ref: "./units.yml#/RainUnit"
+        - in: query
+          name: windUnit
+          schema:
+            $ref: "./units.yml#/WindUnit"
+        - in: query
+          name: pressureUnit
+          schema:
+            $ref: "./units.yml#/PressureUnit"
+        - in: query
+          name: solarRadiationUnit
+          schema:
+            $ref: "./units.yml#/SolarRadiationUnit"
+        - in: query
+          name: temperatureUnit
+          schema:
+            $ref: "./units.yml#/TemperatureUnit"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      value:
+                        example: 5.12
+                      time:
+                        type: string
+                        example: "2023-08-31T12:23:01Z"
+
+        "400":
+          description: Bad Request. Probably the query parameters (unit settings) are invalid.
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/ClientError"
+        "403":
+          description: Access denied. Your api key is missing, invalid or has no read access.
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/AccessDenied"
+        "503":
+          description: Service Unavailable. Happens if no weather data hasn't been uploaded.
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/NoWeatherDataAvailable"
+        "500":
+          description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/ServerError"
+  /current/element/{element}/:interval:
+    get:
+      summary: Access the latest measured values of a weather element in the given interval
+      description: Returns the latest measured values of a weather element in the given interval, which is automatically converted into the desired units. If no units are passed the configured will be used. Your api key needs read access.
+      parameters:
+        - in: path
+          name: interval
+          description: Your desired interval
+          required: true
+          schema:
+            $ref: "./interval.yml#/Interval"
+        - in: header
+          name: x-api-key
+          description: An api key with read access
+          schema:
+            type: string
+            format: uuid
+            example: f9484f84-18c2-4318-9ee1-6d1f8fc87dba
+        - in: query
+          name: rainUnit
+          schema:
+            $ref: "./units.yml#/RainUnit"
+        - in: query
+          name: windUnit
+          schema:
+            $ref: "./units.yml#/WindUnit"
+        - in: query
+          name: pressureUnit
+          schema:
+            $ref: "./units.yml#/PressureUnit"
+        - in: query
+          name: solarRadiationUnit
+          schema:
+            $ref: "./units.yml#/SolarRadiationUnit"
+        - in: query
+          name: temperatureUnit
+          schema:
+            $ref: "./units.yml#/TemperatureUnit"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        value:
+                          example: 12.89
+                        time:
+                          type: string
+                          example: "2023-08-31T12:23:01Z"
+
+        "400":
+          description: Bad Request. Probably the query parameters (unit settings) are invalid.
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/ClientError"
+        "403":
+          description: Access denied. Your api key is missing, invalid or has no read access.
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/AccessDenied"
+        "503":
+          description: Service Unavailable. Happens if no weather data hasn't been uploaded.
+          content:
+            application/json:
+              schema:
+                $ref: "./operation_response.yml#/NoWeatherDataAvailable"
         "500":
           description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
           content:

@@ -1,14 +1,46 @@
 
-import mongoose, { model, Model, ObjectId, Schema, Types } from "mongoose";
+import mongoose, { Model } from "mongoose";
 import units from "simple-units";
-import { WindUnit, RainUnit, TemperatureUnit, PressureUnit, SolarRadiationUnit, UnitSettings} from "vant-environment/units";
+import { UnitSettings} from "vant-environment/units";
 import { RichRealtimeData } from "vant-environment/structures";
+import api from "../api/api";
+
+export const Intervals = {
+    "live": 0 as 0,
+    "1h": 1 as 1,
+    "12h": 12 as 12,
+    "24h": 24 as 24
+};
+
+export type IntervalValue = (typeof Intervals)[keyof typeof Intervals];
+export type IntervalDescriptor = keyof typeof Intervals;
+export const IntervalDescriptors: IntervalDescriptor[] = Object.keys(Intervals) as IntervalDescriptor[];
+export const IntervalValues: IntervalValue[] = Object.values(Intervals) as IntervalValue[];
+
+
+
+export const intervalOf = (descr: IntervalDescriptor) => {
+    return Intervals[descr];
+}
 
 export interface ICurrentConditions extends Omit<RichRealtimeData, 'time'>{
     /**
      * The time the record was created
      */
-    time: string,
+    time: Date,
+
+    /** The interval the record is corresponding to.
+     * - `0`: Live entry (only 1 exists)
+     * - `1`: Entry of one hour interval
+     * - `12`: Entry of 12 hour interval
+     * - `24`: Entry of 24 hour interval
+     */
+    interval: IntervalValue,
+
+    /**
+     * The index of the record inside the interval.
+     */
+    index: number
 }
 
 interface ICurrentConditionsMethods {
@@ -19,6 +51,14 @@ interface ICurrentConditionsMethods {
 type CurrentConditionsModel = Model<ICurrentConditions, {}, ICurrentConditionsMethods>;
 
 const currentConditionsSchema = new mongoose.Schema<ICurrentConditions, CurrentConditionsModel, ICurrentConditionsMethods>({
+    interval: {
+        type: Number,
+        default: 0,
+    },
+    index: {
+        type: Number,
+        default: 0,
+    },
     altimeter: {
         type: Number,
         default: null
@@ -214,7 +254,7 @@ const currentConditionsSchema = new mongoose.Schema<ICurrentConditions, CurrentC
         default: null
     },
     time: {
-        type: String,
+        type: Date,
         default: null
     },
     transmitterBatteryStatus: {
@@ -270,56 +310,56 @@ const currentConditionsSchema = new mongoose.Schema<ICurrentConditions, CurrentC
  * @param unitSettings the desired unit settings
  */
 currentConditionsSchema.methods.changeUnits = function (unitSettings : Partial<UnitSettings>) {
-    const databaseRainUnit = process.env.RAIN_UNIT as RainUnit;
-    const databaseWindUnit = process.env.WIND_UNIT as WindUnit;
-    const databaseTemperatureUnit = process.env.TEMPERATURE_UNIT as TemperatureUnit;
-    const databaseSolarRadiationUnit = process.env.SOLAR_RADIATION_UNIT as SolarRadiationUnit;
-    const databasePressureUnit = process.env.PRESSURE_UNIT as PressureUnit;
+    const databaseRainUnit = api.settings.units.rain;
+    const databaseWindUnit = api.settings.units.wind;
+    const databaseTemperatureUnit = api.settings.units.temperature;
+    const databaseSolarRadiationUnit = api.settings.units.solarRadiation;
+    const databasePressureUnit = api.settings.units.pressure;
 
     if (unitSettings.rain) {
-        if (this.etDay !== null) this.etDay = units.from(this.etDay, databaseRainUnit).to(unitSettings.rain);
-        if (this.etMonth !== null) this.etMonth = units.from(this.etMonth, databaseRainUnit).to(unitSettings.rain);
-        if (this.etYear !== null) this.etYear = units.from(this.etYear, databaseRainUnit).to(unitSettings.rain);
-        if (this.rain15m !== null) this.rain15m = units.from(this.rain15m, databaseRainUnit).to(unitSettings.rain);
-        if (this.rain1h !== null) this.rain1h = units.from(this.rain1h, databaseRainUnit).to(unitSettings.rain);
-        if (this.rain24h !== null) this.rain24h = units.from(this.rain24h, databaseRainUnit).to(unitSettings.rain);
-        if (this.rainDay !== null) this.rainDay = units.from(this.rainDay, databaseRainUnit).to(unitSettings.rain);
-        if (this.rainMonth !== null) this.rainMonth = units.from(this.rainMonth, databaseRainUnit).to(unitSettings.rain);
-        if (this.rainRate !== null) this.rainRate = units.from(this.rainRate, databaseRainUnit).to(unitSettings.rain);
-        if (this.rainYear !== null) this.rainYear = units.from(this.rainYear, databaseRainUnit).to(unitSettings.rain);
-        if (this.stormRain !== null) this.stormRain = units.from(this.stormRain, databaseRainUnit).to(unitSettings.rain);
+        if(this.etDay !== null && this.etDay !== undefined) this.etDay = units.from(this.etDay, databaseRainUnit).to(unitSettings.rain);
+        if(this.etMonth !== null && this.etMonth !== undefined) this.etMonth = units.from(this.etMonth, databaseRainUnit).to(unitSettings.rain);
+        if(this.etYear !== null && this.etYear !== undefined) this.etYear = units.from(this.etYear, databaseRainUnit).to(unitSettings.rain);
+        if(this.rain15m !== null && this.rain15m !== undefined) this.rain15m = units.from(this.rain15m, databaseRainUnit).to(unitSettings.rain);
+        if(this.rain1h !== null && this.rain1h !== undefined) this.rain1h = units.from(this.rain1h, databaseRainUnit).to(unitSettings.rain);
+        if(this.rain24h !== null && this.rain24h !== undefined) this.rain24h = units.from(this.rain24h, databaseRainUnit).to(unitSettings.rain);
+        if(this.rainDay !== null && this.rainDay !== undefined) this.rainDay = units.from(this.rainDay, databaseRainUnit).to(unitSettings.rain);
+        if(this.rainMonth !== null && this.rainMonth !== undefined) this.rainMonth = units.from(this.rainMonth, databaseRainUnit).to(unitSettings.rain);
+        if(this.rainRate !== null && this.rainRate !== undefined) this.rainRate = units.from(this.rainRate, databaseRainUnit).to(unitSettings.rain);
+        if(this.rainYear !== null && this.rainYear !== undefined) this.rainYear = units.from(this.rainYear, databaseRainUnit).to(unitSettings.rain);
+        if(this.stormRain !== null && this.stormRain !== undefined) this.stormRain = units.from(this.stormRain, databaseRainUnit).to(unitSettings.rain);
     }
 
     if (unitSettings.temperature) {
-        this.tempExtra = this.tempExtra.map((extraTemp: number | null) => extraTemp === null ? null : units.from(extraTemp, databaseTemperatureUnit).to(unitSettings.temperature!));
-        if (this.tempIn !== null) this.tempIn = units.from(this.tempIn, databaseTemperatureUnit).to(unitSettings.temperature);
-        if (this.tempOut !== null) this.tempOut = units.from(this.tempOut, databaseTemperatureUnit).to(unitSettings.temperature);
-        this.leafTemps = this.leafTemps.map((leafTemp : number | null) => leafTemp === null ? null : units.from(leafTemp, databaseTemperatureUnit).to(unitSettings.temperature!));
-        this.soilTemps = this.soilTemps.map((soilTemp : number | null) => soilTemp === null ? null : units.from(soilTemp, databaseTemperatureUnit).to(unitSettings.temperature!));
-        if (this.chill !== null) this.chill = units.from(this.chill, databaseTemperatureUnit).to(unitSettings.temperature);
-        if (this.heat !== null) this.heat = units.from(this.heat, databaseTemperatureUnit).to(unitSettings.temperature);
-        if (this.dewpoint !== null) this.dewpoint = units.from(this.dewpoint, databaseTemperatureUnit).to(unitSettings.temperature);
-        if (this.thsw !== null) this.thsw = units.from(this.thsw, databaseTemperatureUnit).to(unitSettings.temperature);
+        if(this.tempExtra) this.tempExtra = this.tempExtra.map((extraTemp: number | null) => extraTemp === null ? null : units.from(extraTemp, databaseTemperatureUnit).to(unitSettings.temperature!));
+        if(this.tempIn !== null && this.tempIn !== undefined) this.tempIn = units.from(this.tempIn, databaseTemperatureUnit).to(unitSettings.temperature);
+        if(this.tempOut !== null && this.tempOut !== undefined) this.tempOut = units.from(this.tempOut, databaseTemperatureUnit).to(unitSettings.temperature);
+        if(this.leafTemps) this.leafTemps = this.leafTemps.map((leafTemp : number | null) => leafTemp === null ? null : units.from(leafTemp, databaseTemperatureUnit).to(unitSettings.temperature!));
+        if(this.soilTemps) this.soilTemps = this.soilTemps.map((soilTemp : number | null) => soilTemp === null ? null : units.from(soilTemp, databaseTemperatureUnit).to(unitSettings.temperature!));
+        if(this.chill !== null && this.chill !== undefined) this.chill = units.from(this.chill, databaseTemperatureUnit).to(unitSettings.temperature);
+        if(this.heat !== null && this.heat !== undefined) this.heat = units.from(this.heat, databaseTemperatureUnit).to(unitSettings.temperature);
+        if(this.dewpoint !== null && this.dewpoint !== undefined) this.dewpoint = units.from(this.dewpoint, databaseTemperatureUnit).to(unitSettings.temperature);
+        if(this.thsw !== null && this.thsw !== undefined) this.thsw = units.from(this.thsw, databaseTemperatureUnit).to(unitSettings.temperature);
     }
 
     if (unitSettings.pressure) {
-        if (this.altimeter !== null) this.altimeter = units.from(this.altimeter, databasePressureUnit).to(unitSettings.pressure);
-        if (this.press !== null) this.press = units.from(this.press, databasePressureUnit).to(unitSettings.pressure);
-        if (this.pressAbs !== null) this.pressAbs = units.from(this.pressAbs, databasePressureUnit).to(unitSettings.pressure);
-        if (this.pressCalibrationOffset !== null) this.pressCalibrationOffset = units.from(this.pressCalibrationOffset, databasePressureUnit).to(unitSettings.pressure);
-        if (this.pressRaw !== null) this.pressRaw = units.from(this.pressRaw, databasePressureUnit).to(unitSettings.pressure);
-        if (this.pressUserOffset !== null) this.pressUserOffset = units.from(this.pressUserOffset, databasePressureUnit).to(unitSettings.pressure);
+        if(this.altimeter !== null && this.altimeter !== undefined) this.altimeter = units.from(this.altimeter, databasePressureUnit).to(unitSettings.pressure);
+        if(this.press !== null && this.press !== undefined) this.press = units.from(this.press, databasePressureUnit).to(unitSettings.pressure);
+        if(this.pressAbs !== null && this.pressAbs !== undefined) this.pressAbs = units.from(this.pressAbs, databasePressureUnit).to(unitSettings.pressure);
+        if(this.pressCalibrationOffset !== null && this.pressCalibrationOffset !== undefined) this.pressCalibrationOffset = units.from(this.pressCalibrationOffset, databasePressureUnit).to(unitSettings.pressure);
+        if(this.pressRaw !== null && this.pressRaw !== undefined) this.pressRaw = units.from(this.pressRaw, databasePressureUnit).to(unitSettings.pressure);
+        if(this.pressUserOffset !== null && this.pressUserOffset !== undefined) this.pressUserOffset = units.from(this.pressUserOffset, databasePressureUnit).to(unitSettings.pressure);
     }
 
     if (unitSettings.solarRadiation) {
-        if (this.solarRadiation !== null) this.solarRadiation = units.from(this.solarRadiation, databaseSolarRadiationUnit).to(unitSettings.solarRadiation);
+        if(this.solarRadiation !== null && this.solarRadiation !== undefined) this.solarRadiation = units.from(this.solarRadiation, databaseSolarRadiationUnit).to(unitSettings.solarRadiation);
     }
 
     if (unitSettings.wind) {
-        if (this.wind !== null) this.wind = units.from(this.wind, databaseWindUnit).to(unitSettings.wind);
-        if (this.windAvg10m !== null) this.windAvg10m = units.from(this.windAvg10m, databaseWindUnit).to(unitSettings.wind);
-        if (this.windAvg2m !== null) this.windAvg2m = units.from(this.windAvg2m, databaseWindUnit).to(unitSettings.wind);
-        if (this.windGust !== null) this.windGust = units.from(this.windGust, databaseWindUnit).to(unitSettings.wind);
+        if(this.wind !== null && this.wind !== undefined) this.wind = units.from(this.wind, databaseWindUnit).to(unitSettings.wind);
+        if(this.windAvg10m !== null && this.windAvg10m !== undefined) this.windAvg10m = units.from(this.windAvg10m, databaseWindUnit).to(unitSettings.wind);
+        if(this.windAvg2m !== null && this.windAvg2m !== undefined) this.windAvg2m = units.from(this.windAvg2m, databaseWindUnit).to(unitSettings.wind);
+        if(this.windGust !== null && this.windGust !== undefined) this.windGust = units.from(this.windGust, databaseWindUnit).to(unitSettings.wind);
     }
 };
 
@@ -329,3 +369,5 @@ export default currentModel;
 const test = new currentModel();
 
 export type CurrentConditionsType = typeof test;
+export type CurrentConditionsElement = Exclude<keyof ICurrentConditions, "id" | "interval" | "time" | "index">;
+export const CurrentConditionsElements: CurrentConditionsElement[] = Object.keys(test.toJSON()).filter((val) => !["id", "interval", "time", "index", "__v", "_id"].includes(val)) as CurrentConditionsElement[];

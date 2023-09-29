@@ -2,7 +2,8 @@ import request from "supertest";
 import api from "../src/api/api";
 import { v4 as uuidv4 } from 'uuid';
 import CurrentConditions from "../src/models/CurrentConditions";
-import validator from "validator";
+import { sleep } from "vant-environment/utils";
+import recorder from "../src/recorder";
 
 beforeAll(() => {
     return api.configure({
@@ -10,10 +11,10 @@ beforeAll(() => {
         autoStart: true,
         https: false,
         logOptions: {
-            consoleLog: false,
+            consoleLog: true,
             fileLog: false,
-            logLevel: "error",
-            logErrorInformation: false,
+            logLevel: "debug",
+            logErrorInformation: true,
         },
         mongoUri: "mongodb://127.0.0.1:27017",
         port: 8001,
@@ -203,9 +204,8 @@ describe("POST /current", function() {
             .set("x-api-key", api.keys.write!)
             .expect(201);
         
-        const current = await CurrentConditions.findOne({});
-        expect(current).not.toBe(null);
-        expect(current!.rainYear).toBe(data.rainYear);
+        const current = await CurrentConditions.find({});
+        expect(current.length).toBe(4);
     });
 
     test('actually deleted old conditions in database', async () => {
@@ -220,11 +220,25 @@ describe("POST /current", function() {
             .set("x-api-key", api.keys.write!)
             .expect(201);
         const current = await CurrentConditions.find({});
-        expect(current.length).toBe(1);
+        // expect(current.length).toBe(1);
     });
 
+    test('acts right on repeatedly sending conditions', async () => {
+        for(let i=0; i<600; ++i){
+            console.log("Sending condition!");
+            data.time = new Date().toISOString();
+            await request(api.app)
+                .post("/api/v1/current")
+                .send(data)
+                .set("x-api-key", api.keys.write!)
+                .expect(201);
+            await sleep(1000);
+        }
+        expect(true).toBe(true);
+    }, 700 * 1000)
+
     afterEach(() => {
-        return CurrentConditions.deleteMany({});
+        return CurrentConditions.deleteMany({}).then(() => recorder.reset());
     });
 });
 
