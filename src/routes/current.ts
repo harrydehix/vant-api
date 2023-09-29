@@ -37,11 +37,11 @@ router.get(['/element/:element/:interval', '/element/:element'],
             const results = [];
             for(let i = 0; i < records.length; ++i){
                 records[i].changeUnits({
-                    rain: req.query.rain as RainUnit,
-                    wind: req.query.wind as WindUnit,
-                    temperature: req.query.temperature as TemperatureUnit,
-                    solarRadiation: req.query.solarRadiation as SolarRadiationUnit,
-                    pressure: req.query.pressure as PressureUnit
+                    rain: req.query.rainUnit as RainUnit,
+                    wind: req.query.windUnit as WindUnit,
+                    temperature: req.query.temperatureUnit as TemperatureUnit,
+                    solarRadiation: req.query.solarRadiationUnit as SolarRadiationUnit,
+                    pressure: req.query.pressureUnit as PressureUnit
                 });
 
                 const result = Object.assign(records[i].toJSON()) as any;
