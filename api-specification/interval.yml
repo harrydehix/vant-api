@@ -1,4 +1,0 @@
-Interval:
-  type: string
-  enum: [1h, 12h, 24h]
-  default: 1h

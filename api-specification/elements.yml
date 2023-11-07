@@ -5,7 +5,7 @@ Element:
       altimeter,
       chill,
       consoleBatteryVoltage,
-      dewpoint,
+      dew,
       etDay,
       etMonth,
       etYear,

@@ -1,0 +1,25 @@
+Error:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: false
+      enum: [false]
+    error:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            [
+              no_data,
+              outdated,
+              maintenance,
+              bad_query_params,
+              access_denied,
+              internal,
+            ]
+          example: error_type
+        message:
+          type: string
+          example: Some detailed error message!

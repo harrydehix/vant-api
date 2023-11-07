@@ -1,0 +1,23 @@
+Settings:
+  type: object
+  properties:
+    units:
+      $ref: "./units.yml#/UnitSettings"
+    rainCollectorSize:
+      type: string
+      enum: [0.01in, 0.2mm, 0.1mm]
+    serialPath:
+      type: string
+      description: The serial path the recorder uses to communicate with the weather station.
+      example: COM3
+    recordInterval:
+      type: string
+      description: Interval the recorder sends realtime weather data to the vant api.
+      example: 1s
+    resolutions:
+      type: object
+      properties:
+        "[0-9]+(y|m|w|d|h|min|s)":
+          $ref: "./resolution.yml#/ResolutionConfiguration"
+        "archive":
+          $ref: "./resolution.yml#/ResolutionConfiguration"

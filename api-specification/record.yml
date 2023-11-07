@@ -1,4 +1,4 @@
-CurrentConditions:
+Record:
   type: object
   properties:
     altimeter:
@@ -13,7 +13,7 @@ CurrentConditions:
       type: number
       nullable: true
       example: 3.5
-    dewpoint:
+    dew:
       type: number
       nullable: true
       example: 10.3

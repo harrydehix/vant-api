@@ -17,3 +17,35 @@ SolarRadiationUnit:
 TemperatureUnit:
   type: string
   enum: [°C, °F]
+
+HumidityUnit:
+  type: string
+  enum: ["%"]
+
+SoilMoistureUnit:
+  type: string
+  enum: [cb]
+
+UnitSettings:
+  type: object
+  properties:
+    pressure:
+      $ref: "./units.yml#/PressureUnit"
+    rain:
+      $ref: "./units.yml#/RainUnit"
+    solarRadiation:
+      $ref: "./units.yml#/SolarRadiationUnit"
+    temperature:
+      $ref: "./units.yml#/TemperatureUnit"
+    wind:
+      $ref: "./units.yml#/TemperatureUnit"
+    soilMoisture:
+      $ref: "./units.yml#/SoilMoistureUnit"
+    leafTemperature:
+      $ref: "./units.yml#/TemperatureUnit"
+    soilTemperature:
+      $ref: "./units.yml#/TemperatureUnit"
+    evoTranspiration:
+      $ref: "./units.yml#/RainUnit"
+    humidity:
+      $ref: "./units.yml#/HumidityUnit"
