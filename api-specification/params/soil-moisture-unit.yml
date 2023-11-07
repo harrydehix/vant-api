@@ -1,0 +1,5 @@
+in: query
+name: soilMoisture
+description: The desired soil moisture unit.
+schema:
+  $ref: "../comps/units.yml#/SoilMoistureUnit"

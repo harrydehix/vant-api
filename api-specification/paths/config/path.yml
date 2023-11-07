@@ -1,0 +1,38 @@
+# /config
+put:
+  tags: [config]
+  summary: Update the vant-environment configuration
+  description: Updates the vant-environment configuration. One needs an admin api key.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "../../comps/configuration.yml#/Configuration"
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                enum: [true]
+get:
+  tags: [config]
+  summary: Get the vant-environment configuration
+  description: Gets the current vant-environment configuration. Requires an admin or write api key.
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                enum: [true]
+              configuration:
+                $ref: "../../comps/configuration.yml#/Configuration"

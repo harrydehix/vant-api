@@ -1,0 +1,52 @@
+# /meteomatics/live
+get:
+  tags: [meteomatics]
+  summary: Get the live weather with a small forecast from the meteomatics api
+  description: Gets the live weather (temperature, conditions) and a 24h hourly forecast (temperature, conditions, rain) from the meteomatics api. The weather data gets automatically converted into the desired units. If no units are passed the configured default units will be used. Your api key needs read access.
+  parameters:
+    - $ref: "../../../params/rain-unit.yml"
+    - $ref: "../../../params/wind-unit.yml"
+    - $ref: "../../../params/pressure-unit.yml"
+    - $ref: "../../../params/solar-radiation-unit.yml"
+    - $ref: "../../../params/temperature-unit.yml"
+    - $ref: "../../../params/leaf-temperature-unit.yml"
+    - $ref: "../../../params/soil-temperature-unit.yml"
+    - $ref: "../../../params/soil-moisture-unit.yml"
+    - $ref: "../../../params/humidity-unit.yml"
+    - $ref: "../../../params/evo-transpiration-unit.yml"
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                enum: [true]
+              live:
+                type: object
+                properties:
+                  temp:
+                    type: number
+                    example: 23.1
+                  conditions:
+                    $ref: "../../../comps/meteomatics.yml#/Conditions"
+              forecast:
+                type: array
+                minItems: 24
+                maxItems: 24
+                items:
+                  type: object
+                  properties:
+                    time:
+                      $ref: "../../../comps/time.yml#/DateTime"
+                    temp:
+                      type: number
+                      example: 23.4
+                    rain:
+                      type: number
+                      example: 0.4
+                    conditions:
+                      $ref: "../../../comps/meteomatics.yml#/Conditions"

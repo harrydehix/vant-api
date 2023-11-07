@@ -1,0 +1,64 @@
+# /records/{element}
+get:
+  tags: [records]
+  summary: Get all records of a weather element (in the specified interval)
+  description: Returns all measured values of a weather element in the given interval, which is automatically converted into the desired units. If no units are passed the configured will be used. Your api key needs read access.
+  parameters:
+    - $ref: "../../../params/interval-from.yml"
+    - $ref: "../../../params/interval-to.yml"
+    - $ref: "../../../params/rain-unit.yml"
+    - $ref: "../../../params/wind-unit.yml"
+    - $ref: "../../../params/pressure-unit.yml"
+    - $ref: "../../../params/solar-radiation-unit.yml"
+    - $ref: "../../../params/temperature-unit.yml"
+    - $ref: "../../../params/leaf-temperature-unit.yml"
+    - $ref: "../../../params/soil-temperature-unit.yml"
+    - $ref: "../../../params/soil-moisture-unit.yml"
+    - $ref: "../../../params/humidity-unit.yml"
+    - $ref: "../../../params/evo-transpiration-unit.yml"
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              records:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    value:
+                      example: 12.89
+                    time:
+                      type: string
+                      example: "2023-08-31T12:23:01Z"
+
+    "400":
+      description: Bad Request. Probably the query parameters (unit settings) are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/Error"
+    "403":
+      description: Access denied. Your api key is missing, invalid or has no read access.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/Error"
+    "503":
+      description: Service Unavailable. Happens if no weather data hasn't been uploaded.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/Error"
+    "500":
+      description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/Error"

@@ -1,0 +1,5 @@
+in: query
+name: rain
+description: The desired rain unit.
+schema:
+  $ref: "../comps/units.yml#/RainUnit"

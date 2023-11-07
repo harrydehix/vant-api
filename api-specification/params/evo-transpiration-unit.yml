@@ -1,0 +1,5 @@
+in: query
+name: evoTranspiration
+description: The desired evo transpiration unit.
+schema:
+  $ref: "../comps/units.yml#/RainUnit"

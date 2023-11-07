@@ -1,0 +1,53 @@
+# /config/generate-api-key
+post:
+  tags: [config]
+  summary: Generate a new api key
+  description: Returns a new api key. You need an admin api key to create new api keys.
+  parameters:
+    - in: query
+      name: role
+      description: The role (access privileges) of the generated api key.
+      schema:
+        type: string
+        enum: [read, write, readwrite, admin]
+  responses:
+    "201":
+      description: The API key was generated successfully.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                enum: [true]
+                example: true
+              key:
+                type: string
+                format: uuid
+                example: f9484f84-18c2-4318-9ee1-6d1f8fc87dba
+              role:
+                type: string
+                enum: [read, write, readwrite, admin]
+                example: readwrite
+              generated:
+                type: string
+                example: 2023-08-31T12:23:01Z
+    "400":
+      description: Bad Request. Probably your role query parameter is missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/Error"
+    "403":
+      description: Access denied. Your api key is missing, invalid or has no admin access.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/Error"
+    "500":
+      description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/Error"

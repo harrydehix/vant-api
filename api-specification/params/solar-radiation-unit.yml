@@ -1,0 +1,5 @@
+in: query
+name: solarRadiation
+description: The desired solar radiation unit.
+schema:
+  $ref: "../comps/units.yml#/SolarRadiationUnit"

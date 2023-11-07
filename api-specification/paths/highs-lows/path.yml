@@ -1,0 +1,29 @@
+# /highs-lows/
+get:
+  tags: [highs-lows]
+  summary: Get alltime highs and lows
+  description: Gets the alltime highs and lows. They get automatically converted into the desired units. If no units are passed the configured default units will be used. Your api key needs read access.
+  parameters:
+    - $ref: "../../params/rain-unit.yml"
+    - $ref: "../../params/wind-unit.yml"
+    - $ref: "../../params/pressure-unit.yml"
+    - $ref: "../../params/solar-radiation-unit.yml"
+    - $ref: "../../params/temperature-unit.yml"
+    - $ref: "../../params/leaf-temperature-unit.yml"
+    - $ref: "../../params/soil-temperature-unit.yml"
+    - $ref: "../../params/soil-moisture-unit.yml"
+    - $ref: "../../params/humidity-unit.yml"
+    - $ref: "../../params/evo-transpiration-unit.yml"
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                enum: [true]
+              highsAndLows:
+                $ref: "../../comps/highs-and-lows.yml#/AlltimeHighsAndLows"

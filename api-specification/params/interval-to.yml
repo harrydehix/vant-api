@@ -1,0 +1,8 @@
+in: query
+name: to
+description: Inclusive end time of the interval
+required: false
+schema:
+  type: string
+  format: date-time
+  example: "2024-07-21T17:32:28Z"

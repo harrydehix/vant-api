@@ -1,0 +1,5 @@
+in: query
+name: humidity
+description: The desired humidity unit.
+schema:
+  $ref: "../comps/units.yml#/HumidityUnit"

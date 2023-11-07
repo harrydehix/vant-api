@@ -1,0 +1,66 @@
+# /records/{element}/latest
+get:
+  tags: [records]
+  summary: Get the most recent measured value of a weather element
+  description: Returns the most recent measured value of a weather element (and the time it has been measured). Your api key needs read access.
+  parameters:
+    - in: path
+      name: element
+      description: Your desired weather element
+      required: true
+      schema:
+        $ref: "../../../../comps/element.yml#/Element"
+    - $ref: "../../../../params/rain-unit.yml"
+    - $ref: "../../../../params/wind-unit.yml"
+    - $ref: "../../../../params/pressure-unit.yml"
+    - $ref: "../../../../params/solar-radiation-unit.yml"
+    - $ref: "../../../../params/temperature-unit.yml"
+    - $ref: "../../../../params/leaf-temperature-unit.yml"
+    - $ref: "../../../../params/soil-temperature-unit.yml"
+    - $ref: "../../../../params/soil-moisture-unit.yml"
+    - $ref: "../../../../params/humidity-unit.yml"
+    - $ref: "../../../../params/evo-transpiration-unit.yml"
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              latestRecord:
+                type: object
+                properties:
+                  value:
+                    example: 5.12
+                  time:
+                    type: string
+                    example: "2023-08-31T12:23:01Z"
+
+    "400":
+      description: Bad Request. Probably the query parameters (unit settings) are invalid.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../../comps/error.yml#/Error"
+    "403":
+      description: Access denied. Your api key is missing, invalid or has no read access.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../../comps/error.yml#/Error"
+    "503":
+      description: Service Unavailable. Happens if no weather data hasn't been uploaded.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../../comps/error.yml#/Error"
+    "500":
+      description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../../comps/error.yml#/Error"

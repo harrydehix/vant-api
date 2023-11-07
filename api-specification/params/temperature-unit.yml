@@ -1,0 +1,5 @@
+in: query
+name: temperature
+description: The desired temperature unit.
+schema:
+  $ref: "../comps/units.yml#/TemperatureUnit"

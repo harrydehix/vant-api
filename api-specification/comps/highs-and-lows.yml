@@ -1,0 +1,551 @@
+AlltimeHighsAndLows:
+  type: object
+  properties:
+    chill:
+      description: Minimum wind chill
+      type: object
+      properties:
+        minValue:
+          type: number
+          nullable: true
+          example: -12
+        minTime:
+          $ref: "./time.yml#/NullableDateTime"
+    dew:
+      type: object
+      description: Maximum / minimimum dewpoint
+      properties:
+        minValue:
+          type: number
+          nullable: true
+          example: -2
+        minTime:
+          $ref: "./time.yml#/NullableDateTime"
+        maxValue:
+          type: number
+          nullable: true
+          example: 12
+        maxTime:
+          $ref: "./time.yml#/NullableDateTime"
+    etDay:
+      type: object
+      description: Maximum evo transpiration in a day
+      properties:
+        maxValue:
+          type: number
+          nullable: true
+          example: 2.1
+        maxDate:
+          $ref: "./time.yml#/NullableDate"
+    etMonth:
+      type: object
+      description: Maximum evo transpiration in a month
+      properties:
+        maxValue:
+          type: number
+          nullable: true
+          example: 69.5
+        maxMonth:
+          $ref: "./time.yml#/NullableMonth"
+    etYear:
+      type: object
+      description: Maximum evo transpiration in a year
+      properties:
+        maxValue:
+          type: number
+          nullable: true
+          example: 603.1
+        maxYear:
+          $ref: "./time.yml#/NullableYear"
+    heat:
+      description: Maximum heat index
+      type: object
+      properties:
+        maxValue:
+          type: number
+          nullable: true
+          example: 43
+        maxTime:
+          $ref: "./time.yml#/NullableDateTime"
+    humExtra:
+      type: object
+      description: Maximum / minimimum extra humidities
+      properties:
+        minValues:
+          type: array
+          minItems: 7
+          maxItems: 7
+          example: [null, 23, 22, 21, 24, null, null]
+          items:
+            type: number
+            nullable: true
+        minTimes:
+          type: array
+          minItems: 7
+          maxItems: 7
+          example:
+            [
+              null,
+              2014-05-19T14:54:16Z,
+              2023-03-18T19:00:02Z,
+              2023-09-18T19:00:02Z,
+              2024-02-21T17:32:28Z,
+              null,
+              null,
+            ]
+          items:
+            $ref: "./time.yml#/NullableDateTime"
+        maxValues:
+          type: array
+          minItems: 7
+          maxItems: 7
+          example: [null, 99, 100, 99, 100, null, null]
+          items:
+            type: number
+            nullable: true
+        maxTimes:
+          type: array
+          minItems: 7
+          maxItems: 7
+          example:
+            [
+              null,
+              2014-05-19T14:54:16Z,
+              2022-05-08T15:05:02Z,
+              2022-11-08T18:02:02Z,
+              2021-05-11T17:32:28Z,
+              null,
+              null,
+            ]
+          items:
+            $ref: "./time.yml#/NullableDateTime"
+    humIn:
+      type: object
+      description: Maximum / minimimum inside humidity
+      properties:
+        minValue:
+          type: number
+          nullable: true
+          example: 12
+        minTime:
+          $ref: "./time.yml#/NullableDateTime"
+        maxValue:
+          type: number
+          nullable: true
+          example: 75
+        maxTime:
+          $ref: "./time.yml#/NullableDateTime"
+    humOut:
+      type: object
+      description: Maximum / minimimum outside humidity
+      properties:
+        minValue:
+          type: number
+          nullable: true
+          example: 23
+        minTime:
+          $ref: "./time.yml#/NullableDateTime"
+        maxValue:
+          type: number
+          nullable: true
+          example: 100
+        maxTime:
+          $ref: "./time.yml#/NullableDateTime"
+    leafTemps:
+      type: object
+      description: Maximum / minimimum leaf temperatures
+      properties:
+        minValues:
+          type: array
+          minItems: 4
+          maxItems: 4
+          example: [null, null, -3.1, -4.2]
+          items:
+            type: number
+            nullable: true
+        minTimes:
+          type: array
+          minItems: 4
+          maxItems: 4
+          example: [null, null, 2014-05-19T14:54:16Z, 2024-02-19T19:52:01Z]
+          items:
+            $ref: "./time.yml#/NullableDateTime"
+        maxValues:
+          type: array
+          minItems: 4
+          maxItems: 4
+          example: [null, null, 38.2, 39.4]
+          items:
+            type: number
+            nullable: true
+        maxTimes:
+          type: array
+          minItems: 4
+          maxItems: 4
+          example: [null, null, 2023-03-18T19:00:02Z, 2024-02-19T19:52:01Z]
+          items:
+            $ref: "./time.yml#/NullableDateTime"
+    leafWetnesses:
+      type: object
+      description: Maximum / minimimum leaf wetnesses
+      properties:
+        minValues:
+          type: array
+          minItems: 4
+          maxItems: 4
+          example: [1, null, 1, 1]
+          items:
+            type: number
+            nullable: true
+        minTimes:
+          type: array
+          minItems: 4
+          maxItems: 4
+          example:
+            [
+              2024-07-19T19:52:01Z,
+              null,
+              2014-05-19T14:54:16Z,
+              2024-02-19T19:52:01Z,
+            ]
+          items:
+            $ref: "./time.yml#/NullableDateTime"
+        maxValues:
+          type: array
+          minItems: 4
+          maxItems: 4
+          example: [15, null, 15, 14]
+          items:
+            type: number
+            nullable: true
+        maxTimes:
+          type: array
+          minItems: 4
+          maxItems: 4
+          example:
+            [
+              22023-03-18T19:00:02Z,
+              null,
+              2024-08-21T17:32:28Z,
+              2024-02-21T17:32:28Z,
+            ]
+          items:
+            $ref: "./time.yml#/NullableDateTime"
+    press:
+      type: object
+      description: Maximum / minimimum pressure
+      properties:
+        minValue:
+          type: number
+          nullable: true
+          example: 975.1
+        minTime:
+          $ref: "./time.yml#/NullableDateTime"
+        maxValue:
+          type: number
+          nullable: true
+          example: 1040.4
+        maxTime:
+          $ref: "./time.yml#/NullableDateTime"
+    rain15min:
+      type: object
+      description: Maximum rain amount in 15min
+      properties:
+        maxValue:
+          type: number
+          nullable: true
+          example: 23.9
+        maxTime:
+          $ref: "./time.yml#/NullableDateTime"
+    rain1h:
+      type: object
+      description: Maximum rain amount in 1h
+      properties:
+        maxValue:
+          type: number
+          nullable: true
+          example: 38.1
+        maxTime:
+          $ref: "./time.yml#/NullableDateTime"
+    rain24h:
+      type: object
+      description: Maximum rain amount in 24h
+      properties:
+        maxValue:
+          type: number
+          nullable: true
+          example: 68.6
+        maxTime:
+          $ref: "./time.yml#/NullableDateTime"
+    rainDay:
+      type: object
+      description: Maximum rain amount in a day
+      properties:
+        maxValue:
+          type: number
+          nullable: true
+          example: 58.9
+        maxDate:
+          $ref: "./time.yml#/NullableDate"
+    rainMonth:
+      type: object
+      description: Maximum rain amount in a month
+      properties:
+        minValue:
+          type: number
+          nullable: true
+          example: 1.2
+        minMonth:
+          $ref: "./time.yml#/NullableMonth"
+        maxValue:
+          type: number
+          nullable: true
+          example: 103.2
+        maxMonth:
+          $ref: "./time.yml#/NullableMonth"
+    rainRate:
+      type: object
+      description: Maximum rain rate
+      properties:
+        maxValue:
+          type: number
+          nullable: true
+          example: 25.4
+        maxTime:
+          $ref: "./time.yml#/NullableDateTime"
+    rainYear:
+      type: object
+      description: Maximum / minimimum amount of rain in a year
+      properties:
+        minValue:
+          type: number
+          nullable: true
+          example: 431.9
+        minYear:
+          $ref: "./time.yml#/NullableYear"
+        maxValue:
+          type: number
+          nullable: true
+          example: 821.8
+        maxYear:
+          $ref: "./time.yml#/NullableYear"
+    soilMoistures:
+      type: object
+      description: Maximum / minimimum soil moistures
+      properties:
+        minValues:
+          type: array
+          minItems: 4
+          maxItems: 4
+          example: [null, null, 0.0, null]
+          items:
+            type: number
+            nullable: true
+        minTimes:
+          type: array
+          minItems: 4
+          maxItems: 4
+          example: [null, null, 2024-02-21T17:32:28Z, null]
+          items:
+            $ref: "./time.yml#/NullableDateTime"
+        maxValues:
+          type: array
+          minItems: 4
+          maxItems: 4
+          example: [null, null, 199.3, null]
+          items:
+            type: number
+            nullable: true
+        maxTimes:
+          type: array
+          minItems: 4
+          maxItems: 4
+          example: [null, null, 2014-05-19T14:54:16Z, null]
+          items:
+            $ref: "./time.yml#/NullableDateTime"
+    soilTemps:
+      description: Maximum / minimimum soil temperatures
+      type: object
+      properties:
+        minValues:
+          type: array
+          minItems: 4
+          maxItems: 4
+          example: [-12.3, null, null, null]
+          items:
+            type: number
+            nullable: true
+        minTimes:
+          type: array
+          minItems: 4
+          maxItems: 4
+          example: [2024-02-21T17:32:28Z, null, null, null]
+          items:
+            $ref: "./time.yml#/NullableDateTime"
+        maxValues:
+          type: array
+          minItems: 4
+          maxItems: 4
+          example: [42.3, null, null, null]
+          items:
+            type: number
+            nullable: true
+        maxTimes:
+          type: array
+          minItems: 4
+          maxItems: 4
+          example: [2024-08-21T17:32:28Z, null, null, null]
+          items:
+            $ref: "./time.yml#/NullableDateTime"
+    solarRadiation:
+      description: Maximum solar radiation
+      type: object
+      properties:
+        maxValue:
+          type: number
+          nullable: true
+          example: 1201.3
+        maxTime:
+          $ref: "./time.yml#/NullableDateTime"
+    stormRain:
+      type: object
+      description: Maximum rain in a shower
+      properties:
+        maxValue:
+          type: number
+          nullable: true
+          example: 63.1
+        maxTime:
+          $ref: "./time.yml#/NullableDateTime"
+    tempExtra:
+      description: Maximum / minimimum extra temperatures
+      type: object
+      properties:
+        minValues:
+          type: array
+          minItems: 7
+          maxItems: 7
+          example: [-12.3, -11.5, -10.4, null, null, null, null]
+          items:
+            type: number
+            nullable: true
+        minTimes:
+          type: array
+          minItems: 7
+          maxItems: 7
+          example:
+            [
+              2024-02-21T17:32:28Z,
+              2024-02-19T19:52:01Z,
+              2023-03-18T19:00:02Z,
+              null,
+              null,
+              null,
+              null,
+            ]
+          items:
+            $ref: "./time.yml#/NullableDateTime"
+        maxValues:
+          type: array
+          minItems: 7
+          maxItems: 7
+          example: [32.3, 31.9, 39.9, null, null, null, null]
+          items:
+            type: number
+            nullable: true
+        maxTimes:
+          type: array
+          minItems: 7
+          maxItems: 7
+          example:
+            [
+              2024-08-21T17:32:28Z,
+              2024-07-19T19:52:01Z,
+              2023-09-18T19:00:02Z,
+              null,
+              null,
+              null,
+              null,
+            ]
+          items:
+            $ref: "./time.yml#/NullableDateTime"
+    tempIn:
+      type: object
+      description: Maximum / minimimum inside temperature
+      properties:
+        minValue:
+          type: number
+          nullable: true
+          example: 15.3
+        minTime:
+          $ref: "./time.yml#/NullableDateTime"
+        maxValue:
+          type: number
+          nullable: true
+          example: 27.7
+        maxTime:
+          $ref: "./time.yml#/NullableDateTime"
+    tempOut:
+      type: object
+      description: Maximum / minimimum inside temperature
+      properties:
+        minValue:
+          type: number
+          nullable: true
+          example: -11.9
+        minTime:
+          $ref: "./time.yml#/NullableDateTime"
+        maxValue:
+          type: number
+          nullable: true
+          example: 39.8
+        maxTime:
+          $ref: "./time.yml#/NullableDateTime"
+    thsw:
+      type: object
+      description: Maximum / minimimum thsw index
+      properties:
+        minValue:
+          type: number
+          nullable: true
+          example: -12
+        minTime:
+          $ref: "./time.yml#/NullableDateTime"
+        maxValue:
+          type: number
+          nullable: true
+          example: 42
+        maxTime:
+          $ref: "./time.yml#/NullableDateTime"
+    uv:
+      description: Maximum UV index
+      type: object
+      properties:
+        maxValue:
+          type: number
+          nullable: true
+          example: 8
+        maxTime:
+          $ref: "./time.yml#/NullableDateTime"
+    wind:
+      type: object
+      description: Maximum wind speed (and its direction)
+      properties:
+        dirDeg:
+          type: number
+          nullable: true
+          example: 92
+          minimum: 1
+          maximum: 360
+        dir:
+          type: string
+          enum:
+            [NNE, NE, ENE, E, ESE, SE, SSE, S, SSW, SW, WSW, W, WNW, NW, NNW, N]
+          nullable: true
+          example: E
+        maxValue:
+          type: number
+          nullable: true
+          example: 102.9
+        maxTime:
+          $ref: "./time.yml#/NullableDateTime"

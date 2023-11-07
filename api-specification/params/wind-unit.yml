@@ -1,0 +1,5 @@
+in: query
+name: wind
+description: The desired wind unit.
+schema:
+  $ref: "../comps/units.yml#/WindUnit"

@@ -1,0 +1,5 @@
+in: query
+name: leafTemperature
+description: The desired leaf temperature unit.
+schema:
+  $ref: "../comps/units.yml#/TemperatureUnit"

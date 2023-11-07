@@ -1,0 +1,5 @@
+in: query
+name: soilTemperature
+description: The desired soil temperature unit.
+schema:
+  $ref: "../comps/units.yml#/TemperatureUnit"

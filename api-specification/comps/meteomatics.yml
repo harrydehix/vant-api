@@ -1,0 +1,22 @@
+Conditions:
+  type: string
+  enum:
+    [
+      unknown,
+      clear-sky,
+      light-clouds,
+      partly-cloudy,
+      cloudy,
+      rain,
+      sleet,
+      snow,
+      snow-shower,
+      sleet-shower,
+      light-fog,
+      dense-fog,
+      freezing-rain,
+      thunderstorms,
+      drizzle,
+      sandstorm,
+    ]
+  example: snow-shower
