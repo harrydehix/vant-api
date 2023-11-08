@@ -1,6 +1,7 @@
 # /climate
 
 get:
+  tags: [climate]
   summary: Get the measured long time average.
   description: Gets the measured (not the configured) long time average. The data gets automatically converted into the desired units. If no units are passed the configured default units will be used. Your api key needs read access.
   responses:
