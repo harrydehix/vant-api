@@ -34,20 +34,20 @@ post:
                 type: string
                 example: 2023-08-31T12:23:01Z
     "400":
-      description: Bad Request. Probably your role query parameter is missing or invalid.
+      description: Bad request. You passed invalid query parameters.
       content:
         application/json:
           schema:
-            $ref: "../../../comps/error.yml#/Error"
+            $ref: "../../../comps/error.yml#/BadQueryParamsError"
     "403":
       description: Access denied. Your api key is missing, invalid or has no admin access.
       content:
         application/json:
           schema:
-            $ref: "../../../comps/error.yml#/Error"
+            $ref: "../../../comps/error.yml#/AuthentificationError"
     "500":
       description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
       content:
         application/json:
           schema:
-            $ref: "../../../comps/error.yml#/Error"
+            $ref: "../../../comps/error.yml#/InternalError"

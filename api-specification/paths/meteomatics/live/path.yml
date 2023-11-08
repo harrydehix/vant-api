@@ -50,3 +50,29 @@ get:
                       example: 0.4
                     conditions:
                       $ref: "../../../comps/meteomatics.yml#/Conditions"
+    "400":
+      description: Bad request. You passed invalid query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/BadQueryParamsError"
+    "403":
+      description: Access denied. Your api key is missing, invalid or has no read access.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/AuthentificationError"
+    "503":
+      description: Service unavailable. Either no data or only outdated data available.
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: "../../../comps/error.yml#/OutdatedDataError"
+              - $ref: "../../../comps/error.yml#/NoDataError"
+    "500":
+      description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/InternalError"

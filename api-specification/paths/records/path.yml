@@ -30,26 +30,28 @@ get:
               records:
                 $ref: "../../comps/records.yml#/Records"
     "400":
-      description: Bad Request. Probably the query parameters (unit settings) are invalid.
+      description: Bad request. You passed invalid query parameters.
       content:
         application/json:
           schema:
-            $ref: "../../comps/error.yml#/Error"
+            $ref: "../../comps/error.yml#/BadQueryParamsError"
     "403":
       description: Access denied. Your api key is missing, invalid or has no read access.
       content:
         application/json:
           schema:
-            $ref: "../../comps/error.yml#/Error"
+            $ref: "../../comps/error.yml#/AuthentificationError"
     "503":
-      description: Service Unavailable. Happens if no weather data hasn't been uploaded.
+      description: Service unavailable. Either no data or only outdated data available.
       content:
         application/json:
           schema:
-            $ref: "../../comps/error.yml#/Error"
+            oneOf:
+              - $ref: "../../comps/error.yml#/OutdatedDataError"
+              - $ref: "../../comps/error.yml#/NoDataError"
     "500":
       description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
       content:
         application/json:
           schema:
-            $ref: "../../comps/error.yml#/Error"
+            $ref: "../../comps/error.yml#/InternalError"

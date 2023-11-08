@@ -1,4 +1,50 @@
 # /records/latest
+post:
+  tags: [records]
+  summary: Add a new weather record
+  description: Adds a new weather record. The api processes the record in multiple ways (e.g. to update the highs and lows). One have to use the configured units. The used api key needs write access.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "../../../comps/record.yml#/Record"
+  responses:
+    "201":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                enum: [true]
+    "400":
+      description: Bad request. You passed invalid query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/BadQueryParamsError"
+    "403":
+      description: Access denied. Your api key is missing, invalid or has no write access.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/AuthentificationError"
+    "503":
+      description: Service unavailable. Either no data or only outdated data is available.
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: "../../../comps/error.yml#/OutdatedDataError"
+              - $ref: "../../../comps/error.yml#/NoDataError"
+    "500":
+      description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/InternalError"
 get:
   tags: [records]
   summary: Get the most recently measured weather data
@@ -28,64 +74,28 @@ get:
               latestRecord:
                 $ref: "../../../comps/record.yml#/Record"
     "400":
-      description: Bad Request. Probably the query parameters (unit settings) are invalid.
+      description: Bad request. You passed invalid query parameters.
       content:
         application/json:
           schema:
-            $ref: "../../../comps/error.yml#/Error"
+            $ref: "../../../comps/error.yml#/BadQueryParamsError"
     "403":
       description: Access denied. Your api key is missing, invalid or has no read access.
       content:
         application/json:
           schema:
-            $ref: "../../../comps/error.yml#/Error"
+            $ref: "../../../comps/error.yml#/AuthentificationError"
     "503":
-      description: Service Unavailable. Happens if no weather data hasn't been uploaded.
+      description: Service unavailable. Either no data or only outdated data is available.
       content:
         application/json:
           schema:
-            $ref: "../../../comps/error.yml#/Error"
+            oneOf:
+              - $ref: "../../../comps/error.yml#/OutdatedDataError"
+              - $ref: "../../../comps/error.yml#/NoDataError"
     "500":
       description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
       content:
         application/json:
           schema:
-            $ref: "../../../comps/error.yml#/Error"
-post:
-  tags: [records]
-  summary: Add a new weather record
-  description: Adds a new weather record. The api processes the record in multiple ways (e.g. to update the highs and lows). One have to use the configured units. The used api key needs write access.
-  requestBody:
-    content:
-      application/json:
-        schema:
-          $ref: "../../../comps/record.yml#/Record"
-  responses:
-    "201":
-      description: OK
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-                enum: [true]
-    "400":
-      description: Bad Request. Probably the sent weather data is invalid.
-      content:
-        application/json:
-          schema:
-            $ref: "../../../comps/error.yml#/Error"
-    "403":
-      description: Access denied. Your api key is missing, invalid or has no write access.
-      content:
-        application/json:
-          schema:
-            $ref: "../../../comps/error.yml#/Error"
-    "500":
-      description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
-      content:
-        application/json:
-          schema:
-            $ref: "../../../comps/error.yml#/Error"
+            $ref: "../../../comps/error.yml#/InternalError"

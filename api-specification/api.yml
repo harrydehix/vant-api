@@ -34,5 +34,7 @@ paths:
     $ref: "./paths/config/path.yml"
   /config/generate-api-key:
     $ref: "./paths/config/generate-api-key/path.yml"
-  /highs-lows/:
+  /highs-lows:
     $ref: "./paths/highs-lows/path.yml"
+  /climate:
+    $ref: "./paths/climate/path.yml"

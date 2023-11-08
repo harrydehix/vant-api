@@ -19,10 +19,37 @@ put:
               success:
                 type: boolean
                 enum: [true]
+    "400":
+      description: Bad request. You passed invalid query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: "../../comps/error.yml#/BadQueryParamsError"
+    "403":
+      description: Access denied. Your api key is missing, invalid or has no admin access.
+      content:
+        application/json:
+          schema:
+            $ref: "../../comps/error.yml#/AuthentificationError"
+    "503":
+      description: Service unavailable. Either no data or only outdated data is available.
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: "../../comps/error.yml#/OutdatedDataError"
+              - $ref: "../../comps/error.yml#/NoDataError"
+    "500":
+      description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
+      content:
+        application/json:
+          schema:
+            $ref: "../../comps/error.yml#/InternalError"
+
 get:
   tags: [config]
   summary: Get the vant-environment configuration
-  description: Gets the current vant-environment configuration. Requires an admin or write api key.
+  description: Gets the current vant-environment configuration. Requires a read api key.
   responses:
     "200":
       description: OK
@@ -36,3 +63,29 @@ get:
                 enum: [true]
               configuration:
                 $ref: "../../comps/configuration.yml#/Configuration"
+    "400":
+      description: Bad request. You passed invalid query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: "../../comps/error.yml#/BadQueryParamsError"
+    "403":
+      description: Access denied. Your api key is missing, invalid or has no read access.
+      content:
+        application/json:
+          schema:
+            $ref: "../../comps/error.yml#/AuthentificationError"
+    "503":
+      description: Service unavailable. Either no data or only outdated data is available.
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: "../../comps/error.yml#/OutdatedDataError"
+              - $ref: "../../comps/error.yml#/NoDataError"
+    "500":
+      description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
+      content:
+        application/json:
+          schema:
+            $ref: "../../comps/error.yml#/InternalError"

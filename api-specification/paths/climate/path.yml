@@ -1,0 +1,341 @@
+# /climate
+
+get:
+  summary: Get the measured long time average.
+  description: Gets the measured (not the configured) long time average. The data gets automatically converted into the desired units. If no units are passed the configured default units will be used. Your api key needs read access.
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                enum: [true]
+              tempAvg:
+                description: The average temperature since records began.
+                type: number
+                nullable: true
+                example: 16.4
+              tempMaxAvg:
+                description: The average daily maximum temperature since records began.
+                type: number
+                nullable: true
+                example: 24.1
+              tempMinAvg:
+                description: The average daily minimum temperature since records began.
+                type: number
+                nullable: true
+                example: 5.9
+              rainYearAvg:
+                description: The average yearly rain amount since records began.
+                type: number
+                nullable: true
+                example: 635.3
+              monthly:
+                type: object
+                properties:
+                  jan:
+                    type: object
+                    properties:
+                      tempAvg:
+                        description: The average temperature in January since records began.
+                        type: number
+                        nullable: true
+                        example: 1.5
+                      tempMaxAvg:
+                        description: The average daily maximum temperature in January since records began.
+                        type: number
+                        nullable: true
+                        example: 4
+                      tempMinAvg:
+                        description: The average daily minimum temperature in January since records began.
+                        type: number
+                        nullable: true
+                        example: -1
+                      rainAvg:
+                        description: The average rain in January since records began.
+                        type: number
+                        nullable: true
+                        example: 37.1
+                  feb:
+                    type: object
+                    properties:
+                      tempAvg:
+                        description: The average temperature in February since records began.
+                        type: number
+                        nullable: true
+                        example: 3.5
+                      tempMaxAvg:
+                        description: The average daily maximum temperature in February since records began.
+                        type: number
+                        nullable: true
+                        example: 6
+                      tempMinAvg:
+                        description: The average daily minimum temperature in February since records began.
+                        type: number
+                        nullable: true
+                        example: 1
+                      rainAvg:
+                        description: The average rain in February since records began.
+                        type: number
+                        nullable: true
+                        example: 35.7
+                  mar:
+                    type: object
+                    properties:
+                      tempAvg:
+                        description: The average temperature in March since records began.
+                        type: number
+                        nullable: true
+                        example: 6.5
+                      tempMaxAvg:
+                        description: The average daily maximum temperature in March since records began.
+                        type: number
+                        nullable: true
+                        example: 11
+                      tempMinAvg:
+                        description: The average daily minimum temperature in March since records began.
+                        type: number
+                        nullable: true
+                        example: 2
+                      rainAvg:
+                        description: The average rain in March since records began.
+                        type: number
+                        nullable: true
+                        example: 34.2
+                  apr:
+                    type: object
+                    properties:
+                      tempAvg:
+                        description: The average temperature in April since records began.
+                        type: number
+                        nullable: true
+                        example: 9.5
+                      tempMaxAvg:
+                        description: The average daily maximum temperature in April since records began.
+                        type: number
+                        nullable: true
+                        example: 15
+                      tempMinAvg:
+                        description: The average daily minimum temperature in April since records began.
+                        type: number
+                        nullable: true
+                        example: 4
+                      rainAvg:
+                        description: The average rain in April since records began.
+                        type: number
+                        nullable: true
+                        example: 34
+                  may:
+                    type: object
+                    properties:
+                      tempAvg:
+                        description: The average temperature in May since records began.
+                        type: number
+                        nullable: true
+                        example: 14.5
+                      tempMaxAvg:
+                        description: The average daily maximum temperature in May since records began.
+                        type: number
+                        nullable: true
+                        example: 20
+                      tempMinAvg:
+                        description: The average daily minimum temperature in May since records began.
+                        type: number
+                        nullable: true
+                        example: 9
+                      rainAvg:
+                        description: The average rain in May since records began.
+                        type: number
+                        nullable: true
+                        example: 51.4
+                  jun:
+                    type: object
+                    properties:
+                      tempAvg:
+                        description: The average temperature in June since records began.
+                        type: number
+                        nullable: true
+                        example: 17.5
+                      tempMaxAvg:
+                        description: The average daily maximum temperature in June since records began.
+                        type: number
+                        nullable: true
+                        example: 23
+                      tempMinAvg:
+                        description: The average daily minimum temperature in June since records began.
+                        type: number
+                        nullable: true
+                        example: 12
+                      rainAvg:
+                        description: The average rain in June since records began.
+                        type: number
+                        nullable: true
+                        example: 53.3
+                  jul:
+                    type: object
+                    properties:
+                      tempAvg:
+                        description: The average temperature in July since records began.
+                        type: number
+                        nullable: true
+                        example: 19.5
+                      tempMaxAvg:
+                        description: The average daily maximum temperature in July since records began.
+                        type: number
+                        nullable: true
+                        example: 25
+                      tempMinAvg:
+                        description: The average daily minimum temperature in July since records began.
+                        type: number
+                        nullable: true
+                        example: 14
+                      rainAvg:
+                        description: The average rain in July since records began.
+                        type: number
+                        nullable: true
+                        example: 55
+                  aug:
+                    type: object
+                    properties:
+                      tempAvg:
+                        description: The average temperature in August since records began.
+                        type: number
+                        nullable: true
+                        example: 19
+                      tempMaxAvg:
+                        description: The average daily maximum temperature in August since records began.
+                        type: number
+                        nullable: true
+                        example: 25
+                      tempMinAvg:
+                        description: The average daily minimum temperature in August since records began.
+                        type: number
+                        nullable: true
+                        example: 13
+                      rainAvg:
+                        description: The average rain in August since records began.
+                        type: number
+                        nullable: true
+                        example: 50.3
+                  sep:
+                    type: object
+                    properties:
+                      tempAvg:
+                        description: The average temperature in September since records began.
+                        type: number
+                        nullable: true
+                        example: 15.5
+                      tempMaxAvg:
+                        description: The average daily maximum temperature in September since records began.
+                        type: number
+                        nullable: true
+                        example: 21
+                      tempMinAvg:
+                        description: The average daily minimum temperature in September since records began.
+                        type: number
+                        nullable: true
+                        example: 10
+                      rainAvg:
+                        description: The average rain in September since records began.
+                        type: number
+                        nullable: true
+                        example: 41.5
+                  oct:
+                    type: object
+                    properties:
+                      tempAvg:
+                        description: The average temperature in October since records began.
+                        type: number
+                        nullable: true
+                        example: 10
+                      tempMaxAvg:
+                        description: The average daily maximum temperature in October since records began.
+                        type: number
+                        nullable: true
+                        example: 14
+                      tempMinAvg:
+                        description: The average daily minimum temperature in October since records began.
+                        type: number
+                        nullable: true
+                        example: 6
+                      rainAvg:
+                        description: The average rain in October since records began.
+                        type: number
+                        nullable: true
+                        example: 44.2
+                  nov:
+                    type: object
+                    properties:
+                      tempAvg:
+                        description: The average temperature in November since records began.
+                        type: number
+                        nullable: true
+                        example: 5.5
+                      tempMaxAvg:
+                        description: The average daily maximum temperature in November since records began.
+                        type: number
+                        nullable: true
+                        example: 8
+                      tempMinAvg:
+                        description: The average daily minimum temperature in November since records began.
+                        type: number
+                        nullable: true
+                        example: 3
+                      rainAvg:
+                        description: The average rain in November since records began.
+                        type: number
+                        nullable: true
+                        example: 42.5
+                  dec:
+                    type: object
+                    properties:
+                      tempAvg:
+                        description: The average temperature in December since records began.
+                        type: number
+                        nullable: true
+                        example: 2.5
+                      tempMaxAvg:
+                        description: The average daily maximum temperature in December since records began.
+                        type: number
+                        nullable: true
+                        example: 5
+                      tempMinAvg:
+                        description: The average daily minimum temperature in December since records began.
+                        type: number
+                        nullable: true
+                        example: 0
+                      rainAvg:
+                        description: The average rain in December since records began.
+                        type: number
+                        nullable: true
+                        example: 46
+    "400":
+      description: Bad request. You passed invalid query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: "../../comps/error.yml#/BadQueryParamsError"
+    "403":
+      description: Access denied. Your api key is missing, invalid or has no read access.
+      content:
+        application/json:
+          schema:
+            $ref: "../../comps/error.yml#/AuthentificationError"
+    "503":
+      description: Service unavailable. Either no data or only outdated data available.
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: "../../comps/error.yml#/OutdatedDataError"
+              - $ref: "../../comps/error.yml#/NoDataError"
+    "500":
+      description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
+      content:
+        application/json:
+          schema:
+            $ref: "../../comps/error.yml#/InternalError"

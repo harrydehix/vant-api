@@ -1,4 +1,4 @@
-Error:
+NoDataError:
   type: object
   properties:
     success:
@@ -10,16 +10,87 @@ Error:
       properties:
         type:
           type: string
-          enum:
-            [
-              no_data,
-              outdated,
-              maintenance,
-              bad_query_params,
-              access_denied,
-              internal,
-            ]
-          example: error_type
+          enum: [no_data]
         message:
           type: string
-          example: Some detailed error message!
+          example: No data available!
+OutdatedDataError:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: false
+      enum: [false]
+    error:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [outdated_data]
+        message:
+          type: string
+          example: Only outdated data available!
+MaintenanceError:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: false
+      enum: [false]
+    error:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [maintenance]
+        message:
+          type: string
+          example: Product currently in maintenance. Try again later!
+BadQueryParamsError:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: false
+      enum: [false]
+    error:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [bad_query_params]
+        message:
+          type: string
+          example: You passed bad query parameters.
+AuthentificationError:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: false
+      enum: [false]
+    error:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [access_denied]
+        message:
+          type: string
+          example: No valid api key with enough privileges passed!
+InternalError:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: false
+      enum: [false]
+    error:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [internal_error]
+        message:
+          type: string
+          example: Internal error!
