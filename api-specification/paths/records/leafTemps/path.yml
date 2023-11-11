@@ -1,0 +1,66 @@
+get:
+  tags: [records]
+  summary: Get all records of the leaf temperatures (in the specified interval)
+  description: Gets all records of the leaf temperatures (in the specified interval). They get automatically converted into the desired units. If no units are passed the configured default units will be used. Your api key needs read access. The first value is the temperature of the first leaf, the second value is the temperature of the second leaf and so on. If you have less than four leafs, the remaining values are null.
+  parameters:
+    - $ref: "../../../params/interval-from.yml"
+    - $ref: "../../../params/interval-to.yml"
+    - $ref: "../../../params/temperature-unit.yml"
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              leafTemps:
+                type: array
+                items:
+                  $ref: "../../../comps/record.yml#/ElementRecordArray4"
+                  example:
+                    time: "2020-01-01T00:00:00Z"
+                    interval: "10min"
+                    intervalSeconds: 600
+                    values:
+                      - min: 1.2
+                        minTime: "2020-01-01T03:00:00Z"
+                        max: 2.3
+                        maxTime: "2020-01-01T12:00:00Z"
+                        avg: 1.8
+                      - min: 2.2
+                        minTime: "2020-01-01T05:00:00Z"
+                        max: 4.3
+                        maxTime: "2020-01-01T14:50:00Z"
+                        avg: 3.1
+                      - min: 3.2
+                        minTime: "2020-01-01T07:00:00Z"
+                        max: 5.3
+                        maxTime: "2020-01-01T16:00:00Z"
+                        avg: 4.2
+                      - min: 4.2
+                        minTime: "2020-01-01T09:00:00Z"
+                        max: 6.3
+                        maxTime: "2020-01-01T18:00:00Z"
+                        avg: 5.3
+    "400":
+      description: Bad request. You passed invalid query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/BadQueryParamsError"
+    "403":
+      description: Access denied. Your api key is missing, invalid or has no read access.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/AuthentificationError"
+    "500":
+      description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/InternalError"

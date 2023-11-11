@@ -1,0 +1,86 @@
+get:
+  tags: [live]
+  summary: Get the realtime pressure data
+  description: Gets the realtime pressure data (raw sensor reading, calculated pressure, pressure trend, ...), which automatically is converted to your passed unit. If no unit is passed the configured default unit will be used. Your api key needs read access.
+  parameters:
+    - $ref: "../../../params/pressure-unit.yml"
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                enum: [true]
+              altimeter:
+                type: number
+                nullable: true
+                example: 1012.6
+              press:
+                type: number
+                nullable: true
+                example: 1023.1
+              pressAbs:
+                type: number
+                nullable: true
+                example: 1012.8
+              pressCalibrationOffset:
+                type: number
+                nullable: true
+                example: 0.2
+              pressRaw:
+                type: number
+                nullable: true
+                example: 1012.6
+              pressReductionMethod:
+                type: string
+                nullable: true
+                enum: [user offset, altimeter setting, NOAA bar reduction]
+                example: altimeter setting
+              pressReductionMethodID:
+                type: number
+                nullable: true
+                enum: [0, 1, 2]
+                example: 1
+              pressTrend:
+                type: string
+                enum:
+                  [
+                    Falling Rapidly,
+                    Falling Slowly,
+                    Steady,
+                    Rising Slowly,
+                    Rising Rapidly,
+                  ]
+                nullable: true
+                example: Steady
+              pressTrendID:
+                type: number
+                enum: [-60, -20, 0, 20, 60]
+                example: 0
+                nullable: true
+              pressUserOffset:
+                type: number
+                nullable: true
+                example: 0.1
+    "400":
+      description: Bad request. You passed invalid query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/BadQueryParamsError"
+    "403":
+      description: Access denied. Your api key is missing, invalid or has no read access.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/AuthentificationError"
+    "500":
+      description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/InternalError"

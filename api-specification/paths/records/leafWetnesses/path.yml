@@ -1,0 +1,65 @@
+get:
+  tags: [records]
+  summary: Get all records of the leaf wetnesses (in the specified interval)
+  description: Gets all records of the leaf wetnesses (in the specified interval). They get automatically converted into the desired units. If no units are passed the configured default units will be used. Your api key needs read access. The first value is the wetness of the first leaf, the second value is the wetness of the second leaf and so on. If you have less than four leafs, the remaining values are null.
+  parameters:
+    - $ref: "../../../params/interval-from.yml"
+    - $ref: "../../../params/interval-to.yml"
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              leafWetnesses:
+                type: array
+                items:
+                  $ref: "../../../comps/record.yml#/ElementRecordArray4"
+                  example:
+                    time: "2020-01-01T00:00:00Z"
+                    interval: "10min"
+                    intervalSeconds: 600
+                    values:
+                      - min: 1
+                        minTime: "2020-01-01T03:00:00Z"
+                        max: 14
+                        maxTime: "2020-01-01T12:00:00Z"
+                        avg: 4.7
+                      - min: 2
+                        minTime: "2020-01-01T05:00:00Z"
+                        max: 9
+                        maxTime: "2020-01-01T14:50:00Z"
+                        avg: 5.3
+                      - min: 4
+                        minTime: "2020-01-01T07:00:00Z"
+                        max: 12
+                        maxTime: "2020-01-01T16:00:00Z"
+                        avg: 7.2
+                      - min: 1
+                        minTime: "2020-01-01T09:00:00Z"
+                        max: 15
+                        maxTime: "2020-01-01T18:00:00Z"
+                        avg: 3.3
+    "400":
+      description: Bad request. You passed invalid query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/BadQueryParamsError"
+    "403":
+      description: Access denied. Your api key is missing, invalid or has no read access.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/AuthentificationError"
+    "500":
+      description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/InternalError"

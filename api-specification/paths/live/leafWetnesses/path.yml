@@ -1,0 +1,41 @@
+get:
+  tags: [live]
+  summary: Get the realtime leaf wetnesses
+  description: Gets the realtime leaf wetnesses (up to 4 sensors). Your api key needs read access.
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                enum: [true]
+              leafWetnesses:
+                type: array
+                minItems: 4
+                maxItems: 4
+                items:
+                  type: number
+                  nullable: true
+                example: [2, 15, 9, 15]
+    "400":
+      description: Bad request. You passed invalid query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/BadQueryParamsError"
+    "403":
+      description: Access denied. Your api key is missing, invalid or has no read access.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/AuthentificationError"
+    "500":
+      description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/InternalError"

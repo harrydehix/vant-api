@@ -15,9 +15,12 @@ Configuration:
       description: Interval the recorder sends realtime weather data to the vant api.
       example: 1s
     resolutions:
+      description: Configures in which interval records of a particular type of weather element are stored. You can specify multiple resolutions.
       type: object
       properties:
         "[0-9]+(y|m|w|d|h|min|s)":
           $ref: "./resolution.yml#/ResolutionConfiguration"
         "archive":
           $ref: "./resolution.yml#/ResolutionConfiguration"
+      example:
+        $ref: "./configuration-example.json"

@@ -1,0 +1,84 @@
+post:
+  tags: [live]
+  summary: Process realtime conditions
+  description: Processes realtime conditions from the weather station. The api processes the data in multiple ways (e.g. to update the highs and lows or to create a new record). One have to use the configured units. The used api key needs write access.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "../../comps/live.yml#/RichRealtimeData"
+  responses:
+    "201":
+      description: CREATED
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                enum: [true]
+    "400":
+      description: Bad request. You passed invalid query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: "../../comps/error.yml#/BadQueryParamsError"
+    "403":
+      description: Access denied. Your api key is missing, invalid or has no write access.
+      content:
+        application/json:
+          schema:
+            $ref: "../../comps/error.yml#/AuthentificationError"
+    "500":
+      description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
+      content:
+        application/json:
+          schema:
+            $ref: "../../comps/error.yml#/InternalError"
+get:
+  tags: [live]
+  summary: Get all realtime conditions
+  description: Gets the latest processed realtime conditions (and the some extra realtime information fetched from the meteomatics api). They are automatically converted into the desired units. If no units are passed the configured default units will be used. Your api key needs read access.
+  parameters:
+    - $ref: "../../params/rain-unit.yml"
+    - $ref: "../../params/wind-unit.yml"
+    - $ref: "../../params/pressure-unit.yml"
+    - $ref: "../../params/solar-radiation-unit.yml"
+    - $ref: "../../params/temperature-unit.yml"
+    - $ref: "../../params/leaf-temperature-unit.yml"
+    - $ref: "../../params/soil-temperature-unit.yml"
+    - $ref: "../../params/soil-moisture-unit.yml"
+    - $ref: "../../params/humidity-unit.yml"
+    - $ref: "../../params/evo-transpiration-unit.yml"
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                enum: [true]
+              data:
+                $ref: "../../comps/live.yml#/LiveConditions"
+    "400":
+      description: Bad request. You passed invalid query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: "../../comps/error.yml#/BadQueryParamsError"
+    "403":
+      description: Access denied. Your api key is missing, invalid or has no read access.
+      content:
+        application/json:
+          schema:
+            $ref: "../../comps/error.yml#/AuthentificationError"
+    "500":
+      description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
+      content:
+        application/json:
+          schema:
+            $ref: "../../comps/error.yml#/InternalError"

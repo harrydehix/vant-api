@@ -31,21 +31,12 @@ put:
         application/json:
           schema:
             $ref: "../../comps/error.yml#/AuthentificationError"
-    "503":
-      description: Service unavailable. Either no data or only outdated data is available.
-      content:
-        application/json:
-          schema:
-            oneOf:
-              - $ref: "../../comps/error.yml#/OutdatedDataError"
-              - $ref: "../../comps/error.yml#/NoDataError"
     "500":
       description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
       content:
         application/json:
           schema:
             $ref: "../../comps/error.yml#/InternalError"
-
 get:
   tags: [config]
   summary: Get the vant-environment configuration
@@ -75,14 +66,6 @@ get:
         application/json:
           schema:
             $ref: "../../comps/error.yml#/AuthentificationError"
-    "503":
-      description: Service unavailable. Either no data or only outdated data is available.
-      content:
-        application/json:
-          schema:
-            oneOf:
-              - $ref: "../../comps/error.yml#/OutdatedDataError"
-              - $ref: "../../comps/error.yml#/NoDataError"
     "500":
       description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
       content:

@@ -16,20 +16,112 @@ components:
 security:
   - api_key: []
 paths:
+  /live:
+    $ref: "./paths/live/path.yml"
+  /live/chill:
+    $ref: "./paths/live/chill/path.yml"
+  /live/consoleBatteryVoltage:
+    $ref: "./paths/live/consoleBatteryVoltage/path.yml"
+  /live/dew:
+    $ref: "./paths/live/dew/path.yml"
+  /live/et:
+    $ref: "./paths/live/et/path.yml"
+  /live/forecast:
+    $ref: "./paths/live/forecast/path.yml"
+  /live/heat:
+    $ref: "./paths/live/heat/path.yml"
+  /live/humExtra:
+    $ref: "./paths/live/humExtra/path.yml"
+  /live/humIn:
+    $ref: "./paths/live/humIn/path.yml"
+  /live/humOut:
+    $ref: "./paths/live/humOut/path.yml"
+  /live/leafTemps:
+    $ref: "./paths/live/leafTemps/path.yml"
+  /live/leafWetnesses:
+    $ref: "./paths/live/leafWetnesses/path.yml"
+  /live/press:
+    $ref: "./paths/live/press/path.yml"
+  /live/rain:
+    $ref: "./paths/live/rain/path.yml"
+  /live/soilMoistures:
+    $ref: "./paths/live/soilMoistures/path.yml"
+  /live/soilTemps:
+    $ref: "./paths/live/soilTemps/path.yml"
+  /live/solarRadiation:
+    $ref: "./paths/live/solarRadiation/path.yml"
+  /live/sunrise-sunset:
+    $ref: "./paths/live/sunrise-sunset/path.yml"
+  /live/symbol:
+    $ref: "./paths/live/symbol/path.yml"
+  /live/tempExtra:
+    $ref: "./paths/live/tempExtra/path.yml"
+  /live/tempIn:
+    $ref: "./paths/live/tempIn/path.yml"
+  /live/tempOut:
+    $ref: "./paths/live/tempOut/path.yml"
+  /live/thsw:
+    $ref: "./paths/live/thsw/path.yml"
+  /live/transmitterBatteryStatus:
+    $ref: "./paths/live/transmitterBatteryStatus/path.yml"
+  /live/uv:
+    $ref: "./paths/live/uv/path.yml"
+  /live/wind:
+    $ref: "./paths/live/wind/path.yml"
   /records/latest:
     $ref: "./paths/records/latest/path.yml"
   /records:
     $ref: "./paths/records/path.yml"
-  /records/{element}/latest:
-    $ref: "./paths/records/{element}/latest/path.yml"
-  /records/{element}:
-    $ref: "./paths/records/{element}/path.yml"
+  /records/chill:
+    $ref: "./paths/records/chill/path.yml"
+  /records/dew:
+    $ref: "./paths/records/dew/path.yml"
+  /records/et:
+    $ref: "./paths/records/et/path.yml"
+  /records/heat:
+    $ref: "./paths/records/heat/path.yml"
+  /records/humExtra:
+    $ref: "./paths/records/humExtra/path.yml"
+  /records/humIn:
+    $ref: "./paths/records/humIn/path.yml"
+  /records/humOut:
+    $ref: "./paths/records/humOut/path.yml"
+  /records/leafTemps:
+    $ref: "./paths/records/leafTemps/path.yml"
+  /records/leafWetnesses:
+    $ref: "./paths/records/leafWetnesses/path.yml"
+  /records/press:
+    $ref: "./paths/records/press/path.yml"
+  /records/rain:
+    $ref: "./paths/records/rain/path.yml"
+  /records/rainRate:
+    $ref: "./paths/records/rainRate/path.yml"
+  /records/soilMoistures:
+    $ref: "./paths/records/soilMoistures/path.yml"
+  /records/soilTemps:
+    $ref: "./paths/records/soilTemps/path.yml"
+  /records/solarRadiation:
+    $ref: "./paths/records/solarRadiation/path.yml"
+  /records/tempExtra:
+    $ref: "./paths/records/tempExtra/path.yml"
+  /records/tempIn:
+    $ref: "./paths/records/tempIn/path.yml"
+  /records/tempOut:
+    $ref: "./paths/records/tempOut/path.yml"
+  /records/thsw:
+    $ref: "./paths/records/thsw/path.yml"
+  /records/uv:
+    $ref: "./paths/records/uv/path.yml"
+  /records/wind:
+    $ref: "./paths/records/wind/path.yml"
+  /records/windGust:
+    $ref: "./paths/records/windGust/path.yml"
+  /records/symbol:
+    $ref: "./paths/records/symbol/path.yml"
   /dwd-warnings:
     $ref: "./paths/dwd-warnings/path.yml"
-  /meteomatics/forecast:
-    $ref: "./paths/meteomatics/forecast/path.yml"
-  /meteomatics/live:
-    $ref: "./paths/meteomatics/live/path.yml"
+  /forecast:
+    $ref: "./paths/forecast/path.yml"
   /config:
     $ref: "./paths/config/path.yml"
   /config/generate-api-key:

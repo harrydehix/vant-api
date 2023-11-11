@@ -1,8 +1,8 @@
 # /records
 get:
   tags: [records]
-  summary: Get all records (in the specified interval)
-  description: Get all records (in the specified interval). They get automatically converted into the desired units. If no units are passed the configured default units will be used. Your api key needs read access.
+  summary: Get all records of all weather elements (in the specified interval)
+  description: Gets all records of all weather elements (in the specified interval). They get automatically converted into the desired units. If no units are passed the configured default units will be used. Your api key needs read access.
   parameters:
     - $ref: "../../params/interval-from.yml"
     - $ref: "../../params/interval-to.yml"
@@ -41,14 +41,6 @@ get:
         application/json:
           schema:
             $ref: "../../comps/error.yml#/AuthentificationError"
-    "503":
-      description: Service unavailable. Either no data or only outdated data available.
-      content:
-        application/json:
-          schema:
-            oneOf:
-              - $ref: "../../comps/error.yml#/OutdatedDataError"
-              - $ref: "../../comps/error.yml#/NoDataError"
     "500":
       description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
       content:

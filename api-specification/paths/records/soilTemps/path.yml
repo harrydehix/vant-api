@@ -1,0 +1,41 @@
+get:
+  tags: [records]
+  summary: Get all records of the soil temperatures (in the specified interval)
+  description: Gets all records of the soil temperatures (in the specified interval). They get automatically converted into the desired units. If no units are passed the configured default units will be used. Your api key needs read access.
+  parameters:
+    - $ref: "../../../params/interval-from.yml"
+    - $ref: "../../../params/interval-to.yml"
+    - $ref: "../../../params/temperature-unit.yml"
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              records:
+                type: array
+                items:
+                  $ref: "../../../comps/record.yml#/ElementRecordArray4"
+    "400":
+      description: Bad request. You passed invalid query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/BadQueryParamsError"
+    "403":
+      description: Access denied. Your api key is missing, invalid or has no read access.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/AuthentificationError"
+    "500":
+      description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/InternalError"

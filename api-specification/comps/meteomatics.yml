@@ -1,8 +1,7 @@
-Conditions:
+Symbol:
   type: string
   enum:
     [
-      unknown,
       clear-sky,
       light-clouds,
       partly-cloudy,
@@ -19,4 +18,5 @@ Conditions:
       drizzle,
       sandstorm,
     ]
+  nullable: true
   example: snow-shower

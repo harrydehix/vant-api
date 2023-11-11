@@ -1,0 +1,69 @@
+get:
+  tags: [live]
+  summary: Get the realtime rain data
+  description: Gets the realtime rain data (rain rate, rain in latest 15 minutes, ...), which automatically is converted to your passed unit. If no unit is passed the configured default unit will be used. Your api key needs read access.
+  parameters:
+    - $ref: "../../../params/rain-unit.yml"
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                enum: [true]
+              rain15min:
+                type: number
+                nullable: true
+                example: 0.3
+              rain1h:
+                type: number
+                nullable: true
+                example: 0.9
+              rain24h:
+                type: number
+                nullable: true
+                example: 12.1
+              rainDay:
+                type: number
+                nullable: true
+                example: 8.4
+              rainMonth:
+                type: number
+                nullable: true
+                example: 244.1
+              rainRate:
+                type: number
+                nullable: true
+                example: 1.2
+              rainYear:
+                type: number
+                nullable: true
+                example: 823.12
+              stormRain:
+                type: number
+                nullable: true
+                example: 5.6
+              stormStartDate:
+                $ref: "../../../comps/time.yml#/NullableDate"
+    "400":
+      description: Bad request. You passed invalid query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/BadQueryParamsError"
+    "403":
+      description: Access denied. Your api key is missing, invalid or has no read access.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/AuthentificationError"
+    "500":
+      description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/InternalError"

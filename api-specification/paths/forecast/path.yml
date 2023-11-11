@@ -1,19 +1,19 @@
-# /meteomatics/forecast
+# /forecast
 get:
-  tags: [meteomatics]
+  tags: [forecast]
   summary: Get the 10 day forecast from the meteomatics api
   description: Gets the forecast from the meteomatics api. The weather data gets automatically converted into the desired units. If no units are passed the configured default units will be used. Your api key needs read access.
   parameters:
-    - $ref: "../../../params/rain-unit.yml"
-    - $ref: "../../../params/wind-unit.yml"
-    - $ref: "../../../params/pressure-unit.yml"
-    - $ref: "../../../params/solar-radiation-unit.yml"
-    - $ref: "../../../params/temperature-unit.yml"
-    - $ref: "../../../params/leaf-temperature-unit.yml"
-    - $ref: "../../../params/soil-temperature-unit.yml"
-    - $ref: "../../../params/soil-moisture-unit.yml"
-    - $ref: "../../../params/humidity-unit.yml"
-    - $ref: "../../../params/evo-transpiration-unit.yml"
+    - $ref: "../../params/rain-unit.yml"
+    - $ref: "../../params/wind-unit.yml"
+    - $ref: "../../params/pressure-unit.yml"
+    - $ref: "../../params/solar-radiation-unit.yml"
+    - $ref: "../../params/temperature-unit.yml"
+    - $ref: "../../params/leaf-temperature-unit.yml"
+    - $ref: "../../params/soil-temperature-unit.yml"
+    - $ref: "../../params/soil-moisture-unit.yml"
+    - $ref: "../../params/humidity-unit.yml"
+    - $ref: "../../params/evo-transpiration-unit.yml"
   responses:
     "200":
       description: OK
@@ -33,9 +33,9 @@ get:
                   type: object
                   properties:
                     date:
-                      $ref: "../../../comps/time.yml#/Date"
-                    conditions:
-                      $ref: "../../../comps/meteomatics.yml#/Conditions"
+                      $ref: "../../comps/time.yml#/Date"
+                    symbol:
+                      $ref: "../../comps/meteomatics.yml#/Symbol"
                     tempMin:
                       type: number
                     tempMax:
@@ -56,8 +56,8 @@ get:
                         morning:
                           type: object
                           properties:
-                            conditions:
-                              $ref: "../../../comps/meteomatics.yml#/Conditions"
+                            symbol:
+                              $ref: "../../comps/meteomatics.yml#/Symbol"
                             tempMin:
                               type: number
                             tempMax:
@@ -75,8 +75,8 @@ get:
                         midday:
                           type: object
                           properties:
-                            conditions:
-                              $ref: "../../../comps/meteomatics.yml#/Conditions"
+                            symbol:
+                              $ref: "../../comps/meteomatics.yml#/Symbol"
                             tempMin:
                               type: number
                             tempMax:
@@ -94,8 +94,8 @@ get:
                         evening:
                           type: object
                           properties:
-                            conditions:
-                              $ref: "../../../comps/meteomatics.yml#/Conditions"
+                            symbol:
+                              $ref: "../../comps/meteomatics.yml#/Symbol"
                             tempMin:
                               type: number
                             tempMax:
@@ -113,8 +113,8 @@ get:
                         night:
                           type: object
                           properties:
-                            conditions:
-                              $ref: "../../../comps/meteomatics.yml#/Conditions"
+                            symbol:
+                              $ref: "../../comps/meteomatics.yml#/Symbol"
                             tempMin:
                               type: number
                             tempMax:
@@ -131,7 +131,7 @@ get:
                               type: number
                   example:
                     date: 2023-11-06
-                    conditions: snow-shower
+                    symbol: snow-shower
                     tempMin: -5
                     tempMax: 1
                     rain: 3
@@ -139,7 +139,7 @@ get:
                     windDir: 5
                     windGust: 12.4
                     morning:
-                      - conditions: snow-shower
+                      - symbol: snow-shower
                         tempMin: -3
                         tempMax: -2
                         rain: 3
@@ -147,7 +147,7 @@ get:
                         windDir: 3
                         windGust: 12.4
                     midday:
-                      - conditions: light-clouds
+                      - symbol: light-clouds
                         tempMin: -2
                         tempMax: 1
                         rain: 0
@@ -155,7 +155,7 @@ get:
                         windDir: 4
                         windGust: 7.3
                     evening:
-                      - conditions: clear-sky
+                      - symbol: clear-sky
                         tempMin: -3
                         tempMax: 1
                         rain: 0
@@ -163,7 +163,7 @@ get:
                         windDir: 6
                         windGust: 2.3
                     night:
-                      - conditions: clear-sky
+                      - symbol: clear-sky
                         tempMin: -5
                         tempMax: -3
                         rain: 0
@@ -175,24 +175,16 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../../../comps/error.yml#/BadQueryParamsError"
+            $ref: "../../comps/error.yml#/BadQueryParamsError"
     "403":
       description: Access denied. Your api key is missing, invalid or has no read access.
       content:
         application/json:
           schema:
-            $ref: "../../../comps/error.yml#/AuthentificationError"
-    "503":
-      description: Service unavailable. Either no data or only outdated data available.
-      content:
-        application/json:
-          schema:
-            oneOf:
-              - $ref: "../../../comps/error.yml#/OutdatedDataError"
-              - $ref: "../../../comps/error.yml#/NoDataError"
+            $ref: "../../comps/error.yml#/AuthentificationError"
     "500":
       description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
       content:
         application/json:
           schema:
-            $ref: "../../../comps/error.yml#/InternalError"
+            $ref: "../../comps/error.yml#/InternalError"

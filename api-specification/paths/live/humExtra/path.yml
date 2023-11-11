@@ -1,0 +1,43 @@
+get:
+  tags: [live]
+  summary: Get the realtime extra humidities
+  description: Gets the realtime extra humidities (up to 7 sensors), which automatically are converted to your passed unit. If no unit is passed the configured default unit will be used. Your api key needs read access.
+  parameters:
+    - $ref: "../../../params/humidity-unit.yml"
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                enum: [true]
+              humExtra:
+                type: array
+                minItems: 7
+                maxItems: 7
+                items:
+                  type: number
+                  nullable: true
+                example: [null, 77, 81, 76, null, null, null]
+    "400":
+      description: Bad request. You passed invalid query parameters.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/BadQueryParamsError"
+    "403":
+      description: Access denied. Your api key is missing, invalid or has no read access.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/AuthentificationError"
+    "500":
+      description: Internal server error. Multiple reasons are possible. Probably the database connection failed.
+      content:
+        application/json:
+          schema:
+            $ref: "../../../comps/error.yml#/InternalError"

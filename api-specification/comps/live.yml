@@ -1,0 +1,535 @@
+LiveConditions:
+  type: object
+  properties:
+    altimeter:
+      type: number
+      nullable: true
+      example: null
+    chill:
+      type: number
+      nullable: true
+      example: 12.3
+    consoleBatteryVoltage:
+      type: number
+      nullable: true
+      example: 3.5
+    dew:
+      type: number
+      nullable: true
+      example: 10.3
+    etDay:
+      type: number
+      nullable: true
+      example: null
+    etMonth:
+      type: number
+      nullable: true
+      example: null
+    etYear:
+      type: number
+      nullable: true
+      example: null
+    forecast:
+      type: string
+      nullable: true
+      enum:
+        [
+          Mostly Clear,
+          Partly Cloudy,
+          Mostly Cloudy,
+          Mostly Cloudy,
+          Rain within 12 hours,
+          Mostly Cloudy,
+          Snow within 12 hours,
+          Mostly Cloudy,
+          Rain or Snow within 12 hours,
+          Partly Cloudy,
+          Rain within 12 hours,
+          Partly Cloudy,
+          Rain or Snow within 12 hours,
+          Partly Cloudy,
+          Snow within 12 hours,
+        ]
+      example: Mostly Cloudy
+    forecastID:
+      type: number
+      nullable: true
+      enum: [8, 6, 2, 3, 18, 19, 7, 22, 23]
+      example: 2
+    forecastRule:
+      type: number
+      nullable: true
+      description: Not documented. Please create an issue on https://github.com/harrydehix/vant-api if you know more about this.
+    heat:
+      type: number
+      nullable: true
+      example: 27.2
+    humExtra:
+      type: array
+      minItems: 7
+      maxItems: 7
+      items:
+        type: number
+        nullable: true
+      example: [38.2, null, null, null, null, null, null]
+    humIn:
+      type: number
+      nullable: true
+      example: 40.0
+    humOut:
+      type: number
+      nullable: true
+      example: 65.1
+    leafTemps:
+      type: array
+      minItems: 4
+      maxItems: 4
+      items:
+        type: number
+        nullable: true
+      example: [22.1, null, null, 29.2]
+    leafWetnesses:
+      type: array
+      minItems: 4
+      maxItems: 4
+      items:
+        type: number
+        nullable: true
+      example: [null, null, null, null]
+    press:
+      type: number
+      nullable: true
+      example: 1023.1
+    pressAbs:
+      type: number
+      nullable: true
+      example: 1012.8
+    pressCalibrationOffset:
+      type: number
+      nullable: true
+      example: 0.2
+    pressRaw:
+      type: number
+      nullable: true
+      example: 1012.6
+    pressReductionMethod:
+      type: string
+      nullable: true
+      enum: [user offset, altimeter setting, NOAA bar reduction]
+      example: altimeter setting
+    pressReductionMethodID:
+      type: number
+      nullable: true
+      enum: [0, 1, 2]
+      example: 1
+    pressTrend:
+      type: string
+      enum:
+        [Falling Rapidly, Falling Slowly, Steady, Rising Slowly, Rising Rapidly]
+      nullable: true
+      example: Steady
+    pressTrendID:
+      type: number
+      enum: [-60, -20, 0, 20, 60]
+      example: 0
+      nullable: true
+    pressUserOffset:
+      type: number
+      nullable: true
+      example: 0.1
+    rain15min:
+      type: number
+      nullable: true
+      example: 0.3
+    rain1h:
+      type: number
+      nullable: true
+      example: 0.9
+    rain24h:
+      type: number
+      nullable: true
+      example: 12.1
+    rainDay:
+      type: number
+      nullable: true
+      example: 8.4
+    rainMonth:
+      type: number
+      nullable: true
+      example: 244.1
+    rainRate:
+      type: number
+      nullable: true
+      example: 1.2
+    rainYear:
+      type: number
+      nullable: true
+      example: 823.12
+    soilMoistures:
+      type: array
+      minItems: 4
+      maxItems: 4
+      items:
+        type: number
+        nullable: true
+      example: [null, null, null, null]
+    soilTemps:
+      type: array
+      minItems: 4
+      maxItems: 4
+      items:
+        type: number
+        nullable: true
+      example: [null, null, null, null]
+    solarRadiation:
+      type: number
+      nullable: true
+      example: null
+    stormRain:
+      type: number
+      nullable: true
+      example: 5.6
+    stormStartDate:
+      $ref: "./time.yml#/NullableDate"
+    sunrise:
+      $ref: "./time.yml#/NullableDateTime"
+    sunset:
+      $ref: "./time.yml#/NullableDateTime"
+    tempExtra:
+      type: array
+      minItems: 7
+      maxItems: 7
+      items:
+        type: number
+        nullable: true
+      example: [null, 19.2, null, null, null, null, null]
+    tempIn:
+      type: number
+      nullable: true
+      example: 23.1
+    tempOut:
+      type: number
+      nullable: true
+      example: 12.2
+    thsw:
+      type: number
+      nullable: true
+      example: 10.3
+    time:
+      $ref: "./time.yml#/DateTime"
+    transmitterBatteryStatus:
+      type: number
+      nullable: true
+      description: Poorly documented. Create an issue on https://github.com/harrydehix/vant-api if you know more about this.
+      example: null
+    uv:
+      type: number
+      nullable: true
+      example: 2
+    wind:
+      type: number
+      nullable: true
+      example: 13.2
+    windAvg10m:
+      type: number
+      nullable: true
+      example: 5.3
+    windAvg2m:
+      type: number
+      nullable: true
+      example: 7.5
+    windDir:
+      type: string
+      enum: [NNE, NE, ENE, E, ESE, SE, SSE, S, SSW, SW, WSW, W, WNW, NW, NNW, N]
+      nullable: true
+      example: E
+    windDirDeg:
+      type: number
+      nullable: true
+      example: 92
+      minimum: 1
+      maximum: 360
+    windGust:
+      type: number
+      nullable: true
+      example: 34.4
+    windGustDir:
+      type: string
+      enum: [NNE, NE, ENE, E, ESE, SE, SSE, S, SSW, SW, WSW, W, WNW, NW, NNW, N]
+      nullable: true
+      example: S
+    windGustDirDeg:
+      type: number
+      nullable: true
+      example: 179
+      minimum: 1
+      maximum: 360
+    symbol:
+      $ref: "./meteomatics.yml#/Symbol"
+
+RichRealtimeData:
+  type: object
+  properties:
+    altimeter:
+      type: number
+      nullable: true
+      example: null
+    chill:
+      type: number
+      nullable: true
+      example: 12.3
+    consoleBatteryVoltage:
+      type: number
+      nullable: true
+      example: 3.5
+    dew:
+      type: number
+      nullable: true
+      example: 10.3
+    etDay:
+      type: number
+      nullable: true
+      example: null
+    etMonth:
+      type: number
+      nullable: true
+      example: null
+    etYear:
+      type: number
+      nullable: true
+      example: null
+    forecast:
+      type: string
+      nullable: true
+      enum:
+        [
+          Mostly Clear,
+          Partly Cloudy,
+          Mostly Cloudy,
+          Mostly Cloudy,
+          Rain within 12 hours,
+          Mostly Cloudy,
+          Snow within 12 hours,
+          Mostly Cloudy,
+          Rain or Snow within 12 hours,
+          Partly Cloudy,
+          Rain within 12 hours,
+          Partly Cloudy,
+          Rain or Snow within 12 hours,
+          Partly Cloudy,
+          Snow within 12 hours,
+        ]
+      example: Mostly Cloudy
+    forecastID:
+      type: number
+      nullable: true
+      enum: [8, 6, 2, 3, 18, 19, 7, 22, 23]
+      example: 2
+    forecastRule:
+      type: number
+      nullable: true
+      description: Not documented. Please create an issue on https://github.com/harrydehix/vant-api if you know more about this.
+    heat:
+      type: number
+      nullable: true
+      example: 27.2
+    humExtra:
+      type: array
+      minItems: 7
+      maxItems: 7
+      items:
+        type: number
+        nullable: true
+      example: [38.2, null, null, null, null, null, null]
+    humIn:
+      type: number
+      nullable: true
+      example: 40.0
+    humOut:
+      type: number
+      nullable: true
+      example: 65.1
+    leafTemps:
+      type: array
+      minItems: 4
+      maxItems: 4
+      items:
+        type: number
+        nullable: true
+      example: [22.1, null, null, 29.2]
+    leafWetnesses:
+      type: array
+      minItems: 4
+      maxItems: 4
+      items:
+        type: number
+        nullable: true
+      example: [null, null, null, null]
+    press:
+      type: number
+      nullable: true
+      example: 1023.1
+    pressAbs:
+      type: number
+      nullable: true
+      example: 1012.8
+    pressCalibrationOffset:
+      type: number
+      nullable: true
+      example: 0.2
+    pressRaw:
+      type: number
+      nullable: true
+      example: 1012.6
+    pressReductionMethod:
+      type: string
+      nullable: true
+      enum: [user offset, altimeter setting, NOAA bar reduction]
+      example: altimeter setting
+    pressReductionMethodID:
+      type: number
+      nullable: true
+      enum: [0, 1, 2]
+      example: 1
+    pressTrend:
+      type: string
+      enum:
+        [Falling Rapidly, Falling Slowly, Steady, Rising Slowly, Rising Rapidly]
+      nullable: true
+      example: Steady
+    pressTrendID:
+      type: number
+      enum: [-60, -20, 0, 20, 60]
+      example: 0
+      nullable: true
+    pressUserOffset:
+      type: number
+      nullable: true
+      example: 0.1
+    rain15min:
+      type: number
+      nullable: true
+      example: 0.3
+    rain1h:
+      type: number
+      nullable: true
+      example: 0.9
+    rain24h:
+      type: number
+      nullable: true
+      example: 12.1
+    rainDay:
+      type: number
+      nullable: true
+      example: 8.4
+    rainMonth:
+      type: number
+      nullable: true
+      example: 244.1
+    rainRate:
+      type: number
+      nullable: true
+      example: 1.2
+    rainYear:
+      type: number
+      nullable: true
+      example: 823.12
+    soilMoistures:
+      type: array
+      minItems: 4
+      maxItems: 4
+      items:
+        type: number
+        nullable: true
+      example: [null, null, null, null]
+    soilTemps:
+      type: array
+      minItems: 4
+      maxItems: 4
+      items:
+        type: number
+        nullable: true
+      example: [null, null, null, null]
+    solarRadiation:
+      type: number
+      nullable: true
+      example: null
+    stormRain:
+      type: number
+      nullable: true
+      example: 5.6
+    stormStartDate:
+      $ref: "./time.yml#/NullableDate"
+    sunrise:
+      $ref: "./time.yml#/NullableDateTime"
+    sunset:
+      $ref: "./time.yml#/NullableDateTime"
+    tempExtra:
+      type: array
+      minItems: 7
+      maxItems: 7
+      items:
+        type: number
+        nullable: true
+      example: [null, 19.2, null, null, null, null, null]
+    tempIn:
+      type: number
+      nullable: true
+      example: 23.1
+    tempOut:
+      type: number
+      nullable: true
+      example: 12.2
+    thsw:
+      type: number
+      nullable: true
+      example: 10.3
+    time:
+      $ref: "./time.yml#/DateTime"
+    transmitterBatteryStatus:
+      type: number
+      nullable: true
+      description: Poorly documented. Create an issue on https://github.com/harrydehix/vant-api if you know more about this.
+      example: null
+    uv:
+      type: number
+      nullable: true
+      example: 2
+    wind:
+      type: number
+      nullable: true
+      example: 13.2
+    windAvg10m:
+      type: number
+      nullable: true
+      example: 5.3
+    windAvg2m:
+      type: number
+      nullable: true
+      example: 7.5
+    windDir:
+      type: string
+      enum: [NNE, NE, ENE, E, ESE, SE, SSE, S, SSW, SW, WSW, W, WNW, NW, NNW, N]
+      nullable: true
+      example: E
+    windDirDeg:
+      type: number
+      nullable: true
+      example: 92
+      minimum: 1
+      maximum: 360
+    windGust:
+      type: number
+      nullable: true
+      example: 34.4
+    windGustDir:
+      type: string
+      enum: [NNE, NE, ENE, E, ESE, SE, SSE, S, SSW, SW, WSW, W, WNW, NW, NNW, N]
+      nullable: true
+      example: S
+    windGustDirDeg:
+      type: number
+      nullable: true
+      example: 179
+      minimum: 1
+      maximum: 360
