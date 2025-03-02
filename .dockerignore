@@ -5,4 +5,3 @@ guides/
 logs/
 dist/
 .env
-package-lock.json
